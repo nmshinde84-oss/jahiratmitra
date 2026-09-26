@@ -1,0 +1,1492 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="mainTitleTag">करंजाडे Updates जाहिरात मित्र</title>
+    <!-- Google Fonts & Font Awesome -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- SheetJS & jsPDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+
+    <!-- Firebase SDKs (CDN) -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-analytics.js";
+        import { getAuth, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyAY2Ejm80H8qnbe0nByRN2HzzDD5ONLv0w",
+            authDomain: "karanjadeupdates.firebaseapp.com",
+            projectId: "karanjadeupdates",
+            storageBucket: "karanjadeupdates.firebasestorage.app",
+            messagingSenderId: "374702226183",
+            appId: "1:374702226183:web:3550181bc5d3419cf923a2",
+            measurementId: "G-8RP8NM82V0"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+        const db = getFirestore(app);
+        const auth = getAuth(app);
+
+        window.db = db;
+        window.firebaseAuth = auth;
+        window.firebaseFns = { doc, getDoc, setDoc, signInWithEmailAndPassword, signOut };
+
+        window.dispatchEvent(new Event('firebase-ready'));
+    </script>
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; -webkit-tap-highlight-color: transparent; }
+        body { background-color: #e2e8f0; color: #2d3748; display: flex; justify-content: center; align-items: flex-start; min-height: 100vh; margin: 0; }
+        
+        .app-container { width: 100%; max-width: 480px; background-color: #ffffff; min-height: 100vh; position: relative; box-shadow: 0 10px 30px rgba(0,0,0,0.15); display: flex; flex-direction: column; animation: smoothPopup 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        @keyframes smoothPopup { 
+            0% { opacity: 0; transform: scale(0.94) translateY(20px); } 
+            100% { opacity: 1; transform: scale(1) translateY(0); } 
+        }
+
+        @media (min-width: 481px) { body { background: linear-gradient(135deg, #5c1bc2 0%, #2b2d42 100%); padding: 20px 0; } .app-container { min-height: 92vh; border-radius: 20px; overflow: hidden; } }
+        
+        .sticky-top-bar { position: sticky; top: 0; z-index: 1000; background-color: #ffffff; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12); }
+        
+        /* नवीन डिझाईनयुक्त हेडर बॅनर */
+        .custom-banner-header { background: linear-gradient(135deg, #5c1bc2 0%, #3f1285 100%); color: white; padding: 16px; position: relative; overflow: hidden; display: flex; flex-direction: column; justify-content: center; min-height: 110px; cursor: pointer; }
+        .banner-content { position: relative; z-index: 2; }
+        .banner-title-row { display: flex; align-items: center; gap: 8px; font-size: 20px; font-weight: 800; text-shadow: 0 2px 4px rgba(0,0,0,0.3); }
+        .banner-location-sub { font-size: 15px; font-weight: 800; color: #fbd38d; margin-top: 2px; text-shadow: 0 1px 3px rgba(0,0,0,0.3); }
+        .banner-tagline { font-size: 11px; opacity: 0.9; margin-top: 4px; font-weight: 500; }
+        .banner-bg-graphics { position: absolute; right: -10px; bottom: 0; opacity: 0.25; font-size: 75px; pointer-events: none; z-index: 1; color: #ffffff; }
+
+        .ticker-wrap { width: 100%; overflow: hidden; background: #ff5400; border-top: 1px solid rgba(255, 255, 255, 0.2); border-bottom: 2px solid #d94100; padding: 10px 0; white-space: nowrap; cursor: pointer; }
+        .ticker-move { display: inline-block; white-space: nowrap; animation: tickerSlide 18s linear infinite; font-size: 14px; font-weight: 800; color: #ffffff; letter-spacing: 0.4px; text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4); }
+        @keyframes tickerSlide { 0% { transform: translate3d(100%, 0, 0); } 100% { transform: translate3d(-100%, 0, 0); } }
+        
+        .page { display: none; padding: 16px 16px 140px 16px; flex: 1; }
+        .page.active { display: block; }
+        .location { display: flex; align-items: center; font-size: 13px; font-weight: 600; color: #4a5568; margin-bottom: 12px; gap: 6px; }
+        .location i { color: #e53e3e; }
+        .section-title { font-size: 15px; font-weight: 700; margin-bottom: 12px; display: flex; align-items: center; gap: 6px; color: #1a202c; cursor: pointer; }
+        .featured-scroll-container { display: flex; overflow-x: auto; gap: 12px; padding-bottom: 10px; margin-bottom: 20px; scrollbar-width: thin; }
+        .featured-card { min-width: 260px; max-width: 260px; background: #fff; border: 1.5px solid #fbd38d; border-radius: 12px; padding: 12px; box-shadow: 0 2px 6px rgba(0,0,0,0.04); flex-shrink: 0; cursor: pointer; }
+        .featured-tag { background: #feebc8; color: #b7791f; font-size: 10px; font-weight: 700; padding: 2px 6px; border-radius: 4px; display: inline-block; margin-bottom: 6px; }
+        .categories-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 24px; }
+        .category-card { border: 1px solid #e2e8f0; border-radius: 12px; padding: 14px 10px; background: #fff; cursor: pointer; text-align: center; box-shadow: 0 1px 3px rgba(0,0,0,0.03); display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        .cat-icon-wrap { width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 8px; font-size: 20px; }
+        .cat-icon-services { background: #e0e7ff; color: #4338ca; }
+        .cat-icon-property { background: #dbeafe; color: #1e40af; }
+        .cat-icon-doctor { background: #fee2e2; color: #b91c1c; }
+        .cat-icon-legal { background: #fef3c7; color: #92400e; }
+        .cat-icon-shop { background: #fef9c3; color: #a16207; }
+        .cat-icon-food { background: #ffe4e6; color: #e11d48; }
+        .cat-icon-home { background: #fce7f3; color: #db2777; }
+        .cat-icon-classes { background: #e0f2fe; color: #0284c7; }
+        .cat-icon-auto { background: #dcfce7; color: #16a34a; }
+        .cat-icon-events { background: #ffedd5; color: #ea580c; }
+        .cat-icon-other { background: #f3e8ff; color: #7e22ce; }
+        .category-card .title { font-size: 13px; font-weight: 600; color: #2d3748; }
+        
+        .checkbox-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; max-height: 180px; overflow-y: auto; background: #f8fafc; padding: 10px; border-radius: 8px; border: 1px solid #cbd5e0; }
+        .checkbox-item { display: flex; align-items: center; gap: 6px; font-size: 12px; color: #4a5568; cursor: pointer; }
+        .checkbox-item input { width: 16px; height: 16px; cursor: pointer; }
+
+        .subcategory-container { margin-bottom: 12px; display: flex; flex-wrap: wrap; gap: 6px; }
+        .sub-chip { background: #edf2f7; color: #4a5568; padding: 6px 12px; border-radius: 20px; font-size: 11px; font-weight: 600; cursor: pointer; border: 1px solid #cbd5e0; }
+        .sub-chip.active { background: #5c1bc2; color: #fff; border-color: #5c1bc2; }
+
+        .ad-card { border: 1px solid #e2e8f0; border-radius: 12px; padding: 14px; background: #fff; margin-bottom: 14px; box-shadow: 0 2px 4px rgba(0,0,0,0.03); scroll-margin-top: 80px; }
+        .ad-card h4 { font-size: 15px; color: #1a202c; font-weight: 700; }
+        .ad-meta { font-size: 12px; color: #718096; margin: 4px 0 6px 0; }
+        .ad-address { font-size: 12px; color: #4a5568; margin-bottom: 6px; }
+        .ad-desc { font-size: 12px; color: #4a5568; line-height: 1.4; margin-bottom: 8px; }
+        .ad-card-img { width: 100%; height: 165px; object-fit: contain; border-radius: 8px; margin-bottom: 10px; border: 1px solid #edf2f7; background: #f7fafc; }
+        .ad-actions { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; margin-top: 8px; }
+        .btn-call, .btn-whatsapp, .btn-share { border-radius: 8px; padding: 8px; font-size: 11px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 4px; text-decoration: none; cursor: pointer; }
+        .btn-call { border: 1px solid #5c1bc2; background: white; color: #5c1bc2; }
+        .btn-whatsapp { background: #25d366; color: white; border: none; }
+        .btn-share { background: #3182ce; color: white; border: none; }
+        
+        .social-links-row { display: flex; gap: 6px; margin-top: 8px; margin-bottom: 8px; }
+        .btn-social { flex: 1; border-radius: 6px; padding: 6px; font-size: 11px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 4px; text-decoration: none; color: white; }
+        .btn-insta { background: #e1306c; }
+        .btn-fb { background: #1877f2; }
+        .btn-web { background: #4a5568; }
+
+        .rating-box { margin-top: 10px; padding: 8px; background: #f8fafc; border-radius: 8px; border: 1px solid #e2e8f0; display: flex; align-items: center; justify-content: space-between; font-size: 12px; }
+        .stars-container i { color: #cbd5e0; cursor: pointer; font-size: 14px; margin-right: 2px; }
+        .stars-container i.rated { color: #f59e0b; }
+
+        .directory-card { border: 1px solid #e2e8f0; border-radius: 10px; padding: 12px; margin-bottom: 10px; background: #fff; display: flex; align-items: center; justify-content: space-between; }
+        .info-update-card { border-left: 4px solid #5c1bc2; background: #f8fafc; border-radius: 8px; padding: 12px; margin-bottom: 12px; }
+        .form-group { margin-bottom: 14px; }
+        .form-group label { display: block; font-size: 12px; font-weight: 600; margin-bottom: 5px; color: #4a5568; }
+        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 10px 12px; border: 1px solid #cbd5e0; border-radius: 8px; font-size: 13px; outline: none; background: #fff; }
+        .btn-primary { background-color: #5c1bc2; color: white; border: none; width: 100%; padding: 12px; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; }
+        .btn-submit-ad { background-color: #5c1bc2; color: #ffffff; padding: 14px; font-size: 15px; font-weight: 700; border-radius: 10px; width: 100%; border: none; cursor: pointer; box-shadow: 0 4px 12px rgba(92, 27, 194, 0.35); }
+        .bottom-nav { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 480px; background: #ffffff; display: flex; justify-content: space-around; padding: 8px 0; border-top: 1px solid #e2e8f0; box-shadow: 0 -2px 10px rgba(0,0,0,0.06); z-index: 999; }
+        .nav-item { display: flex; flex-direction: column; align-items: center; color: #718096; font-size: 10px; cursor: pointer; gap: 3px; padding: 4px 8px; }
+        .nav-item i { font-size: 18px; }
+        .nav-item.active { color: #5c1bc2; font-weight: 700; }
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 10000; justify-content: center; align-items: center; padding: 20px; }
+        .modal.active { display: flex; }
+        .modal-content { background: white; border-radius: 14px; padding: 20px; width: 100%; max-width: 400px; max-height: 85vh; overflow-y: auto; text-align: left; }
+        .modal-btn-close { background: #5c1bc2; color: white; border: none; padding: 8px 16px; border-radius: 8px; margin-top: 14px; cursor: pointer; width: 100%; font-weight: 600; }
+        .back-btn { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 600; color: #5c1bc2; cursor: pointer; margin-bottom: 12px; }
+        .expired-badge { background: #e53e3e; color: #fff; padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: bold; margin-left: 8px; }
+    </style>
+</head>
+<body>
+
+<div class="app-container">
+    <div class="sticky-top-bar">
+        <!-- नवीन डिझाईनयुक्त हेडर बॅनर -->
+        <header class="custom-banner-header" onclick="openOwnerContactModal()">
+            <div class="banner-content">
+                <div class="banner-title-row"><i class="fa-solid fa-bullhorn"></i> जाहिरात मित्र</div>
+                <div class="banner-location-sub" id="headerLocationText">करंजाडे अपडेट्स</div>
+                <div class="banner-tagline">तुमचं काम • तुमची जाहिरात • तुमच्या परिसरात</div>
+            </div>
+            <div class="banner-bg-graphics"><i class="fa-solid fa-city"></i></div>
+        </header>
+        <div class="ticker-wrap" onclick="openOwnerContactModal()"><div class="ticker-move" id="liveTickerText">लोड होत आहे...</div></div>
+    </div>
+
+    <!-- 1. होम पेज -->
+    <div id="page-home" class="page active">
+        <div class="location"><i class="fa-solid fa-location-dot"></i><span id="currentLocationDisplay">करंजाडे, पनवेल</span></div>
+        
+        <div class="section-title" onclick="openFestivalOffersPage()" style="background: #fff; padding: 12px 14px; border-radius: 12px; border: 1px solid #e2e8f0; margin-bottom: 18px; box-shadow: 0 1px 3px rgba(0,0,0,0.03); cursor: pointer;">
+            <i class="fa-solid fa-gift" style="color: #ec4899; font-size: 18px;"></i> 
+            <span style="font-size: 14px; font-weight: 700; color: #1a202c;">फेस्टिव्हल व स्पेशल ऑफर्स</span> 
+            <i class="fa-solid fa-chevron-right" style="font-size: 12px; margin-left: auto; color: #718096;"></i>
+        </div>
+
+        <div class="section-title" onclick="openFeaturedAdsPage()" style="cursor: pointer;"><i class="fa-solid fa-crown" style="color: #f59e0b;"></i> Featured Ads (खास जाहिराती) <i class="fa-solid fa-chevron-right" style="font-size:12px; margin-left:auto;"></i></div>
+        <div class="featured-scroll-container" id="featuredAdsContainer"></div>
+        <div class="section-title"><i class="fa-solid fa-layer-group" style="color: #5c1bc2;"></i> Categories (वर्ग)</div>
+        <div class="categories-grid">
+            <div class="category-card" onclick="openCategoryPage('Services')"><div class="cat-icon-wrap cat-icon-services"><i class="fa-solid fa-screwdriver-wrench"></i></div><span class="title">Services (दैनिक व तांत्रिक)</span></div>
+            <div class="category-card" onclick="openCategoryPage('Property & Real Estate')"><div class="cat-icon-wrap cat-icon-property"><i class="fa-solid fa-building-user"></i></div><span class="title">प्रॉपर्टी व एजंट्स</span></div>
+            <div class="category-card" onclick="openCategoryPage('Doctor & Healthcare')"><div class="cat-icon-wrap cat-icon-doctor"><i class="fa-solid fa-user-doctor"></i></div><span class="title">डॉक्टर व क्लिनिक</span></div>
+            <div class="category-card" onclick="openCategoryPage('Legal & Advocates')"><div class="cat-icon-wrap cat-icon-legal"><i class="fa-solid fa-scale-balanced"></i></div><span class="title">वकील व कायदेशीर सल्ला</span></div>
+            <div class="category-card" onclick="openCategoryPage('दुकान')"><div class="cat-icon-wrap cat-icon-shop"><i class="fa-solid fa-store"></i></div><span class="title">दुकान व स्टोअर्स</span></div>
+            <div class="category-card" onclick="openCategoryPage('Food')"><div class="cat-icon-wrap cat-icon-food"><i class="fa-solid fa-utensils"></i></div><span class="title">Food & Mess</span></div>
+            <div class="category-card" onclick="openCategoryPage('Home Business')"><div class="cat-icon-wrap cat-icon-home"><i class="fa-solid fa-house-chimney-user"></i></div><span class="title">Home Business</span></div>
+            <div class="category-card" onclick="openCategoryPage('Classes')"><div class="cat-icon-wrap cat-icon-classes"><i class="fa-solid fa-graduation-cap"></i></div><span class="title">Classes & Coaching</span></div>
+            <div class="category-card" onclick="openCategoryPage('Automobile')"><div class="cat-icon-wrap cat-icon-auto"><i class="fa-solid fa-car"></i></div><span class="title">Automobile</span></div>
+            <div class="category-card" onclick="openCategoryPage('Events & Competitions')"><div class="cat-icon-wrap cat-icon-events"><i class="fa-solid fa-trophy"></i></div><span class="title">इव्हेंट्स व स्पर्धा</span></div>
+            <div class="category-card" style="grid-column: span 2;" onclick="openOtherCategoryPage()"><div class="cat-icon-wrap cat-icon-other"><i class="fa-solid fa-circle-info"></i></div><span class="title">Other (महत्वाचे अपडेट्स व डिरेक्टरी)</span></div>
+        </div>
+    </div>
+
+    <!-- 2. स्वतंत्र कॅटेगरी पेज -->
+    <div id="page-category" class="page">
+        <div class="back-btn" onclick="goBackToHome()"><i class="fa-solid fa-arrow-left"></i> मागे जा</div>
+        <h3 id="categoryTitle" style="margin-bottom: 10px; color: #1a202c;"></h3>
+        <div id="subcategoryContainer" class="subcategory-container"></div>
+        <div id="categoryAdsList"></div>
+    </div>
+
+    <!-- 2C. Featured Ads स्वतंत्र पेज -->
+    <div id="page-featured-special" class="page">
+        <div class="back-btn" onclick="goBackToHome()"><i class="fa-solid fa-arrow-left"></i> मागे जा</div>
+        <h3 style="color:#f59e0b; margin-bottom: 14px;"><i class="fa-solid fa-crown"></i> Featured Ads (खास जाहिराती)</h3>
+        <div id="featuredAdsListContainer"></div>
+    </div>
+
+    <!-- 2D. Festival & Special Offers स्वतंत्र पेज -->
+    <div id="page-festival-special" class="page">
+        <div class="back-btn" onclick="goBackToHome()"><i class="fa-solid fa-arrow-left"></i> मागे जा</div>
+        <h3 style="color:#ec4899; margin-bottom: 14px;"><i class="fa-solid fa-gift"></i> फेस्टिव्हल व स्पेशल ऑफर्स</h3>
+        <div id="festivalOffersListContainer"></div>
+    </div>
+
+    <!-- 2B. OTHER कॅटेगरीचे विशेष पेज -->
+    <div id="page-other-special" class="page">
+        <div class="back-btn" onclick="goBackToHome()"><i class="fa-solid fa-arrow-left"></i> मागे जा</div>
+        <h3 id="otherPageMainTitle" style="color:#5c1bc2; margin-bottom: 12px;"><i class="fa-solid fa-circle-info"></i> महत्त्वाची माहिती व सेवा</h3>
+        <div class="section-title"><i class="fa-solid fa-bullhorn" style="color:#ff5400;"></i> ताजी माहिती (Live Updates)</div>
+        <div id="karanjadeUpdatesList"></div>
+        <div class="section-title" style="margin-top: 18px;"><i class="fa-solid fa-address-book" style="color:#25d366;"></i> फोन डिरेक्टरी (Important Contacts)</div>
+        <div id="phoneDirectoryList"></div>
+        <div class="section-title" style="margin-top: 18px;"><i class="fa-solid fa-boxes-stacked" style="color:#7e22ce;"></i> इतर जाहिराती (Other Ads)</div>
+        <div id="otherGeneralAdsList"></div>
+    </div>
+
+    <!-- 3. सर्च पेज -->
+    <div id="page-search" class="page">
+        <h3 style="margin-bottom: 12px;">शोधा (Search Ads)</h3>
+        <div class="form-group"><input type="text" id="searchInput" placeholder="नाव, कामाचा प्रकार शोधा..." oninput="handleSearch()"></div>
+        
+        <div class="form-group">
+            <label style="font-size: 12px; font-weight: 600; margin-bottom: 5px; color: #4a5568;">मुख्य कॅटेगरी निवडा:</label>
+            <select id="searchCategory" onchange="updateSearchSubCategories()">
+                <option value="">सर्व कॅटेगरीज (All Categories)</option>
+                <option value="Services">Services (दैनिक व तांत्रिक)</option>
+                <option value="Property & Real Estate">प्रॉपर्टी व रिअल इस्टेट</option>
+                <option value="Doctor & Healthcare">डॉक्टर व क्लिनिक</option>
+                <option value="Legal & Advocates">वकील व कायदेशीर सल्ला</option>
+                <option value="दुकान">दुकान व स्टोअर्स</option>
+                <option value="Food">Food & Mess</option>
+                <option value="Home Business">Home Business</option>
+                <option value="Classes">Classes & Coaching</option>
+                <option value="Automobile">Automobile</option>
+                <option value="Events & Competitions">इव्हेंट्स व स्पर्धा</option>
+                <option value="Other">Other</option>
+            </select>
+        </div>
+
+        <div class="form-group" id="searchSubCategoryGroup" style="display:none;">
+            <label style="font-size: 12px; font-weight: 600; margin-bottom: 5px; color: #4a5568;">सब-कॅटेगरीज निवडा (एकापेक्षा जास्त सिलेक्ट करू शकता):</label>
+            <div class="checkbox-grid" id="searchSubCategoriesCheckboxGroup" style="max-height: 220px;"></div>
+        </div>
+
+        <div id="searchResultsList" style="margin-top: 16px;"></div>
+    </div>
+
+    <!-- 4. पोस्ट ॲड -->
+    <div id="page-post" class="page">
+        <h3 style="margin-bottom: 8px; color: #1a202c;">नवीन जाहिरात पोस्ट करा</h3>
+        <form onsubmit="handleUserSubmitAd(event)">
+            <div class="form-group"><label>व्यवसायाचे / सेवेचे नाव *</label><input type="text" id="postName" required placeholder="उदा. पाटील क्लिनिक"></div>
+            
+            <div class="form-group">
+                <label>मुख्य कॅटेगरी निवडा *</label>
+                <select id="postCategory" required onchange="updatePostSubCategories()">
+                    <option value="Services">Services (दैनिक व तांत्रिक)</option>
+                    <option value="Property & Real Estate">प्रॉपर्टी व रिअल इस्टेट</option>
+                    <option value="Doctor & Healthcare">डॉक्टर व क्लिनिक</option>
+                    <option value="Legal & Advocates">वकील व कायदेशीर सल्ला</option>
+                    <option value="दुकान">दुकान व स्टोअर्स</option>
+                    <option value="Food">Food & Mess</option>
+                    <option value="Home Business">Home Business</option>
+                    <option value="Classes">Classes & Coaching</option>
+                    <option value="Automobile">Automobile</option>
+                    <option value="Events & Competitions">इव्हेंट्स व स्पर्धा</option>
+                    <option value="Other">Other</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>सब-कॅटेगरीज निवडा * (एकापेक्षा जास्त सिलेक्ट करू शकता)</label>
+                <div class="checkbox-grid" id="postSubCategoriesCheckboxGroup"></div>
+            </div>
+
+            <div class="form-group"><label>मोबाईल नंबर * (पासवर्ड)</label><input type="tel" id="postPhone" required placeholder="10 अंकी मोबाईल नंबर"></div>
+            <div class="form-group"><label>पत्ता *</label><input type="text" id="postAddress" required placeholder="उदा. सेक्टर 4"></div>
+            <div class="form-group"><label>माहिती (Description) *</label><textarea id="postDesc" rows="3" required placeholder="माहिती लिहा..."></textarea></div>
+            
+            <div class="form-group"><label>इन्स्टाग्राम प्रोफाइल लिंक (पर्यायी)</label><input type="url" id="postInsta" placeholder="https://instagram.com/..."></div>
+            <div class="form-group"><label>फेसबुक पेज लिंक (पर्यायी)</label><input type="url" id="postFb" placeholder="https://facebook.com/..."></div>
+            <div class="form-group"><label>स्वतःची वेबसाईट लिंक (पर्यायी)</label><input type="url" id="postWeb" placeholder="https://..."></div>
+
+            <div class="form-group" style="display: flex; align-items: flex-start; gap: 8px; background: #f8fafc; padding: 10px; border-radius: 8px; border: 1px solid #e2e8f0;">
+                <input type="checkbox" id="postTermsCheck" required style="width: 18px; height: 18px; margin-top: 2px; cursor: pointer;">
+                <label for="postTermsCheck" style="margin: 0; font-weight: 500; font-size: 12px; color: #4a5568; cursor: pointer;">
+                    मी प्लॅटफॉर्मच्या सर्व <span style="color: #5c1bc2; font-weight: bold; text-decoration: underline;" onclick="openTermsModal()">अटी व शर्ती (Terms & Conditions)</span> वाचल्या असून त्या मला मान्य आहेत.
+                </label>
+            </div>
+
+            <button type="submit" class="btn-submit-ad">🚀 जाहिरात सबमिट करा</button>
+        </form>
+    </div>
+
+    <!-- 5. माय ॲड्स -->
+    <div id="page-myads" class="page">
+        <h3 style="margin-bottom: 6px;">माझ्या जाहिराती (My Ads)</h3>
+        <div id="myAdsLoginBox" style="margin-top: 14px; background:#fff; border:1px solid #e2e8f0; border-radius:12px; padding:16px;">
+            <div class="form-group"><label>Username</label><input type="text" id="myAdsUser"></div>
+            <div class="form-group"><label>Password (मोबाईल नंबर)</label><input type="password" id="myAdsPass"></div>
+            <button class="btn-primary" onclick="handleMyAdsLogin()">लॉगिन करा</button>
+        </div>
+        <div id="myAdsContentBox" style="display:none; margin-top:14px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; background:#f8fafc; padding:10px; border-radius:8px;">
+                <b id="myAdsLoggedInUsername" style="color:#5c1bc2;"></b>
+                <button onclick="handleAdvertiserLogout()" style="background:#e53e3e; color:#fff; border:none; padding:4px 10px; border-radius:6px; cursor:pointer;">Logout</button>
+            </div>
+            <div id="myAdsList"></div>
+        </div>
+    </div>
+
+    <!-- 6. प्रोफाईल आणि अडमिन लॉगिन -->
+    <div id="page-profile" class="page">
+        <div style="background: #f8fafc; border: 1px solid #e2e8f0; padding: 12px; border-radius: 10px; margin-bottom: 16px; cursor: pointer;" onclick="openTermsModal()">
+            <div style="font-size: 13px; font-weight: 700; color: #5c1bc2; display: flex; align-items: center; justify-content: space-between;">
+                <span><i class="fa-solid fa-file-contract"></i> अटी व शर्ती (Terms & Conditions)</span>
+                <i class="fa-solid fa-chevron-right" style="font-size: 11px;"></i>
+            </div>
+            <div style="font-size: 11px; color: #718096; margin-top: 2px;">येथे क्लिक करून वाचू शकता</div>
+        </div>
+
+        <div id="adminLoginForm">
+            <h3 style="font-size: 15px; margin-bottom: 10px;">Admin Login</h3>
+            <div class="form-group"><label>Admin Email</label><input type="email" id="adminUser" placeholder="Admin Email टाका"></div>
+            <div class="form-group"><label>Password</label><input type="password" id="adminPass" placeholder="Password टाका"></div>
+            <button class="btn-primary" onclick="handleAdminLogin()">अडमिन लॉगिन करा</button>
+        </div>
+
+        <div id="adminDashboard" style="display: none;">
+            <div style="display:flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+                <h3>Admin Control Center</h3>
+                <button onclick="handleAdminLogout()" style="background:#e53e3e; color:#fff; border:none; padding:4px 8px; border-radius:6px; cursor:pointer;">Logout</button>
+            </div>
+            <div style="background:#eef2ff; border:1.5px solid #c7d2fe; padding:12px; border-radius:12px; margin-bottom:16px;">
+                <div style="font-size:13px; font-weight:700; color:#3730a3; margin-bottom:6px;"><i class="fa-solid fa-file-arrow-down"></i> जाहिरातदार डेटा रिपोर्ट</div>
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+                    <button onclick="downloadExcelReport()" style="background:#107c41; color:#fff; border:none; padding:8px; border-radius:6px; font-weight:600; cursor:pointer;">Excel Report</button>
+                    <button onclick="downloadPDFReport()" style="background:#b30b00; color:#fff; border:none; padding:8px; border-radius:6px; font-weight:600; cursor:pointer;">PDF Report</button>
+                </div>
+            </div>
+            <div class="section-title"><i class="fa-solid fa-sliders" style="color:#5c1bc2;"></i> ॲडमिन कंट्रोल्स</div>
+            <div class="categories-grid">
+                <div class="category-card" onclick="openAdminModal('modalAdminLocation')"><div class="cat-icon-wrap" style="background:#fef3c7; color:#92400e;"><i class="fa-solid fa-location-crosshairs"></i></div><span class="title">लोकेशन बदला</span></div>
+                <div class="category-card" onclick="openAdminModal('modalAdminTicker')"><div class="cat-icon-wrap" style="background:#ffedd5; color:#ea580c;"><i class="fa-solid fa-bullhorn"></i></div><span class="title">स्क्रोलिंग पट्टी व संपर्क माहिती</span></div>
+                <div class="category-card" onclick="openAdminModal('modalAdminUpdates')"><div class="cat-icon-wrap" style="background:#eff6ff; color:#1d4ed8;"><i class="fa-solid fa-faucet-drip"></i></div><span class="title">अपडेट्स</span></div>
+                <div class="category-card" onclick="openAdminModal('modalAdminDirectory')"><div class="cat-icon-wrap" style="background:#f0fdf4; color:#15803d;"><i class="fa-solid fa-address-book"></i></div><span class="title">डिरेक्टरी</span></div>
+                <div class="category-card" onclick="openAdminModal('modalAdminBanners')"><div class="cat-icon-wrap" style="background:#fdf2f8; color:#9d174d;"><i class="fa-solid fa-gift"></i></div><span class="title">बॅनर्स मॅनेजमेंट</span></div>
+                <div class="category-card" onclick="openAdminModal('modalAdminSubCat')"><div class="cat-icon-wrap" style="background:#e0f2fe; color:#0284c7;"><i class="fa-solid fa-folder-plus"></i></div><span class="title">नवीन सब-कॅटेगरी जोडा</span></div>
+                <div class="category-card" onclick="openAdminModal('modalAdminAds')"><div class="cat-icon-wrap" style="background:#faf5ff; color:#6b21a8;"><i class="fa-solid fa-list-check"></i></div><span class="title">ॲड अप्रूवल & एडिट</span></div>
+                <div class="category-card" style="grid-column: span 2;" onclick="openAdminModal('modalAdminTerms')"><div class="cat-icon-wrap" style="background:#e0e7ff; color:#3730a3;"><i class="fa-solid fa-file-pen"></i></div><span class="title">अटी व शर्ती (Terms) बदला</span></div>
+            </div>
+        </div>
+    </div>
+
+    <nav class="bottom-nav">
+        <div class="nav-item active" onclick="showPage('page-home', true, this)"><i class="fa-solid fa-house"></i><span>Home</span></div>
+        <div class="nav-item" onclick="showPage('page-search', true, this)"><i class="fa-solid fa-magnifying-glass"></i><span>Search</span></div>
+        <div class="nav-item" onclick="showPage('page-post', true, this)"><i class="fa-solid fa-plus-circle"></i><span>Post Ad</span></div>
+        <div class="nav-item" onclick="showPage('page-myads', true, this)"><i class="fa-regular fa-clone"></i><span>My Ads</span></div>
+        <div class="nav-item" onclick="showPage('page-profile', true, this)"><i class="fa-regular fa-user"></i><span>Profile</span></div>
+    </nav>
+</div>
+
+<!-- मॉडल्स -->
+<div class="modal" id="modalAdminLocation">
+    <div class="modal-content">
+        <h4 style="color:#92400e; margin-bottom:8px;"><i class="fa-solid fa-location-crosshairs"></i> लोकेशन मॅन्युअली बदल करा</h4>
+        <div class="form-group"><label>शहर / लोकेशनचे नाव:</label><input type="text" id="adminLocationInput" placeholder="उदा. करंजाडे"></div>
+        <button class="btn-primary" style="background:#d97706;" onclick="updateAppLocation()">लोकेशन सेव्ह करा</button>
+        <button class="modal-btn-close" style="background:#718096;" onclick="closeAdminModal('modalAdminLocation')">बंद करा</button>
+    </div>
+</div>
+
+<div class="modal" id="modalAdminTicker">
+    <div class="modal-content">
+        <h4 style="color:#c2410c; margin-bottom:10px;"><i class="fa-solid fa-bullhorn"></i> स्क्रोलिंग पट्टी व संपर्क माहिती बदला</h4>
+        <div class="form-group"><label>स्क्रोलिंग पट्टी मजकूर (Ticker Text):</label><textarea id="adminTickerInput" rows="2"></textarea></div>
+        <div class="form-group"><label>Subject (विषय):</label><input type="text" id="ownerSubjectInput" placeholder="उदा. करंजाडे अपडेट्स सपोर्ट"></div>
+        <div class="form-group"><label>मोबाईल नंबर:</label><input type="tel" id="ownerPhoneInput" placeholder="मोबाईल नंबर टाका"></div>
+        <div class="form-group"><label>ई-मेल आयडी (Email ID):</label><input type="email" id="ownerEmailInput" placeholder="Email टाका"></div>
+        <div class="form-group"><label>डिस्क्रिप्शन (Description):</label><textarea id="ownerDescInput" rows="3" placeholder="माहिती लिहा..."></textarea></div>
+        <button class="btn-primary" style="background:#ea580c;" onclick="updateTickerAndOwnerDetails()">सर्व बदल सेव्ह करा</button>
+        <button class="modal-btn-close" style="background:#718096;" onclick="closeAdminModal('modalAdminTicker')">बंद करा</button>
+    </div>
+</div>
+
+<div class="modal" id="modalAdminSubCat">
+    <div class="modal-content">
+        <h4 style="color:#0284c7; margin-bottom:10px;"><i class="fa-solid fa-folder-plus"></i> कोणत्याही कॅटेगरीत सब-कॅटेगरी जोडा</h4>
+        <div class="form-group">
+            <label>मुख्य कॅटेगरी निवडा:</label>
+            <select id="adminSubCatTarget">
+                <option value="Services">Services (दैनिक व तांत्रिक)</option>
+                <option value="Property & Real Estate">प्रॉपर्टी व रिअल इस्टेट</option>
+                <option value="Doctor & Healthcare">डॉक्टर व क्लिनिक</option>
+                <option value="Legal & Advocates">वकील व कायदेशीर सल्ला</option>
+                <option value="दुकान">दुकान व स्टोअर्स</option>
+                <option value="Food">Food & Mess</option>
+                <option value="Home Business">Home Business</option>
+                <option value="Classes">Classes & Coaching</option>
+                <option value="Automobile">Automobile</option>
+                <option value="Events & Competitions">इव्हेंट्स व स्पर्धा</option>
+                <option value="Other">Other</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>नवीन सब-कॅटेगरीचे नाव:</label>
+            <input type="text" id="adminNewSubCatName" placeholder="उदा. नवीन सेवा प्रकार">
+        </div>
+        <button class="btn-primary" style="background:#0284c7;" onclick="addNewSubCategoryByAdmin()">+ सब-कॅटेगरी जोडा</button>
+        <button class="modal-btn-close" style="background:#718096;" onclick="closeAdminModal('modalAdminSubCat')">बंद करा</button>
+    </div>
+</div>
+
+<div class="modal" id="ownerModal">
+    <div class="modal-content" style="text-align: center;">
+        <h3 style="color:#5c1bc2; margin-bottom: 12px;" id="modalOwnerSubject"><i class="fa-solid fa-circle-info"></i> माहिती व संपर्क</h3>
+        <p style="font-size: 13px; color: #4a5568; margin-bottom: 14px; line-height: 1.5;" id="modalOwnerDesc"></p>
+        <div style="background: #f8fafc; padding: 12px; border-radius: 8px; border: 1px solid #e2e8f0; text-align: left; margin-bottom: 14px;">
+            <p style="margin: 6px 0; font-size: 13px;"><strong>📞 मोबाईल:</strong> <a id="modalOwnerPhone" href="#" style="color:#5c1bc2; text-decoration:none; font-weight:600;"></a></p>
+            <p style="margin: 6px 0; font-size: 13px;"><strong>✉️ ई-मेल:</strong> <a id="modalOwnerEmail" href="#" style="color:#5c1bc2; text-decoration:none; font-weight:600;"></a></p>
+        </div>
+        <button class="modal-btn-close" onclick="closeOwnerContactModal()">बंद करा</button>
+    </div>
+</div>
+
+<div class="modal" id="modalAdminUpdates">
+    <div class="modal-content">
+        <h4 style="color:#1d4ed8; margin-bottom:8px;">नवीन अपडेट जोडा</h4>
+        <div class="form-group"><label>प्रकार:</label><select id="updateType"><option value="पाणी पुरवठा अपडेट">पाणी पुरवठा</option><option value="लाईट अपडेट">लाईट अपडेट</option><option value="इतर सूचना">इतर सूचना</option></select></div>
+        <div class="form-group"><label>शीर्षक:</label><input type="text" id="updateTitle"></div>
+        <div class="form-group"><label>माहिती:</label><textarea id="updateDesc" rows="2"></textarea></div>
+        <button class="btn-primary" style="background:#2563eb;" onclick="addKaranjadeUpdate()">+ जोडा</button>
+        <div id="adminExistingUpdates" style="margin-top:12px; max-height:120px; overflow-y:auto;"></div>
+        <button class="modal-btn-close" style="background:#718096;" onclick="closeAdminModal('modalAdminUpdates')">बंद करा</button>
+    </div>
+</div>
+
+<div class="modal" id="modalAdminDirectory">
+    <div class="modal-content">
+        <h4 style="color:#15803d; margin-bottom:8px;">फोन डिरेक्टरी</h4>
+        <div class="form-group"><label>नाव:</label><input type="text" id="dirName"></div>
+        <div class="form-group"><label>नंबर:</label><input type="tel" id="dirPhone"></div>
+        <button class="btn-primary" style="background:#16a34a;" onclick="addDirectoryContact()">+ डिरेक्टरी जोडा</button>
+        <div id="adminDirectoryList" style="margin-top:12px; max-height:120px; overflow-y:auto;"></div>
+        <button class="modal-btn-close" style="background:#718096;" onclick="closeAdminModal('modalAdminDirectory')">बंद करा</button>
+    </div>
+</div>
+
+<div class="modal" id="modalAdminBanners">
+    <div class="modal-content">
+        <h4 style="color:#9d174d; margin-bottom:8px;"><i class="fa-solid fa-gift"></i> बॅनर्स मॅनेजमेंट</h4>
+        <div class="form-group"><label>बॅनर फोटो URL (Image Link):</label><input type="text" id="bannerImgInput" placeholder="https://... फोटोची लिंक टाका"></div>
+        <div class="form-group"><label>बॅनर वर्णन (Description / मेसेज):</label><textarea id="bannerDescInput" rows="2" placeholder="उदा. होळी विशेष ऑफर..."></textarea></div>
+        <div class="form-group"><label>Expire Date:</label><input type="date" id="bannerExpInput"></div>
+        <div class="form-group"><label><input type="checkbox" id="bannerHideCheck"> बॅनर Hide करा</label></div>
+        <button class="btn-primary" style="background:#db2777;" onclick="saveNewBannerItem()">+ नवीन बॅनर जोडा</button>
+        <div id="adminBannerListContainer" style="margin-top:12px; max-height:150px; overflow-y:auto;"></div>
+        <button class="modal-btn-close" style="background:#718096;" onclick="closeAdminModal('modalAdminBanners')">बंद करा</button>
+    </div>
+</div>
+
+<div class="modal" id="modalAdminTerms">
+    <div class="modal-content">
+        <h4 style="color:#3730a3; margin-bottom:8px;"><i class="fa-solid fa-file-pen"></i> अटी व शर्ती (Terms & Conditions) बदला</h4>
+        <div class="form-group"><textarea id="adminTermsInput" rows="8" placeholder="अटी व शर्ती येथे लिहा..."></textarea></div>
+        <button class="btn-primary" style="background:#3730a3;" onclick="updateTermsAndConditions()">बदल सेव्ह करा</button>
+        <button class="modal-btn-close" style="background:#718096;" onclick="closeAdminModal('modalAdminTerms')">बंद करा</button>
+    </div>
+</div>
+
+<div class="modal" id="modalViewTerms">
+    <div class="modal-content">
+        <h3 style="color:#5c1bc2; margin-bottom:10px;"><i class="fa-solid fa-file-contract"></i> अटी व शर्ती (Terms & Conditions)</h3>
+        <div id="viewTermsContent" style="font-size: 13px; color: #4a5568; line-height: 1.6; white-space: pre-line; max-height: 300px; overflow-y: auto; background: #f8fafc; padding: 10px; border-radius: 8px;"></div>
+        <button class="modal-btn-close" onclick="closeTermsModal()">बंद करा</button>
+    </div>
+</div>
+
+<div class="modal" id="modalAdminAds">
+    <div class="modal-content" style="max-width:440px;">
+        <h4 style="color:#6b21a8; margin-bottom:8px;"><i class="fa-solid fa-list-check"></i> ॲड अप्रूवल & एडिट मॅनेजमेंट</h4>
+        <div style="display:flex; gap:6px; margin-bottom:10px;">
+            <button onclick="switchAdminTab('pending')" id="tabBtnPending" style="flex:1; padding:6px; font-weight:700; background:#c05621; color:#fff; border:none; border-radius:6px; cursor:pointer;">Pending Ads</button>
+            <button onclick="switchAdminTab('approved')" id="tabBtnApproved" style="flex:1; padding:6px; font-weight:700; background:#e2e8f0; color:#4a5568; border:none; border-radius:6px; cursor:pointer;">Approved Ads</button>
+        </div>
+        <div class="form-group" style="margin-bottom: 10px;">
+            <input type="text" id="adminSearchInput" placeholder="नाव किंवा मोबाईल नंबरने शोधा..." oninput="renderAdminAdsManager()" style="padding: 8px; font-size: 12px;">
+        </div>
+        <div id="adminAdsManager" style="max-height:300px; overflow-y:auto;"></div>
+        <button class="modal-btn-close" style="background:#718096;" onclick="closeAdminModal('modalAdminAds')">बंद करा</button>
+    </div>
+</div>
+
+<script>
+    let appLocation = localStorage.getItem('kj_location') || "करंजाडे";
+    let ownerDetails = JSON.parse(localStorage.getItem('kj_owner')) || { 
+        subject: "करंजाडे Updates मदत केंद्र", 
+        phone: "9876543210", 
+        email: "contact@updates.com", 
+        desc: "करंजाडे Updates - सर्वोत्कृष्ट डिजिटल प्लॅटफॉर्मच्या माध्यमातून आपल्यापर्यंत सर्व सेवा पोहोचवत आहोत." 
+    };
+    let tickerText = localStorage.getItem('kj_ticker') || "🔥 तुमच्या परिसरात उत्तम सेवा • संपर्क करा 🔥";
+    
+    let bannersList = JSON.parse(localStorage.getItem('kj_banners_list')) || [
+        { url: "https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=600", desc: "✨ खास फेस्टिव्हल व स्पेशल ऑफर्सचा आनंद घ्या!", expireDate: "2026-12-31", hidden: false }
+    ];
+    let karanjadeUpdates = JSON.parse(localStorage.getItem('kj_updates')) || [];
+    let phoneDirectory = JSON.parse(localStorage.getItem('kj_directory')) || [];
+    
+    let subCategoriesMap = JSON.parse(localStorage.getItem('kj_subcategories_map')) || {
+        "Services": ["इलेक्ट्रिशियन", "प्लंबर", "कारपेंटर", "पेंटर", "AC / फ्रिज रिपेअर", "मोबाईल / कॉम्प्युटर रिपेअर", "CCTV सेवा", "घर साफसफाई", "Pest Control", "RO / वॉटर प्युरिफायर", "Washing Machine Repair", "घरगुती सेवा", "इतर सेवा"],
+        "Property & Real Estate": ["फ्लॅट विक्री", "फ्लॅट भाड्याने", "रूम / PG", "दुकान / ऑफिस", "जमीन / प्लॉट", "घर विक्री", "घर भाड्याने", "Commercial Property", "नवीन प्रोजेक्ट", "Parking", "Property Consultant"],
+        "Doctor & Healthcare": ["जनरल फिजिशियन", "दंतचिकित्सक", "बालरोग तज्ञ", "स्त्रीरोग तज्ञ", "त्वचारोग तज्ञ", "आयुर्वेदिक डॉक्टर", "होमिओपॅथी", "फिजिओथेरपी", "डायग्नोस्टिक सेंटर", "मेडिकल / फार्मसी", "क्लिनिक", "ॲम्ब्युलन्स"],
+        "Legal & Advocates": ["प्रॉपर्टी वकील", "कौटुंबिक कायदा", "घटस्फोट विषयक", "ग्राहक तक्रार", "कोर्ट प्रकरणे", "करार / Agreement", "नोटरी", "Legal Consultancy", "GST / Tax Legal", "इतर कायदेशीर सेवा"],
+        "दुकान": ["किराणा", "कपडे", "मोबाईल शॉप", "इलेक्ट्रॉनिक्स", "हार्डवेअर", "स्टेशनरी", "फर्निचर", "मेडिकल", "बेकरी", "गिफ्ट शॉप", "ज्वेलरी", "ब्यूटी / कॉस्मेटिक्स", "जनरल स्टोअर"],
+        "Food": ["घरगुती डबे", "Mess", "टिफिन सेवा", "हॉटेल", "रेस्टॉरंट", "नाश्ता सेंटर", "बेकरी", "मिठाई / फराळ", "केटरिंग", "चाय / कॉफी", "घरगुती पदार्थ", "Food Delivery"],
+        "Home Business": ["घरगुती खाद्यपदार्थ", "टिफिन / डबे", "केक / बेकरी", "शिवणकाम", "मेहंदी", "ब्युटी सर्व्हिस", "घरगुती क्लासेस", "हस्तकला", "Handmade Products", "ऑनलाइन व्यवसाय", "घरून Freelance काम"],
+        "Classes": ["शालेय ट्युशन", "गणित", "विज्ञान", "इंग्रजी", "मराठी", "स्पर्धा परीक्षा", "MPSC", "UPSC", "Banking", "NEET / JEE", "Computer Classes", "Spoken English", "Dance / Music", "Drawing"],
+        "Automobile": ["कार विक्री", "बाइक / स्कूटर विक्री", "Used Vehicles", "Car Service", "Bike Service", "Washing / Detailing", "Tyre Shop", "Battery", "Spare Parts", "Car Accessories", "Driving School", "Car Rental"],
+        "Events & Competitions": ["क्रिकेट", "फुटबॉल", "कबड्डी", "बॅडमिंटन", "मॅरेथॉन", "सांस्कृतिक कार्यक्रम", "गणेशोत्सव", "नवरात्रोत्सव", "शाळा / कॉलेज कार्यक्रम", "सोसायटी कार्यक्रम", "रक्तदान शिबिर", "सामाजिक उपक्रम"],
+        "Other": ["महत्वाचे अपडेट्स", "डिरेक्टरी व इतर"]
+    };
+
+    let currentCategoryName = ""; 
+    let currentSubCategory = "सर्व";
+    
+    let termsText = localStorage.getItem('kj_terms') || 
+        "1. माहितीची सत्यता: जाहिरातदार जी माहिती (नाव, मोबाईल नंबर, पत्ता, कामाचे विवरण इ.) सबमिट करेल, ती पूर्णपणे खरी आणि कायदेशीर असावी. खोटी किंवा दिशाभूल करणारी माहिती टाकल्यास जाहिरात कोणतीही पूर्वकल्पना न देता डिलीट केली जाईल.\n\n" +
+        "2. जाहिरात मंजुरी (Approval): युजरने सबमिट केलेली जाहिरात ॲडमिनच्या तपासणीनंतरच (Approval) वेबसाईटवर लाईव्ह केली जाईल.\n\n" +
+        "3. वैधता व मुदत (Validity): जाहिरातीची मुदत संपल्यानंतर ती सार्वजनिक दृष्ट्या दिसेनाशी होईल.\n\n" +
+        "4. जबाबदारी: या प्लॅटफॉर्मवर दिलेली जाहिरात किंवा सेवेबाबत येणारे अनुभव, व्यवहार किंवा वादासाठी 'करंजाडे Updates जाहिरात मित्र' किंवा ॲडमिन जबाबदार राहणार नाही.\n\n" +
+        "5. बदलाचे अधिकार: अटी व शर्तींमध्ये बदल करण्याचे किंवा कोणतीही जाहिरात नाकारण्याचे सर्व अधिकार ॲडमिनकडे सुरक्षित राहतील.";
+
+    const categoryAutoImages = {
+        "Services": "https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=500",
+        "Property & Real Estate": "https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=500",
+        "Doctor & Healthcare": "https://images.unsplash.com/photo-1629909613654-28e377c37b09?w=500",
+        "Legal & Advocates": "https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=500",
+        "दुकान": "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=500",
+        "Food": "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=500",
+        "Home Business": "https://images.unsplash.com/photo-1513151233558-d860c5398176?w=500",
+        "Classes": "https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=500",
+        "Automobile": "https://images.unsplash.com/photo-1486006920555-c77dce18193b?w=500",
+        "Events & Competitions": "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=500",
+        "Other": "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=500"
+    };
+
+    function generateBulkDummyAds() { return []; }
+
+    let adsData = JSON.parse(localStorage.getItem('kj_ads')) || generateBulkDummyAds();
+    let currentAdminTab = 'pending';
+    let currentLoggedInAdvertiser = null;
+
+    async function saveAllDataToCloud() {
+        localStorage.setItem('kj_ads', JSON.stringify(adsData));
+        localStorage.setItem('kj_location', appLocation);
+        localStorage.setItem('kj_ticker', tickerText);
+        localStorage.setItem('kj_banners_list', JSON.stringify(bannersList));
+        localStorage.setItem('kj_terms', termsText);
+        localStorage.setItem('kj_owner', JSON.stringify(ownerDetails));
+        localStorage.setItem('kj_subcategories_map', JSON.stringify(subCategoriesMap));
+        
+        if (window.db) {
+            try {
+                const { setDoc, doc } = window.firebaseFns;
+                await setDoc(doc(window.db, "appData", "mainStore"), {
+                    adsData: adsData, appLocation: appLocation, tickerText: tickerText,
+                    bannersList: bannersList, karanjadeUpdates: karanjadeUpdates, phoneDirectory: phoneDirectory, termsText: termsText, ownerDetails: ownerDetails, subCategoriesMap: subCategoriesMap
+                });
+            } catch (e) { console.log("Cloud sync note: ", e); }
+        }
+    }
+
+    window.addEventListener('firebase-ready', async () => {
+        try {
+            const { doc, getDoc } = window.firebaseFns || {};
+            if (window.db) {
+                const snap = await getDoc(doc(window.db, "appData", "mainStore"));
+                if (snap.exists()) {
+                    const cloudData = snap.data();
+                    if (cloudData.adsData) adsData = cloudData.adsData;
+                    if (cloudData.appLocation) appLocation = cloudData.appLocation;
+                    if (cloudData.tickerText) tickerText = cloudData.tickerText;
+                    if (cloudData.bannersList) bannersList = cloudData.bannersList;
+                    if (cloudData.karanjadeUpdates) karanjadeUpdates = cloudData.karanjadeUpdates;
+                    if (cloudData.phoneDirectory) phoneDirectory = cloudData.phoneDirectory;
+                    if (cloudData.termsText) termsText = cloudData.termsText;
+                    if (cloudData.ownerDetails) ownerDetails = cloudData.ownerDetails;
+                    if (cloudData.subCategoriesMap) subCategoriesMap = cloudData.subCategoriesMap;
+                }
+            }
+        } catch (err) { console.log("Error loading from cloud"); }
+        
+        history.replaceState({ pageId: 'page-home' }, "", "");
+        renderHome();
+        updatePostSubCategories();
+    });
+
+    function saveAllData() { saveAllDataToCloud(); }
+
+    function showPage(pageId, pushHistory = true, navElement = null) {
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        const targetPage = document.getElementById(pageId);
+        if(targetPage) targetPage.classList.add('active');
+        
+        if (navElement) {
+            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+            navElement.classList.add('active');
+        } else if (pageId === 'page-home') {
+            document.querySelectorAll('.nav-item').forEach((item, idx) => {
+                if(idx === 0) item.classList.add('active');
+                else item.classList.remove('active');
+            });
+        }
+
+        if (pushHistory) {
+            history.pushState({ pageId: pageId }, "", "");
+        }
+
+        if (pageId === 'page-home') renderHome();
+        if (pageId === 'page-search') handleSearch();
+        if (pageId === 'page-myads') renderMyAdsView();
+        window.scrollTo(0, 0);
+    }
+
+    window.addEventListener('popstate', (event) => {
+        if (event.state && event.state.pageId) {
+            showPage(event.state.pageId, false);
+        } else {
+            showPage('page-home', false);
+        }
+    });
+
+    function goBackToHome() {
+        history.back();
+    }
+
+    function renderHome() {
+        const locTextEl = document.getElementById('headerLocationText');
+        if(locTextEl) locTextEl.innerText = `${appLocation} अपडेट्स`;
+        
+        const titleTagEl = document.getElementById('mainTitleTag');
+        if(titleTagEl) titleTagEl.innerText = `${appLocation} updates जाहिरात मित्र`;
+        
+        const curLocEl = document.getElementById('currentLocationDisplay');
+        if(curLocEl) curLocEl.innerText = `${appLocation}, पनवेल`;
+        
+        const tickerEl = document.getElementById('liveTickerText');
+        if(tickerEl) tickerEl.innerText = tickerText;
+
+        const today = new Date().toISOString().split('T')[0];
+
+        const featContainer = document.getElementById('featuredAdsContainer');
+        if(featContainer) {
+            featContainer.innerHTML = '';
+            const featuredAds = adsData.filter(ad => ad.status === 'approved' && ad.isFeatured && (!ad.expireDate || ad.expireDate >= today));
+            
+            if (featuredAds.length === 0) {
+                featContainer.innerHTML = '<p style="font-size:12px; color:#888;">सध्या कोणतीही Featured जाहिरात नाही.</p>';
+            } else {
+                featuredAds.forEach(ad => {
+                    featContainer.innerHTML += `<div class="featured-card" onclick="scrollToFeaturedAd(${ad.id})"><span class="featured-tag"><i class="fa-solid fa-star"></i> FEATURED</span><img src="${ad.cardImg}" class="ad-card-img" style="height:100px; object-fit:contain;"><h5 style="font-size: 13px; font-weight:700;">${ad.name}</h5><div style="font-size: 11px; color: #718096; margin: 3px 0;">📍 ${ad.city}</div><div class="ad-actions" style="grid-template-columns: 1fr 1fr;"><a href="tel:${ad.phone}" class="btn-call" onclick="event.stopPropagation()"><i class="fa-solid fa-phone"></i> Call</a><a href="https://wa.me/91${ad.phone}" class="btn-whatsapp" onclick="event.stopPropagation()"><i class="fa-brands fa-whatsapp"></i> WA</a></div></div>`;
+                });
+            }
+        }
+    }
+
+    function scrollToFeaturedAd(adId) {
+        showPage('page-home', true);
+        setTimeout(() => {
+            let targetEl = document.getElementById(`adCard_${adId}`);
+            if (!targetEl) {
+                let foundAd = adsData.find(a => a.id === adId);
+                if(foundAd) {
+                    openCategoryPage(foundAd.category || 'Services');
+                    setTimeout(() => {
+                        targetEl = document.getElementById(`adCard_${adId}`);
+                        if (targetEl) {
+                            targetEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                            targetEl.style.border = '2px solid #5c1bc2';
+                            setTimeout(() => { targetEl.style.border = '1px solid #e2e8f0'; }, 2000);
+                        }
+                    }, 100);
+                }
+            } else {
+                targetEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                targetEl.style.border = '2px solid #5c1bc2';
+                setTimeout(() => { targetEl.style.border = '1px solid #e2e8f0'; }, 2000);
+            }
+        }, 100);
+    }
+
+    function openFeaturedAdsPage() {
+        const container = document.getElementById('featuredAdsListContainer');
+        if(!container) return;
+        container.innerHTML = '';
+        const today = new Date().toISOString().split('T')[0];
+        const featuredAds = adsData.filter(ad => ad.status === 'approved' && ad.isFeatured && (!ad.expireDate || ad.expireDate >= today));
+
+        if (featuredAds.length === 0) {
+            container.innerHTML = '<p style="font-size:13px; color:#718096; text-align:center; padding:30px 0;">सध्या कोणतीही Featured जाहिरात उपलब्ध नाही.</p>';
+        } else {
+            featuredAds.forEach(ad => {
+                container.innerHTML += generateAdCardHTML(ad);
+            });
+        }
+        showPage('page-featured-special', true);
+    }
+
+    function openFestivalOffersPage() {
+        const container = document.getElementById('festivalOffersListContainer');
+        if(!container) return;
+        container.innerHTML = '';
+        const today = new Date().toISOString().split('T')[0];
+        const activeBanners = bannersList.filter(b => !b.hidden && (!b.expireDate || b.expireDate >= today));
+
+        if (activeBanners.length === 0) {
+            container.innerHTML = '<p style="font-size:13px; color:#718096; text-align:center; padding:30px 0;">सध्या कोणतीही फेस्टिव्हल ऑफर उपलब्ध नाही.</p>';
+        } else {
+            activeBanners.forEach((b, idx) => {
+                let bannerDesc = b.desc || "✨ विशेष फेस्टिव्हल ऑफर!";
+                let shareText = `🎉 ऑफर! ऑफर! ऑफर! 🏷️📢\n${bannerDesc}\n\n🎁 आकर्षक ऑफर्सचा लाभ घेण्यासाठी\n🌐 वेबसाईटला आजच भेट द्या!\n\n${window.location.href}\n\n⏳ ऑफरचा लाभ घेण्याची संधी चुकवू नका! 🚀`;
+                let waShareUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(shareText)}`;
+
+                container.innerHTML += `
+                    <div style="background:#fff; border-radius:14px; overflow:hidden; margin-bottom:16px; box-shadow:0 4px 10px rgba(0,0,0,0.08); padding:12px; border:1px solid #e2e8f0;">
+                        <span class="featured-tag">Offer #${idx+1}</span>
+                        <p style="font-size:13px; font-weight:600; color:#2d3748; margin: 6px 0;">${bannerDesc}</p>
+                        <img src="${b.url}" style="width:100%; height:auto; max-height:450px; object-fit:contain; border-radius:10px; display:block; background:#f7fafc; margin-top:6px; margin-bottom:10px;" onerror="this.src='https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=600'">
+                        <a href="${waShareUrl}" target="_blank" class="btn-share" style="width:100%; padding:10px; font-size:12px; font-weight:600; text-align:center; display:flex; align-items:center; justify-content:center; gap:6px;"><i class="fa-solid fa-share-nodes"></i> ऑफर शेअर करा (Share)</a>
+                    </div>`;
+            });
+        }
+        showPage('page-festival-special', true);
+    }
+
+    function openCategoryPage(categoryName, selectedSub = "सर्व") {
+        currentCategoryName = categoryName;
+        currentSubCategory = selectedSub;
+        
+        let catTitleEl = document.getElementById('categoryTitle');
+        if(catTitleEl) catTitleEl.innerHTML = `<i class="fa-solid fa-folder-open" style="color:#5c1bc2;"></i> ${categoryName}`;
+        
+        const subContainer = document.getElementById('subcategoryContainer');
+        if(subContainer) {
+            const subs = ["सर्व", ...(subCategoriesMap[categoryName] || [])];
+            subContainer.innerHTML = subs.map(sub => `
+                <div class="sub-chip ${currentSubCategory === sub ? 'active' : ''}" onclick="openCategoryPage('${categoryName}', '${sub}')">${sub}</div>
+            `).join('');
+        }
+
+        const listContainer = document.getElementById('categoryAdsList');
+        if(listContainer) {
+            listContainer.innerHTML = '';
+            const today = new Date().toISOString().split('T')[0];
+            
+            const filtered = adsData.filter(ad => {
+                const matchesStatus = ad.status === 'approved';
+                const matchesCat = ad.category === categoryName;
+                const adSubs = ad.subCategories || [ad.subCategory];
+                const matchesSub = (currentSubCategory === "सर्व" || adSubs.includes(currentSubCategory));
+                const matchesDate = (!ad.expireDate || ad.expireDate >= today);
+                return matchesStatus && matchesCat && matchesSub && matchesDate;
+            });
+
+            if (filtered.length === 0) {
+                listContainer.innerHTML = '<p style="font-size:13px; color:#718096; text-align:center; padding:30px 0;">या विभागात सध्या कोणतीही जाहिरात नाही.</p>';
+            } else {
+                filtered.forEach(ad => { listContainer.innerHTML += generateAdCardHTML(ad); });
+            }
+        }
+        
+        if(selectedSub === "सर्व") {
+            showPage('page-category', true);
+        }
+    }
+
+    function openOtherCategoryPage() {
+        currentCategoryName = "OtherSpecial";
+        let otherTitleEl = document.getElementById('otherPageMainTitle');
+        if(otherTitleEl) otherTitleEl.innerHTML = `<i class="fa-solid fa-circle-info"></i> ${appLocation} महत्त्वाची माहिती व सेवा`;
+        
+        const today = new Date().toISOString().split('T')[0];
+        
+        const updatesBox = document.getElementById('karanjadeUpdatesList');
+        if(updatesBox) {
+            updatesBox.innerHTML = karanjadeUpdates.length === 0 ? '<p style="font-size:12px; color:#888;">कोणतेही अपडेट नाही.</p>' : karanjadeUpdates.map(up => `<div class="info-update-card"><span style="font-size:11px; font-weight:700; color:#5c1bc2;">${up.type}</span><h5 style="margin: 4px 0; font-size:13px;">${up.title}</h5><p style="font-size:12px; color:#475569;">${up.desc}</p></div>`).join('');
+        }
+
+        const dirBox = document.getElementById('phoneDirectoryList');
+        if(dirBox) {
+            dirBox.innerHTML = phoneDirectory.length === 0 ? '<p style="font-size:12px; color:#888;">नंबर उपलब्ध नाहीत.</p>' : phoneDirectory.map(d => `<div class="directory-card"><div><div style="font-size:13px; font-weight:700;">${d.name}</div><div style="font-size:12px; color:#64748b;">📞 ${d.phone}</div></div><a href="tel:${d.phone}" class="btn-call" style="padding:6px 12px; font-size:11px;"><i class="fa-solid fa-phone"></i> Call</a></div>`).join('');
+        }
+
+        const generalBox = document.getElementById('otherGeneralAdsList');
+        if(generalBox) {
+            const otherAds = adsData.filter(ad => ad.status === 'approved' && ad.category === 'Other' && (!ad.expireDate || ad.expireDate >= today));
+            generalBox.innerHTML = otherAds.length === 0 ? '<p style="font-size:12px; color:#888;">इतर जाहिराती नाहीत.</p>' : otherAds.map(ad => generateAdCardHTML(ad)).join('');
+        }
+
+        showPage('page-other-special', true);
+    }
+
+    function updatePostSubCategories() {
+        const catEl = document.getElementById('postCategory');
+        if(!catEl) return;
+        const cat = catEl.value;
+        const container = document.getElementById('postSubCategoriesCheckboxGroup');
+        if(!container) return;
+        const subs = subCategoriesMap[cat] || [];
+        container.innerHTML = subs.map(sub => `
+            <label class="checkbox-item"><input type="checkbox" name="postSubCat" value="${sub}"> ${sub}</label>
+        `).join('');
+    }
+
+    function addNewSubCategoryByAdmin() {
+        const targetCat = document.getElementById('adminSubCatTarget').value;
+        const newSubName = document.getElementById('adminNewSubCatName').value.trim();
+        
+        if (!newSubName) {
+            alert('कृपया सब-कॅटेगरीचे नाव टाका!');
+            return;
+        }
+
+        if (!subCategoriesMap[targetCat]) {
+            subCategoriesMap[targetCat] = [];
+        }
+
+        if (subCategoriesMap[targetCat].includes(newSubName)) {
+            alert('ही सब-कॅटेगरी आधीपासूनच अस्तित्वात आहे!');
+            return;
+        }
+
+        subCategoriesMap[targetCat].push(newSubName);
+        saveAllData();
+        alert(`यशस्वी! '${newSubName}' ही सब-कॅटेगरी '${targetCat}' मध्ये जोडली गेली आहे.`);
+        document.getElementById('adminNewSubCatName').value = '';
+        closeAdminModal('modalAdminSubCat');
+        updatePostSubCategories();
+    }
+
+    function updateSearchSubCategories() {
+        const catEl = document.getElementById('searchCategory');
+        if(!catEl) return;
+        const cat = catEl.value;
+        const group = document.getElementById('searchSubCategoryGroup');
+        const container = document.getElementById('searchSubCategoriesCheckboxGroup');
+        
+        if (!cat) {
+            if(group) group.style.display = 'none';
+            if(container) container.innerHTML = '';
+            handleSearch();
+            return;
+        }
+
+        if(group) group.style.display = 'block';
+        const subs = subCategoriesMap[cat] || [];
+        if(container) {
+            container.innerHTML = subs.map(sub => `
+                <label class="checkbox-item"><input type="checkbox" name="searchSubCat" value="${sub}" onchange="handleSearch()"> ${sub}</label>
+            `).join('');
+        }
+        handleSearch();
+    }
+
+    function generateAdCardHTML(ad) {
+        let shareText = `📣 जाहिरात मित्र - ${ad.name}\n📍 पत्ता: ${ad.address}\n📝 माहिती: ${ad.desc}\n📞 संपर्क: ${ad.phone}\n\n📍 तुमच्या परिसरातील ऑफर्स व जाहिराती एका ठिकाणी!\n\n💰 बचत करा, सोय मिळवा!\n👉 अश्याच अनेक जाहिरातीसाठी आजच वेबसाईटला भेट द्या!\n🌐 ${window.location.href}`;
+        let waShareUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(shareText)}`;
+        
+        let ratings = ad.ratings || [];
+        let avgRating = ratings.length > 0 ? (ratings.reduce((a, b) => a + b, 0) / ratings.length).toFixed(1) : "0.0";
+        let userHasRated = localStorage.getItem(`rated_ad_${ad.id}`) === "true";
+
+        let ratingSectionHTML = "";
+        if (userHasRated) {
+            ratingSectionHTML = `<div class="rating-box" style="color: #38a169; font-weight: 600; justify-content: center;"><i class="fa-solid fa-check-circle"></i> तुम्ही या जाहिरातीस रेटिंग दिले आहे! (सरासरी: ${avgRating} ⭐)</div>`;
+        } else {
+            let starsHTML = '';
+            for (let i = 1; i <= 5; i++) {
+                starsHTML += `<i class="fa-solid fa-star" onclick="rateAd(${ad.id}, ${i})"></i>`;
+            }
+            ratingSectionHTML = `
+                <div class="rating-box" id="ratingBox_${ad.id}">
+                    <span>रेटिंग द्या: </span>
+                    <div class="stars-container">${starsHTML}</div>
+                    <span style="color:#718096;">(${avgRating} ⭐)</span>
+                </div>`;
+        }
+
+        let socialLinksHTML = "";
+        let hasSocial = (ad.instaUrl || ad.fbUrl || ad.webUrl);
+        if (hasSocial) {
+            socialLinksHTML += `<div class="social-links-row">`;
+            if (ad.instaUrl) {
+                socialLinksHTML += `<a href="${ad.instaUrl}" target="_blank" class="btn-social btn-insta"><i class="fa-brands fa-instagram"></i> Instagram</a>`;
+            }
+            if (ad.fbUrl) {
+                socialLinksHTML += `<a href="${ad.fbUrl}" target="_blank" class="btn-social btn-fb"><i class="fa-brands fa-facebook"></i> Facebook</a>`;
+            }
+            if (ad.webUrl) {
+                socialLinksHTML += `<a href="${ad.webUrl}" target="_blank" class="btn-social btn-web"><i class="fa-solid fa-globe"></i> Website</a>`;
+            }
+            socialLinksHTML += `</div>`;
+        }
+
+        let subCatsDisplay = ad.subCategories ? ad.subCategories.join(', ') : (ad.subCategory || '');
+
+        return `<div class="ad-card" id="adCard_${ad.id}">
+            <img src="${ad.cardImg}" class="ad-card-img" onerror="this.src='https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=500'">
+            <h4>${ad.name} ${subCatsDisplay ? `<span style="font-size:10px; background:#e2e8f0; color:#4a5568; padding:2px 6px; border-radius:4px; float:right;" title="${subCatsDisplay}">${subCatsDisplay}</span>` : ''}</h4>
+            <div class="ad-meta"><span>📍 <b>${ad.city}</b></span> • <span>📞 ${ad.phone}</span></div>
+            <div class="ad-address"><i class="fa-solid fa-map-location-dot" style="color:#5c1bc2;"></i> ${ad.address}</div>
+            <div class="ad-desc">${ad.desc}</div>
+            ${socialLinksHTML}
+            ${ratingSectionHTML}
+            <div class="ad-actions">
+                <a href="tel:${ad.phone}" class="btn-call"><i class="fa-solid fa-phone"></i> Call</a>
+                <a href="https://wa.me/91${ad.phone}" target="_blank" class="btn-whatsapp"><i class="fa-brands fa-whatsapp"></i> WA</a>
+                <a href="${waShareUrl}" target="_blank" class="btn-share"><i class="fa-solid fa-share-nodes"></i> Share</a>
+            </div>
+        </div>`;
+    }
+
+    function rateAd(adId, stars) {
+        if (localStorage.getItem(`rated_ad_${adId}`) === "true") {
+            alert('तुम्ही या जाहिरातीस आधीच रेटिंग दिले आहे!');
+            return;
+        }
+
+        let currentScrollY = window.scrollY;
+
+        let ad = adsData.find(a => a.id === adId);
+        if (ad) {
+            if (!ad.ratings) ad.ratings = [];
+            ad.ratings.push(stars);
+            localStorage.setItem(`rated_ad_${adId}`, "true");
+            saveAllData();
+            alert(`धन्यवाद! तुम्ही ${stars} स्टार दिले आहेत.`);
+            
+            const activePageEl = document.querySelector('.page.active');
+            const activePage = activePageEl ? activePageEl.id : 'page-home';
+            if (activePage === 'page-category') {
+                openCategoryPage(currentCategoryName, currentSubCategory);
+            } else if (activePage === 'page-other-special') {
+                openOtherCategoryPage();
+            } else if (activePage === 'page-festival-special') {
+                openFestivalOffersPage();
+            } else if (activePage === 'page-search') {
+                handleSearch();
+            } else {
+                renderHome();
+            }
+
+            window.scrollTo(0, currentScrollY);
+        }
+    }
+
+    function handleSearch() {
+        const searchInputEl = document.getElementById('searchInput');
+        const query = searchInputEl ? searchInputEl.value.trim().toLowerCase() : "";
+        const searchCatEl = document.getElementById('searchCategory');
+        const selectedCat = searchCatEl ? searchCatEl.value : "";
+        
+        const checkboxes = document.querySelectorAll('#searchSubCategoriesCheckboxGroup input[type="checkbox"]:checked');
+        const selectedSubCats = Array.from(checkboxes).map(cb => cb.value);
+
+        const resultsContainer = document.getElementById('searchResultsList');
+        if(!resultsContainer) return;
+        const today = new Date().toISOString().split('T')[0];
+        
+        const filtered = adsData.filter(ad => {
+            const matchesStatus = ad.status === 'approved';
+            const matchesCat = (!selectedCat || ad.category === selectedCat);
+            
+            const adSubs = ad.subCategories || [ad.subCategory];
+            const matchesSub = (selectedSubCats.length === 0 || selectedSubCats.some(s => adSubs.includes(s)));
+
+            const matchesQuery = (ad.name.toLowerCase().includes(query) || ad.desc.toLowerCase().includes(query));
+            const matchesDate = (!ad.expireDate || ad.expireDate >= today);
+
+            return matchesStatus && matchesCat && matchesSub && matchesQuery && matchesDate;
+        });
+
+        resultsContainer.innerHTML = filtered.length === 0 ? '<p style="font-size:12px; color:#888; text-align:center;">जाहिरात सापडली नाही.</p>' : filtered.map(ad => generateAdCardHTML(ad)).join('');
+    }
+
+    function handleUserSubmitAd(e) {
+        e.preventDefault();
+        const termsCheckEl = document.getElementById('postTermsCheck');
+        if (termsCheckEl && !termsCheckEl.checked) {
+            alert('कृपया अटी व शर्ती स्वीकारण्यासाठी बॉक्सवर टिक करा.');
+            return;
+        }
+
+        const mainCat = document.getElementById('postCategory').value;
+        const checkboxes = document.querySelectorAll('#postSubCategoriesCheckboxGroup input[name="postSubCat"]:checked');
+        const selectedSubCats = Array.from(checkboxes).map(cb => cb.value);
+
+        if (selectedSubCats.length === 0) {
+            alert('कृपया कमितकम एक सब-कॅटेगरी निवडा.');
+            return;
+        }
+
+        const phone = document.getElementById('postPhone').value.trim();
+        let finalImgUrl = categoryAutoImages[mainCat] || "https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=500";
+
+        const newAd = {
+            id: Date.now(),
+            username: "KJ-" + phone.substring(0, 4) + "-" + Math.floor(100 + Math.random() * 900),
+            password: phone, name: document.getElementById('postName').value.trim(),
+            category: mainCat,
+            subCategories: selectedSubCats,
+            subCategory: selectedSubCats[0],
+            phone: phone, address: document.getElementById('postAddress').value.trim(),
+            city: `${appLocation}, पनवेल`, desc: document.getElementById('postDesc').value.trim(),
+            instaUrl: document.getElementById('postInsta').value.trim(),
+            fbUrl: document.getElementById('postFb').value.trim(),
+            webUrl: document.getElementById('postWeb').value.trim(),
+            cardImg: finalImgUrl, status: "pending", isFeatured: false, ratings: [],
+            expireDate: new Date(Date.now() + 30*24*60*60*1000).toISOString().split('T')[0]
+        };
+
+        adsData.push(newAd); saveAllData(); alert('जाहिरात यशस्वीरित्या सबमिट झाली! अडमिन मंजुरीनंतर दिसेल.');
+        const postForm = document.querySelector('#page-post form');
+        if(postForm) postForm.reset(); 
+        updatePostSubCategories(); 
+        showPage('page-myads', true);
+    }
+
+    function handleMyAdsLogin() {
+        const u = document.getElementById('myAdsUser').value.trim();
+        const p = document.getElementById('myAdsPass').value.trim();
+        const found = adsData.find(a => a.username === u && a.password === p);
+        if (found) { currentLoggedInAdvertiser = found; renderMyAdsView(); } else { alert('चुकीचे तपशील!'); }
+    }
+    function handleAdvertiserLogout() { currentLoggedInAdvertiser = null; renderMyAdsView(); }
+
+    function renderMyAdsView() {
+        const loginBox = document.getElementById('myAdsLoginBox');
+        const contentBox = document.getElementById('myAdsContentBox');
+        const list = document.getElementById('myAdsList');
+        const today = new Date().toISOString().split('T')[0];
+
+        if (!currentLoggedInAdvertiser) {
+            if(loginBox) loginBox.style.display = 'block'; 
+            if(contentBox) contentBox.style.display = 'none';
+        } else {
+            if(loginBox) loginBox.style.display = 'none'; 
+            if(contentBox) contentBox.style.display = 'block';
+            let unameEl = document.getElementById('myAdsLoggedInUsername');
+            if(unameEl) unameEl.innerText = currentLoggedInAdvertiser.username;
+            const ad = adsData.find(a => a.id === currentLoggedInAdvertiser.id);
+            
+            if(ad && list) {
+                const isExpired = ad.expireDate && ad.expireDate < today;
+                const statusText = isExpired ? 'EXPIRED (मुदत संपली)' : ad.status.toUpperCase();
+                const borderCol = isExpired ? '#e53e3e' : (ad.status === 'approved' ? '#38a169' : '#d97706');
+                let ratings = ad.ratings || [];
+                let avgRating = ratings.length > 0 ? (ratings.reduce((a, b) => a + b, 0) / ratings.length).toFixed(1) : "0.0";
+
+                list.innerHTML = `
+                    <div class="ad-card" style="border-left: 5px solid ${borderCol}; opacity: ${isExpired ? '0.7' : '1'};">
+                        <img src="${ad.cardImg}" class="ad-card-img">
+                        <h4>${ad.name} ${isExpired ? '<span class="expired-badge">Expired</span>' : ''}</h4>
+                        <p style="font-size: 12px; color:#4a5568;">${ad.desc}</p>
+                        <p style="font-size: 11px; margin-top:6px; color:${borderCol}; font-weight:bold;">स्थिती: <b>${statusText}</b> | मुदत: <b>${ad.expireDate}</b> | रेटिंग: <b>${avgRating} ⭐ (${ratings.length} वेळा)</b></p>
+                    </div>
+                `;
+            }
+        }
+    }
+
+    function openOwnerContactModal() {
+        let subEl = document.getElementById('modalOwnerSubject');
+        if(subEl) subEl.innerHTML = `<i class="fa-solid fa-circle-info"></i> ${ownerDetails.subject || 'माहिती व संपर्क'}`;
+        
+        let descEl = document.getElementById('modalOwnerDesc');
+        if(descEl) descEl.innerText = ownerDetails.desc || "माहिती उपलब्ध नाही.";
+        
+        let phoneEl = document.getElementById('modalOwnerPhone');
+        if(phoneEl) {
+            phoneEl.innerText = ownerDetails.phone || "";
+            phoneEl.href = `tel:${ownerDetails.phone || ""}`;
+        }
+
+        let emailEl = document.getElementById('modalOwnerEmail');
+        if(emailEl) {
+            emailEl.innerText = ownerDetails.email || "";
+            emailEl.href = `mailto:${ownerDetails.email || ""}`;
+        }
+
+        let modalEl = document.getElementById('ownerModal');
+        if(modalEl) modalEl.classList.add('active');
+    }
+
+    function closeOwnerContactModal() { 
+        let modalEl = document.getElementById('ownerModal');
+        if(modalEl) modalEl.classList.remove('active'); 
+    }
+
+    function updateTickerAndOwnerDetails() {
+        const tickerInputEl = document.getElementById('adminTickerInput');
+        if(tickerInputEl) tickerText = tickerInputEl.value.trim();
+        
+        let subIn = document.getElementById('ownerSubjectInput');
+        if(subIn) ownerDetails.subject = subIn.value.trim();
+        
+        let phIn = document.getElementById('ownerPhoneInput');
+        if(phIn) ownerDetails.phone = phIn.value.trim();
+        
+        let emIn = document.getElementById('ownerEmailInput');
+        if(emIn) ownerDetails.email = emIn.value.trim();
+        
+        let descIn = document.getElementById('ownerDescInput');
+        if(descIn) ownerDetails.desc = descIn.value.trim();
+        
+        saveAllData();
+        renderHome();
+        alert('स्क्रोलिंग पट्टी आणि संपर्क माहिती यशस्वीरित्या अपडेट केली!');
+        closeAdminModal('modalAdminTicker');
+    }
+
+    async function handleAdminLogin() {
+        const emailEl = document.getElementById('adminUser');
+        const passEl = document.getElementById('adminPass');
+        const email = emailEl ? emailEl.value.trim() : "";
+        const password = passEl ? passEl.value.trim() : "";
+        
+        if (!email || !password) { alert('कृपया Admin Email आणि Password टाका.'); return; }
+        try {
+            const { signInWithEmailAndPassword } = window.firebaseFns;
+            await signInWithEmailAndPassword(window.firebaseAuth, email, password);
+            
+            let loginForm = document.getElementById('adminLoginForm');
+            let dash = document.getElementById('adminDashboard');
+            if(loginForm) loginForm.style.display = 'none';
+            if(dash) dash.style.display = 'block';
+            
+            let locIn = document.getElementById('adminLocationInput');
+            if(locIn) locIn.value = appLocation;
+            
+            let tickIn = document.getElementById('adminTickerInput');
+            if(tickIn) tickIn.value = tickerText;
+            
+            let subIn = document.getElementById('ownerSubjectInput');
+            if(subIn) subIn.value = ownerDetails.subject || "";
+            
+            let phIn = document.getElementById('ownerPhoneInput');
+            if(phIn) phIn.value = ownerDetails.phone || "";
+            
+            let emIn = document.getElementById('ownerEmailInput');
+            if(emIn) emIn.value = ownerDetails.email || "";
+            
+            let descIn = document.getElementById('ownerDescInput');
+            if(descIn) descIn.value = ownerDetails.desc || "";
+            
+            let termsIn = document.getElementById('adminTermsInput');
+            if(termsIn) termsIn.value = termsText;
+            
+            renderAdminKaranjadeUpdates(); 
+            renderAdminDirectoryList(); 
+            renderAdminBannersManager(); 
+            renderAdminAdsManager();
+        } catch (error) { alert('चुकीचा Admin Email किंवा Password!'); }
+    }
+
+    async function handleAdminLogout() {
+        try {
+            const { signOut } = window.firebaseFns; 
+            await signOut(window.firebaseAuth);
+            let loginForm = document.getElementById('adminLoginForm');
+            let dash = document.getElementById('adminDashboard');
+            if(loginForm) loginForm.style.display = 'block'; 
+            if(dash) dash.style.display = 'none';
+        } catch (error) { alert('Logout करताना समस्या आली.'); }
+    }
+
+    function updateAppLocation() { 
+        const locIn = document.getElementById('adminLocationInput');
+        const loc = locIn ? locIn.value.trim() : ""; 
+        if (loc) { 
+            appLocation = loc; 
+            saveAllData(); 
+            renderHome(); 
+            alert('लोकेशन बदलले!'); 
+        } 
+    }
+    
+    function updateTermsAndConditions() {
+        const termsIn = document.getElementById('adminTermsInput');
+        if(termsIn) termsText = termsIn.value.trim();
+        saveAllData();
+        alert('अटी व शर्ती यशस्वीरित्या अपडेट केल्या गेल्या!');
+        closeAdminModal('modalAdminTerms');
+    }
+
+    function openTermsModal() {
+        let viewEl = document.getElementById('viewTermsContent');
+        if(viewEl) viewEl.innerText = termsText;
+        let modalEl = document.getElementById('modalViewTerms');
+        if(modalEl) modalEl.classList.add('active');
+    }
+    function closeTermsModal() {
+        let modalEl = document.getElementById('modalViewTerms');
+        if(modalEl) modalEl.classList.remove('active');
+    }
+
+    function addKaranjadeUpdate() { 
+        let typeEl = document.getElementById('updateType');
+        let titleEl = document.getElementById('updateTitle');
+        let descEl = document.getElementById('updateDesc');
+        
+        karanjadeUpdates.unshift({ 
+            id: Date.now(), 
+            type: typeEl ? typeEl.value : "", 
+            title: titleEl ? titleEl.value : "", 
+            desc: descEl ? descEl.value : "" 
+        }); 
+        saveAllData(); 
+        renderAdminKaranjadeUpdates(); 
+        alert('अपडेट जोडले!'); 
+    }
+    
+    function renderAdminKaranjadeUpdates() { 
+        let box = document.getElementById('adminExistingUpdates');
+        if(box) {
+            box.innerHTML = karanjadeUpdates.map(u => `<div><b>[${u.type}]</b> ${u.title} <button onclick="karanjadeUpdates=karanjadeUpdates.filter(x=>x.id!==${u.id});saveAllData();renderAdminKaranjadeUpdates();" style="color:red;border:none;background:none;cursor:pointer;">हटवा</button></div>`).join(''); 
+        }
+    }
+
+    function addDirectoryContact() { 
+        let nameEl = document.getElementById('dirName');
+        let phoneEl = document.getElementById('dirPhone');
+        
+        phoneDirectory.push({ 
+            id: Date.now(), 
+            name: nameEl ? nameEl.value : "", 
+            phone: phoneEl ? phoneEl.value : "" 
+        }); 
+        saveAllData(); 
+        renderAdminDirectoryList(); 
+        alert('नंबर जोडला!'); 
+    }
+    
+    function renderAdminDirectoryList() { 
+        let box = document.getElementById('adminDirectoryList');
+        if(box) {
+            box.innerHTML = phoneDirectory.map(d => `<div><b>${d.name}:</b> ${d.phone} <button onclick="phoneDirectory=phoneDirectory.filter(x=>x.id!==${d.id});saveAllData();renderAdminDirectoryList();" style="color:red;border:none;background:none;cursor:pointer;">हटवा</button></div>`).join(''); 
+        }
+    }
+
+    function saveNewBannerItem() {
+        const urlVal = document.getElementById('bannerImgInput').value.trim();
+        const descVal = document.getElementById('bannerDescInput').value.trim();
+        if(!urlVal) { alert('कृपया बॅनरची इमेज URL टाका!'); return; }
+        
+        let expEl = document.getElementById('bannerExpInput');
+        let hideEl = document.getElementById('bannerHideCheck');
+        
+        bannersList.push({ 
+            url: urlVal, 
+            desc: descVal, 
+            expireDate: expEl ? expEl.value : "", 
+            hidden: hideEl ? hideEl.checked : false 
+        });
+        saveAllData(); 
+        renderHome(); 
+        renderAdminBannersManager(); 
+        
+        document.getElementById('bannerImgInput').value = ''; 
+        document.getElementById('bannerDescInput').value = ''; 
+        if(expEl) expEl.value = ''; 
+        if(hideEl) hideEl.checked = false; 
+        alert('नवीन फेस्टिव्हल बॅनर जोडले!');
+    }
+
+    function renderAdminBannersManager() {
+        let box = document.getElementById('adminBannerListContainer');
+        if(box) {
+            box.innerHTML = bannersList.map((b, i) => `<div style="font-size:11px; margin-bottom:6px; background:#f8fafc; padding:6px; border-radius:6px; border:1px solid #e2e8f0; display:flex; justify-content:space-between; align-items:center;"><div><b>बॅनर #${i+1}</b>: ${b.desc ? b.desc.substring(0,25)+'...' : 'वर्णन नाही'} [Hidden: ${b.hidden}]</div><button onclick="bannersList.splice(${i},1);saveAllData();renderHome();renderAdminBannersManager();" style="color:red;border:none;background:none;cursor:pointer;font-weight:700;">डिलीट</button></div>`).join('');
+        }
+    }
+
+    function switchAdminTab(tab) {
+        currentAdminTab = tab;
+        let btnP = document.getElementById('tabBtnPending');
+        let btnA = document.getElementById('tabBtnApproved');
+        if(btnP) {
+            btnP.style.background = tab === 'pending' ? '#c05621' : '#e2e8f0';
+            btnP.style.color = tab === 'pending' ? '#fff' : '#4a5568';
+        }
+        if(btnA) {
+            btnA.style.background = tab === 'approved' ? '#2f855a' : '#e2e8f0';
+            btnA.style.color = tab === 'approved' ? '#fff' : '#4a5568';
+        }
+        renderAdminAdsManager();
+    }
+
+    function renderAdminAdsManager() {
+        const container = document.getElementById('adminAdsManager');
+        if(!container) return;
+        const searchInputEl = document.getElementById('adminSearchInput');
+        const searchVal = searchInputEl ? searchInputEl.value.trim().toLowerCase() : "";
+        const today = new Date().toISOString().split('T')[0];
+
+        const filtered = adsData.filter(ad => {
+            const matchesTab = (currentAdminTab === 'pending' ? ad.status === 'pending' : ad.status === 'approved');
+            const matchesSearch = ad.name.toLowerCase().includes(searchVal) || ad.phone.includes(searchVal);
+            return matchesTab && matchesSearch;
+        });
+        
+        container.innerHTML = filtered.length === 0 ? '<p style="font-size:12px; color:#888; text-align:center; padding:10px;">कोणतीही जाहिरात सापडली नाही.</p>' : filtered.map(ad => {
+            const isExpired = ad.expireDate && ad.expireDate < today;
+            const expiredBadge = isExpired ? '<span class="expired-badge">Expired</span>' : '';
+
+            return `<div style="border:1px solid ${isExpired ? '#fc8181' : '#cbd5e0'}; border-radius:8px; padding:10px; margin-bottom:10px; background:${isExpired ? '#fff5f5' : '#fff'}; font-size:12px;">
+                <div class="form-group"><label>नाव: ${expiredBadge}</label><input type="text" id="editName_${ad.id}" value="${ad.name}"></div>
+                <div class="form-group"><label>मोबाईल नंबर:</label><input type="text" id="editPhone_${ad.id}" value="${ad.phone}"></div>
+                <div class="form-group"><label>डिस्क्रिप्शन:</label><textarea id="editDesc_${ad.id}" rows="2">${ad.desc}</textarea></div>
+                <div class="form-group"><label>फोटो URL (Image Link):</label><input type="text" id="editImg_${ad.id}" value="${ad.cardImg || ''}" placeholder="Image URL टाका"></div>
+                <div class="form-group"><label>Instagram URL:</label><input type="url" id="editInsta_${ad.id}" value="${ad.instaUrl || ''}" placeholder="https://instagram.com/..."></div>
+                <div class="form-group"><label>Facebook URL:</label><input type="url" id="editFb_${ad.id}" value="${ad.fbUrl || ''}" placeholder="https://facebook.com/..."></div>
+                <div class="form-group"><label>Website URL:</label><input type="url" id="editWeb_${ad.id}" value="${ad.webUrl || ''}" placeholder="https://..."></div>
+                <div class="form-group"><label>Expire Date:</label><input type="date" id="editExp_${ad.id}" value="${ad.expireDate || ''}"></div>
+                <div class="form-group" style="display: flex; align-items: center; gap: 8px; background: #fffaf0; padding: 6px; border-radius: 6px; border: 1.5px solid #feebc8;">
+                    <input type="checkbox" id="editFeatured_${ad.id}" ${ad.isFeatured ? 'checked' : ''} style="width: 18px; height: 18px; cursor: pointer;">
+                    <label for="editFeatured_${ad.id}" style="margin: 0; font-weight: 700; color: #b7791f; cursor: pointer;"><i class="fa-solid fa-star"></i> Featured Ad</label>
+                </div>
+                <div style="display:flex; gap:6px; flex-wrap:wrap; margin-top:8px;">
+                    <button onclick="saveAdminEditedAd(${ad.id})" style="background:#3182ce; color:#fff; border:none; padding:6px; border-radius:4px; cursor:pointer; flex:1;">बदल सेव्ह करा</button>
+                    ${ad.status === 'pending' ? `<button onclick="approveAd(${ad.id})" style="background:green; color:#fff; border:none; padding:6px; border-radius:4px; cursor:pointer; font-weight:700;"><i class="fa-solid fa-check"></i> Approve & Share</button>` : ''}
+                    <button onclick="shareAdCredentialsWhatsApp(${ad.id})" style="background:#25d366; color:#fff; border:none; padding:6px 10px; border-radius:4px; cursor:pointer;"><i class="fa-brands fa-whatsapp"></i></button>
+                    <button onclick="confirmAndDeleteAd(${ad.id})" style="background:#e53e3e; color:#fff; border:none; padding:6px; border-radius:4px; cursor:pointer;"><i class="fa-solid fa-trash"></i></button>
+                </div>
+            </div>`;
+        }).join('');
+    }
+
+    function confirmAndDeleteAd(adId) {
+        let confirmDelete = confirm("तुम्ही ही ॲड delete करू इच्छिता?");
+        if (confirmDelete) {
+            adsData = adsData.filter(x => x.id !== adId);
+            saveAllData();
+            renderAdminAdsManager();
+            renderHome();
+            alert('जाहिरात यशस्वीरित्या डिलीट केली गेली आहे.');
+        }
+    }
+
+    function saveAdminEditedAd(id) {
+        const ad = adsData.find(a => a.id === id);
+        if (ad) {
+            let nameEl = document.getElementById(`editName_${id}`);
+            let phoneEl = document.getElementById(`editPhone_${id}`);
+            let descEl = document.getElementById(`editDesc_${id}`);
+            let imgEl = document.getElementById(`editImg_${id}`);
+            let instaEl = document.getElementById(`editInsta_${id}`);
+            let fbEl = document.getElementById(`editFb_${id}`);
+            let webEl = document.getElementById(`editWeb_${id}`);
+            let expEl = document.getElementById(`editExp_${id}`);
+            let featEl = document.getElementById(`editFeatured_${id}`);
+
+            if(nameEl) ad.name = nameEl.value;
+            if(phoneEl) ad.phone = phoneEl.value;
+            if(descEl) ad.desc = descEl.value;
+            if(imgEl) ad.cardImg = imgEl.value || ad.cardImg;
+            if(instaEl) ad.instaUrl = instaEl.value;
+            if(fbEl) ad.fbUrl = fbEl.value;
+            if(webEl) ad.webUrl = webEl.value;
+            if(expEl) ad.expireDate = expEl.value;
+            if(featEl) ad.isFeatured = featEl.checked;
+            
+            saveAllData(); 
+            alert('जाहिरात यशस्वीरित्या अपडेट केली!'); 
+            renderAdminAdsManager(); 
+            renderHome();
+        }
+    }
+
+    function approveAd(id) {
+        const ad = adsData.find(a => a.id === id);
+        if (ad) {
+            ad.status = 'approved';
+            let imgEl = document.getElementById(`editImg_${id}`);
+            let featEl = document.getElementById(`editFeatured_${id}`);
+            
+            const customImg = imgEl ? imgEl.value : "";
+            if (customImg) { ad.cardImg = customImg; } else if (!ad.cardImg) { ad.cardImg = categoryAutoImages[ad.category] || "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=500"; }
+            if(featEl) ad.isFeatured = featEl.checked;
+            
+            saveAllData(); 
+            renderAdminAdsManager(); 
+            renderHome(); 
+            shareAdCredentialsWhatsApp(id);
+        }
+    }
+
+    function shareAdCredentialsWhatsApp(id) {
+        const ad = adsData.find(a => a.id === id); if (!ad) return;
+        const msg = `नमस्कार *${ad.name}*,\n\n*${appLocation} Updates जाहिरात मित्र* वर तुमची जाहिरात यशस्वीरित्या मंजूर झाली आहे! ✅\n\n👤 *User Name:* ${ad.username}\n🔑 *Password:* ${ad.phone}\n📅 *वैधता (Expiry):* ${ad.expireDate || '30 दिवस'}\n\n🌐 *वेबसाईट:* ${window.location.href}\n\nधन्यवाद! 🙏`;
+        let cleanPhone = ad.phone.replace(/\D/g, ''); if (cleanPhone.length === 10) cleanPhone = '91' + cleanPhone;
+        window.open(`https://wa.me/${cleanPhone}?text=${encodeURIComponent(msg)}`, '_blank');
+    }
+
+    function downloadExcelReport() {
+        if (adsData.length === 0) { alert('डेटा नाही!'); return; }
+        const today = new Date().toISOString().split('T')[0];
+        
+        const reportData = adsData.map((a, i) => {
+            const isExpired = a.expireDate && a.expireDate < today;
+            const ratings = a.ratings || [];
+            const avg = ratings.length > 0 ? (ratings.reduce((x, y) => x + y, 0) / ratings.length).toFixed(1) : "0.0";
+            return {
+                "Sr": i+1,
+                "Name": a.name + (isExpired ? " [EXPIRED]" : ""),
+                "Phone": a.phone,
+                "Category": a.category,
+                "SubCategories": a.subCategories ? a.subCategories.join(', ') : "",
+                "Status": isExpired ? "EXPIRED" : a.status,
+                "Expiry": a.expireDate,
+                "Rating": avg + " ⭐"
+            };
+        });
+
+        const ws = XLSX.utils.json_to_sheet(reportData);
+        const wb = XLSX.utils.book_new(); 
+        XLSX.utils.book_append_sheet(wb, ws, "Ads Report"); 
+        XLSX.writeFile(wb, "Advertisers_Report.xlsx");
+    }
+
+    function downloadPDFReport() {
+        if (adsData.length === 0) { alert('डेटा नाही!'); return; }
+        const { jsPDF } = window.jspdf; 
+        const doc = new jsPDF();
+        const today = new Date().toISOString().split('T')[0];
+
+        doc.text("Advertisers Report (Expired Highlighted)", 14, 15);
+        
+        const tableBody = adsData.map((a, i) => {
+            const isExpired = a.expireDate && a.expireDate < today;
+            const ratings = a.ratings || [];
+            const avg = ratings.length > 0 ? (ratings.reduce((x, y) => x + y, 0) / ratings.length).toFixed(1) : "0.0";
+            return [
+                i+1, 
+                a.name + (isExpired ? " (EXPIRED)" : ""), 
+                a.phone, 
+                a.category, 
+                a.subCategories ? a.subCategories.join(', ') : "", 
+                isExpired ? "EXPIRED" : a.status, 
+                avg + " ⭐"
+            ];
+        });
+
+        doc.autoTable({ 
+            head: [["Sr", "Name", "Phone", "Category", "SubCategories", "Status", "Rating"]], 
+            body: tableBody, 
+            startY: 20,
+            didParseCell: function (data) {
+                const todayStr = new Date().toISOString().split('T')[0];
+                const rowData = adsData[data.row.index];
+                
+                if (rowData && rowData.expireDate && rowData.expireDate < todayStr) {
+                    data.cell.styles.textColor = [229, 62, 62]; 
+                    data.cell.styles.fontStyle = 'bold';
+                }
+            }
+        });
+
+        doc.save("Advertisers_Report.pdf");
+    }
+
+    function openAdminModal(id) { 
+        let modalEl = document.getElementById(id);
+        if(modalEl) modalEl.classList.add('active'); 
+    }
+    
+    function closeAdminModal(id) { 
+        let modalEl = document.getElementById(id);
+        if(modalEl) modalEl.classList.remove('active'); 
+    }
+
+    renderHome();
+</script>
+
+</body>
+</html>
