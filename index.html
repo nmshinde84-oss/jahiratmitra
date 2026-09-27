@@ -8,10 +8,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- SheetJS & jsPDF -->
+    <!-- SheetJS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
 
     <!-- Firebase SDKs (CDN) -->
     <script type="module">
@@ -56,7 +54,6 @@
         
         .sticky-top-bar { position: sticky; top: 0; z-index: 1000; background-color: #ffffff; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12); }
         
-        /* नवीन डिझाईनयुक्त हेडर बॅनर */
         .custom-banner-header { background: linear-gradient(135deg, #5c1bc2 0%, #3f1285 100%); color: white; padding: 16px; position: relative; overflow: hidden; display: flex; flex-direction: column; justify-content: center; min-height: 110px; cursor: pointer; }
         .banner-content { position: relative; z-index: 2; }
         .banner-title-row { display: flex; align-items: center; gap: 8px; font-size: 20px; font-weight: 800; text-shadow: 0 2px 4px rgba(0,0,0,0.3); }
@@ -145,7 +142,6 @@
 
 <div class="app-container">
     <div class="sticky-top-bar">
-        <!-- नवीन डिझाईनयुक्त हेडर बॅनर -->
         <header class="custom-banner-header" onclick="openOwnerContactModal()">
             <div class="banner-content">
                 <div class="banner-title-row"><i class="fa-solid fa-bullhorn"></i> जाहिरात मित्र</div>
@@ -170,19 +166,7 @@
         <div class="section-title" onclick="openFeaturedAdsPage()" style="cursor: pointer;"><i class="fa-solid fa-crown" style="color: #f59e0b;"></i> Featured Ads (खास जाहिराती) <i class="fa-solid fa-chevron-right" style="font-size:12px; margin-left:auto;"></i></div>
         <div class="featured-scroll-container" id="featuredAdsContainer"></div>
         <div class="section-title"><i class="fa-solid fa-layer-group" style="color: #5c1bc2;"></i> Categories (वर्ग)</div>
-        <div class="categories-grid">
-            <div class="category-card" onclick="openCategoryPage('Services')"><div class="cat-icon-wrap cat-icon-services"><i class="fa-solid fa-screwdriver-wrench"></i></div><span class="title">Services (दैनिक व तांत्रिक)</span></div>
-            <div class="category-card" onclick="openCategoryPage('Property & Real Estate')"><div class="cat-icon-wrap cat-icon-property"><i class="fa-solid fa-building-user"></i></div><span class="title">प्रॉपर्टी व एजंट्स</span></div>
-            <div class="category-card" onclick="openCategoryPage('Doctor & Healthcare')"><div class="cat-icon-wrap cat-icon-doctor"><i class="fa-solid fa-user-doctor"></i></div><span class="title">डॉक्टर व क्लिनिक</span></div>
-            <div class="category-card" onclick="openCategoryPage('Legal & Advocates')"><div class="cat-icon-wrap cat-icon-legal"><i class="fa-solid fa-scale-balanced"></i></div><span class="title">वकील व कायदेशीर सल्ला</span></div>
-            <div class="category-card" onclick="openCategoryPage('दुकान')"><div class="cat-icon-wrap cat-icon-shop"><i class="fa-solid fa-store"></i></div><span class="title">दुकान व स्टोअर्स</span></div>
-            <div class="category-card" onclick="openCategoryPage('Food')"><div class="cat-icon-wrap cat-icon-food"><i class="fa-solid fa-utensils"></i></div><span class="title">Food & Mess</span></div>
-            <div class="category-card" onclick="openCategoryPage('Home Business')"><div class="cat-icon-wrap cat-icon-home"><i class="fa-solid fa-house-chimney-user"></i></div><span class="title">Home Business</span></div>
-            <div class="category-card" onclick="openCategoryPage('Classes')"><div class="cat-icon-wrap cat-icon-classes"><i class="fa-solid fa-graduation-cap"></i></div><span class="title">Classes & Coaching</span></div>
-            <div class="category-card" onclick="openCategoryPage('Automobile')"><div class="cat-icon-wrap cat-icon-auto"><i class="fa-solid fa-car"></i></div><span class="title">Automobile</span></div>
-            <div class="category-card" onclick="openCategoryPage('Events & Competitions')"><div class="cat-icon-wrap cat-icon-events"><i class="fa-solid fa-trophy"></i></div><span class="title">इव्हेंट्स व स्पर्धा</span></div>
-            <div class="category-card" style="grid-column: span 2;" onclick="openOtherCategoryPage()"><div class="cat-icon-wrap cat-icon-other"><i class="fa-solid fa-circle-info"></i></div><span class="title">Other (महत्वाचे अपडेट्स व डिरेक्टरी)</span></div>
-        </div>
+        <div class="categories-grid" id="homeCategoriesGrid"></div>
     </div>
 
     <!-- 2. स्वतंत्र कॅटेगरी पेज -->
@@ -228,17 +212,6 @@
             <label style="font-size: 12px; font-weight: 600; margin-bottom: 5px; color: #4a5568;">मुख्य कॅटेगरी निवडा:</label>
             <select id="searchCategory" onchange="updateSearchSubCategories()">
                 <option value="">सर्व कॅटेगरीज (All Categories)</option>
-                <option value="Services">Services (दैनिक व तांत्रिक)</option>
-                <option value="Property & Real Estate">प्रॉपर्टी व रिअल इस्टेट</option>
-                <option value="Doctor & Healthcare">डॉक्टर व क्लिनिक</option>
-                <option value="Legal & Advocates">वकील व कायदेशीर सल्ला</option>
-                <option value="दुकान">दुकान व स्टोअर्स</option>
-                <option value="Food">Food & Mess</option>
-                <option value="Home Business">Home Business</option>
-                <option value="Classes">Classes & Coaching</option>
-                <option value="Automobile">Automobile</option>
-                <option value="Events & Competitions">इव्हेंट्स व स्पर्धा</option>
-                <option value="Other">Other</option>
             </select>
         </div>
 
@@ -259,17 +232,6 @@
             <div class="form-group">
                 <label>मुख्य कॅटेगरी निवडा *</label>
                 <select id="postCategory" required onchange="updatePostSubCategories()">
-                    <option value="Services">Services (दैनिक व तांत्रिक)</option>
-                    <option value="Property & Real Estate">प्रॉपर्टी व रिअल इस्टेट</option>
-                    <option value="Doctor & Healthcare">डॉक्टर व क्लिनिक</option>
-                    <option value="Legal & Advocates">वकील व कायदेशीर सल्ला</option>
-                    <option value="दुकान">दुकान व स्टोअर्स</option>
-                    <option value="Food">Food & Mess</option>
-                    <option value="Home Business">Home Business</option>
-                    <option value="Classes">Classes & Coaching</option>
-                    <option value="Automobile">Automobile</option>
-                    <option value="Events & Competitions">इव्हेंट्स व स्पर्धा</option>
-                    <option value="Other">Other</option>
                 </select>
             </div>
 
@@ -350,7 +312,7 @@
                 <div class="category-card" onclick="openAdminModal('modalAdminUpdates')"><div class="cat-icon-wrap" style="background:#eff6ff; color:#1d4ed8;"><i class="fa-solid fa-faucet-drip"></i></div><span class="title">अपडेट्स</span></div>
                 <div class="category-card" onclick="openAdminModal('modalAdminDirectory')"><div class="cat-icon-wrap" style="background:#f0fdf4; color:#15803d;"><i class="fa-solid fa-address-book"></i></div><span class="title">डिरेक्टरी</span></div>
                 <div class="category-card" onclick="openAdminModal('modalAdminBanners')"><div class="cat-icon-wrap" style="background:#fdf2f8; color:#9d174d;"><i class="fa-solid fa-gift"></i></div><span class="title">बॅनर्स मॅनेजमेंट</span></div>
-                <div class="category-card" onclick="openAdminModal('modalAdminSubCat')"><div class="cat-icon-wrap" style="background:#e0f2fe; color:#0284c7;"><i class="fa-solid fa-folder-plus"></i></div><span class="title">नवीन सब-कॅटेगरी जोडा</span></div>
+                <div class="category-card" onclick="openAdminModal('modalAdminCategory')"><div class="cat-icon-wrap" style="background:#e0f2fe; color:#0284c7;"><i class="fa-solid fa-folder-gear"></i></div><span class="title">कॅटेगरी / सब-कॅटेगरी मॅनेजमेंट</span></div>
                 <div class="category-card" onclick="openAdminModal('modalAdminAds')"><div class="cat-icon-wrap" style="background:#faf5ff; color:#6b21a8;"><i class="fa-solid fa-list-check"></i></div><span class="title">ॲड अप्रूवल & एडिट</span></div>
                 <div class="category-card" style="grid-column: span 2;" onclick="openAdminModal('modalAdminTerms')"><div class="cat-icon-wrap" style="background:#e0e7ff; color:#3730a3;"><i class="fa-solid fa-file-pen"></i></div><span class="title">अटी व शर्ती (Terms) बदला</span></div>
             </div>
@@ -389,31 +351,34 @@
     </div>
 </div>
 
-<div class="modal" id="modalAdminSubCat">
+<!-- अडमिनसाठी कॅटेगरी व सब-कॅटेगरी ॲड, एडिट आणि डिलीट करण्याचे मॉडेल -->
+<div class="modal" id="modalAdminCategory">
     <div class="modal-content">
-        <h4 style="color:#0284c7; margin-bottom:10px;"><i class="fa-solid fa-folder-plus"></i> कोणत्याही कॅटेगरीत सब-कॅटेगरी जोडा</h4>
-        <div class="form-group">
-            <label>मुख्य कॅटेगरी निवडा:</label>
-            <select id="adminSubCatTarget">
-                <option value="Services">Services (दैनिक व तांत्रिक)</option>
-                <option value="Property & Real Estate">प्रॉपर्टी व रिअल इस्टेट</option>
-                <option value="Doctor & Healthcare">डॉक्टर व क्लिनिक</option>
-                <option value="Legal & Advocates">वकील व कायदेशीर सल्ला</option>
-                <option value="दुकान">दुकान व स्टोअर्स</option>
-                <option value="Food">Food & Mess</option>
-                <option value="Home Business">Home Business</option>
-                <option value="Classes">Classes & Coaching</option>
-                <option value="Automobile">Automobile</option>
-                <option value="Events & Competitions">इव्हेंट्स व स्पर्धा</option>
-                <option value="Other">Other</option>
-            </select>
+        <h4 style="color:#0284c7; margin-bottom:10px;"><i class="fa-solid fa-folder-gear"></i> कॅटेगरी व सब-कॅटेगरी मॅनेजमेंट</h4>
+        
+        <!-- मुख्य कॅटेगरी जोडा/डिलीट -->
+        <div style="background:#f8fafc; padding:10px; border-radius:8px; margin-bottom:12px; border:1px solid #e2e8f0;">
+            <h5 style="font-size:12px; color:#1e293b; margin-bottom:6px;">१. मुख्य कॅटेगरी (Main Category) जोडा / काढा:</h5>
+            <div class="form-group" style="margin-bottom:8px;"><input type="text" id="adminNewMainCatName" placeholder="नवीन कॅटेगरीचे नाव"></div>
+            <div style="display:flex; gap:6px;">
+                <button class="btn-primary" style="background:#0284c7; padding:8px; font-size:12px; flex:1;" onclick="addNewMainCategoryByAdmin()">+ जोडा</button>
+                <button class="btn-primary" style="background:#e53e3e; padding:8px; font-size:12px; flex:1;" onclick="deleteMainCategoryByAdmin()">🗑️ काढा (Delete)</button>
+            </div>
         </div>
-        <div class="form-group">
-            <label>नवीन सब-कॅटेगरीचे नाव:</label>
-            <input type="text" id="adminNewSubCatName" placeholder="उदा. नवीन सेवा प्रकार">
+
+        <!-- सब-कॅटेगरी जोडा/डिलीट -->
+        <div style="background:#f8fafc; padding:10px; border-radius:8px; border:1px solid #e2e8f0;">
+            <h5 style="font-size:12px; color:#1e293b; margin-bottom:6px;">२. सब-कॅटेगरी जोडा / काढा:</h5>
+            <div class="form-group" style="margin-bottom:6px;"><label style="font-size:11px;">मुख्य कॅटेगरी निवडा:</label><select id="adminSubCatTarget" style="padding:6px; font-size:12px;" onchange="populateAdminSubCatList()"></select></div>
+            <div class="form-group" style="margin-bottom:6px;"><label style="font-size:11px;">ह्या कॅटेगरीतील सब-कॅटेगरी (काढण्यासाठी निवडा):</label><select id="adminExistingSubCatSelect" style="padding:6px; font-size:12px;"></select></div>
+            <div class="form-group" style="margin-bottom:8px;"><label style="font-size:11px;">नवीन सब-कॅटेगरी नाव:</label><input type="text" id="adminNewSubCatName" placeholder="सब-कॅटेगरी नाव" style="padding:6px; font-size:12px;"></div>
+            <div style="display:flex; gap:6px;">
+                <button class="btn-primary" style="background:#16a34a; padding:8px; font-size:12px; flex:1;" onclick="addNewSubCategoryByAdmin()">+ जोडा</button>
+                <button class="btn-primary" style="background:#e53e3e; padding:8px; font-size:12px; flex:1;" onclick="deleteSubCategoryByAdmin()">🗑️ काढा</button>
+            </div>
         </div>
-        <button class="btn-primary" style="background:#0284c7;" onclick="addNewSubCategoryByAdmin()">+ सब-कॅटेगरी जोडा</button>
-        <button class="modal-btn-close" style="background:#718096;" onclick="closeAdminModal('modalAdminSubCat')">बंद करा</button>
+
+        <button class="modal-btn-close" style="background:#718096; margin-top:12px;" onclick="closeAdminModal('modalAdminCategory')">बंद करा</button>
     </div>
 </div>
 
@@ -527,6 +492,20 @@
         "Other": ["महत्वाचे अपडेट्स", "डिरेक्टरी व इतर"]
     };
 
+    let categoryIconsMap = JSON.parse(localStorage.getItem('kj_cat_icons')) || {
+        "Services": { icon: "fa-screwdriver-wrench", css: "cat-icon-services" },
+        "Property & Real Estate": { icon: "fa-building-user", css: "cat-icon-property" },
+        "Doctor & Healthcare": { icon: "fa-user-doctor", css: "cat-icon-doctor" },
+        "Legal & Advocates": { icon: "fa-scale-balanced", css: "cat-icon-legal" },
+        "दुकान": { icon: "fa-store", css: "cat-icon-shop" },
+        "Food": { icon: "fa-utensils", css: "cat-icon-food" },
+        "Home Business": { icon: "fa-house-chimney-user", css: "cat-icon-home" },
+        "Classes": { icon: "fa-graduation-cap", css: "cat-icon-classes" },
+        "Automobile": { icon: "fa-car", css: "cat-icon-auto" },
+        "Events & Competitions": { icon: "fa-trophy", css: "cat-icon-events" },
+        "Other": { icon: "fa-circle-info", css: "cat-icon-other" }
+    };
+
     let currentCategoryName = ""; 
     let currentSubCategory = "सर्व";
     
@@ -565,13 +544,14 @@
         localStorage.setItem('kj_terms', termsText);
         localStorage.setItem('kj_owner', JSON.stringify(ownerDetails));
         localStorage.setItem('kj_subcategories_map', JSON.stringify(subCategoriesMap));
+        localStorage.setItem('kj_cat_icons', JSON.stringify(categoryIconsMap));
         
         if (window.db) {
             try {
                 const { setDoc, doc } = window.firebaseFns;
                 await setDoc(doc(window.db, "appData", "mainStore"), {
                     adsData: adsData, appLocation: appLocation, tickerText: tickerText,
-                    bannersList: bannersList, karanjadeUpdates: karanjadeUpdates, phoneDirectory: phoneDirectory, termsText: termsText, ownerDetails: ownerDetails, subCategoriesMap: subCategoriesMap
+                    bannersList: bannersList, karanjadeUpdates: karanjadeUpdates, phoneDirectory: phoneDirectory, termsText: termsText, ownerDetails: ownerDetails, subCategoriesMap: subCategoriesMap, categoryIconsMap: categoryIconsMap
                 });
             } catch (e) { console.log("Cloud sync note: ", e); }
         }
@@ -593,13 +573,14 @@
                     if (cloudData.termsText) termsText = cloudData.termsText;
                     if (cloudData.ownerDetails) ownerDetails = cloudData.ownerDetails;
                     if (cloudData.subCategoriesMap) subCategoriesMap = cloudData.subCategoriesMap;
+                    if (cloudData.categoryIconsMap) categoryIconsMap = cloudData.categoryIconsMap;
                 }
             }
         } catch (err) { console.log("Error loading from cloud"); }
         
         history.replaceState({ pageId: 'page-home' }, "", "");
         renderHome();
-        updatePostSubCategories();
+        populateCategoryDropdowns();
     });
 
     function saveAllData() { saveAllDataToCloud(); }
@@ -654,8 +635,9 @@
         const tickerEl = document.getElementById('liveTickerText');
         if(tickerEl) tickerEl.innerText = tickerText;
 
-        const today = new Date().toISOString().split('T')[0];
+        renderHomeCategoriesGrid();
 
+        const today = new Date().toISOString().split('T')[0];
         const featContainer = document.getElementById('featuredAdsContainer');
         if(featContainer) {
             featContainer.innerHTML = '';
@@ -669,6 +651,60 @@
                 });
             }
         }
+    }
+
+    function renderHomeCategoriesGrid() {
+        const grid = document.getElementById('homeCategoriesGrid');
+        if(!grid) return;
+        grid.innerHTML = '';
+
+        const catNames = Object.keys(subCategoriesMap);
+        catNames.forEach(cat => {
+            if(cat === 'Other') return;
+            let iconInfo = categoryIconsMap[cat] || { icon: "fa-folder", css: "cat-icon-services" };
+            grid.innerHTML += `
+                <div class="category-card" onclick="openCategoryPage('${cat}')">
+                    <div class="cat-icon-wrap ${iconInfo.css}"><i class="fa-solid ${iconInfo.icon}"></i></div>
+                    <span class="title">${cat}</span>
+                </div>
+            `;
+        });
+
+        grid.innerHTML += `
+            <div class="category-card" style="grid-column: span 2;" onclick="openOtherCategoryPage()">
+                <div class="cat-icon-wrap cat-icon-other"><i class="fa-solid fa-circle-info"></i></div>
+                <span class="title">Other (महत्वाचे अपडेट्स व डिरेक्टरी)</span>
+            </div>
+        `;
+    }
+
+    function populateCategoryDropdowns() {
+        const postCatEl = document.getElementById('postCategory');
+        const searchCatEl = document.getElementById('searchCategory');
+        const adminSubTargetEl = document.getElementById('adminSubCatTarget');
+
+        const catNames = Object.keys(subCategoriesMap);
+        let optionsHTML = catNames.map(c => `<option value="${c}">${c}</option>`).join('');
+        let searchOptionsHTML = '<option value="">सर्व कॅटेगरीज (All Categories)</option>' + optionsHTML;
+
+        if(postCatEl) postCatEl.innerHTML = optionsHTML;
+        if(searchCatEl) searchCatEl.innerHTML = searchOptionsHTML;
+        if(adminSubTargetEl) {
+            adminSubTargetEl.innerHTML = optionsHTML;
+            populateAdminSubCatList();
+        }
+
+        updatePostSubCategories();
+    }
+
+    // अडमिनसाठी सब-कॅटेगरी ड्रॉपडाउन भरण्याची सोय
+    function populateAdminSubCatList() {
+        const targetCat = document.getElementById('adminSubCatTarget').value;
+        const subSelect = document.getElementById('adminExistingSubCatSelect');
+        if(!subSelect) return;
+
+        const subs = subCategoriesMap[targetCat] || [];
+        subSelect.innerHTML = subs.map(s => `<option value="${s}">${s}</option>`).join('');
     }
 
     function scrollToFeaturedAd(adId) {
@@ -819,6 +855,67 @@
         `).join('');
     }
 
+    // नवीन मुख्य कॅटेगरी जोडणे (आणि नावावरून ऑटोमॅटिक योग्य आयकॉन निवडणे)
+    function addNewMainCategoryByAdmin() {
+        const newCatName = document.getElementById('adminNewMainCatName').value.trim();
+        if(!newCatName) {
+            alert('कृपया मुख्य कॅटेगरीचे नाव टाका!');
+            return;
+        }
+        if(subCategoriesMap[newCatName]) {
+            alert('ही कॅटेगरी आधीपासूनच अस्तित्वात आहे!');
+            return;
+        }
+
+        subCategoriesMap[newCatName] = ["सामान्य"];
+        
+        // नावावरून ऑटोमॅटिक आयकॉन ठरवणे
+        let autoIcon = "fa-folder";
+        let autoCss = "cat-icon-services";
+        let lowerName = newCatName.toLowerCase();
+
+        if(lowerName.includes('डॉक्टर') || lowerName.includes('hospital') || lowerName.includes('clinic')) {
+            autoIcon = "fa-user-doctor"; autoCss = "cat-icon-doctor";
+        } else if(lowerName.includes('food') || lowerName.includes('hotel') || lowerName.includes('खाद्य') || lowerName.includes('मेस')) {
+            autoIcon = "fa-utensils"; autoCss = "cat-icon-food";
+        } else if(lowerName.includes('shop') || lowerName.includes('दुकान') || lowerName.includes('store')) {
+            autoIcon = "fa-store"; autoCss = "cat-icon-shop";
+        } else if(lowerName.includes('property') || lowerName.includes('घर') || lowerName.includes('प्लॉट')) {
+            autoIcon = "fa-building-user"; autoCss = "cat-icon-property";
+        } else if(lowerName.includes('classes') || lowerName.includes('education') || lowerName.includes('क्लासेस')) {
+            autoIcon = "fa-graduation-cap"; autoCss = "cat-icon-classes";
+        } else if(lowerName.includes('car') || lowerName.includes('bike') || lowerName.includes('वाहन')) {
+            autoIcon = "fa-car"; autoCss = "cat-icon-auto";
+        } else if(lowerName.includes('vikal') || lowerName.includes('legal') || lowerName.includes('वकील')) {
+            autoIcon = "fa-scale-balanced"; autoCss = "cat-icon-legal";
+        }
+
+        categoryIconsMap[newCatName] = { icon: autoIcon, css: autoCss };
+        saveAllData();
+        populateCategoryDropdowns();
+        alert(`यशस्वी! '${newCatName}' नवीन कॅटेगरी ऑटोमॅटिक लोगो सह जोडली गेली.`);
+        document.getElementById('adminNewMainCatName').value = '';
+        renderHomeCategoriesGrid();
+    }
+
+    // मुख्य कॅटेगरी डिलीट (काढून टाकणे)
+    function deleteMainCategoryByAdmin() {
+        const targetCat = document.getElementById('adminSubCatTarget').value;
+        if(targetCat === 'Other') {
+            alert('Other कॅटेगरी डिलीट करता येत नाही!');
+            return;
+        }
+        let confirmDel = confirm(`तुम्ही मुख्य कॅटेगरी '${targetCat}' आणि त्यातील सर्व सब-कॅटेगरीज डिलीट करू इच्छिता?`);
+        if(confirmDel) {
+            delete subCategoriesMap[targetCat];
+            delete categoryIconsMap[targetCat];
+            saveAllData();
+            populateCategoryDropdowns();
+            renderHomeCategoriesGrid();
+            alert('कॅटेगरी यशस्वीरित्या काढून टाकली गेली आहे.');
+        }
+    }
+
     function addNewSubCategoryByAdmin() {
         const targetCat = document.getElementById('adminSubCatTarget').value;
         const newSubName = document.getElementById('adminNewSubCatName').value.trim();
@@ -841,8 +938,28 @@
         saveAllData();
         alert(`यशस्वी! '${newSubName}' ही सब-कॅटेगरी '${targetCat}' मध्ये जोडली गेली आहे.`);
         document.getElementById('adminNewSubCatName').value = '';
-        closeAdminModal('modalAdminSubCat');
+        populateAdminSubCatList();
         updatePostSubCategories();
+    }
+
+    // सब-कॅटेगरी डिलीट (काढून टाकणे)
+    function deleteSubCategoryByAdmin() {
+        const targetCat = document.getElementById('adminSubCatTarget').value;
+        const subToDel = document.getElementById('adminExistingSubCatSelect').value;
+
+        if(!subToDel) {
+            alert('काढण्यासाठी कोणतीही सब-कॅटेगरी निवडलेली नाही!');
+            return;
+        }
+
+        let confirmDel = confirm(`तुम्ही '${subToDel}' ही सब-कॅटेगरी काढू इच्छिता?`);
+        if(confirmDel) {
+            subCategoriesMap[targetCat] = subCategoriesMap[targetCat].filter(s => s !== subToDel);
+            saveAllData();
+            populateAdminSubCatList();
+            updatePostSubCategories();
+            alert('सब-कॅटेगरी यशस्वीरित्या काढून टाकली गेली आहे.');
+        }
     }
 
     function updateSearchSubCategories() {
@@ -1434,45 +1551,44 @@
         XLSX.writeFile(wb, "Advertisers_Report.xlsx");
     }
 
+    // मराठी फॉन्ट व स्पष्ट एक्स्पायरी तारखेसह प्रिंट/PDF रिपोर्ट
     function downloadPDFReport() {
         if (adsData.length === 0) { alert('डेटा नाही!'); return; }
-        const { jsPDF } = window.jspdf; 
-        const doc = new jsPDF();
         const today = new Date().toISOString().split('T')[0];
 
-        doc.text("Advertisers Report (Expired Highlighted)", 14, 15);
-        
-        const tableBody = adsData.map((a, i) => {
+        let printWindow = window.open('', '', 'height=600,width=800');
+        printWindow.document.write('<html><head><title>Advertisers Report</title>');
+        printWindow.document.write('<style>body{font-family:Arial,sans-serif;padding:20px;} table{width:100%;border-collapse:collapse;margin-top:15px;} th,td{border:1px solid #ddd;padding:8px;text-align:left;font-size:12px;} th{background-color:#5c1bc2;color:white;} .expired{color:red;font-weight:bold;}</style>');
+        printWindow.document.write('</head><body>');
+        printWindow.document.write('<h2>करंजाडे Updates जाहिरात मित्र - जाहिरातदार अहवाल (Advertisers Report)</h2>');
+        printWindow.document.write('<p>दिनांक: ' + today + '</p>');
+        printWindow.document.write('<table><thead><tr><th>अ.क्र.</th><th>व्यवसायाचे नाव</th><th>मोबाईल नंबर</th><th>कॅटेगरी</th><th>सब-कॅटेगरीज</th><th>स्थिती (Status)</th><th>वैधता (Expiry Date)</th><th>रेटिंग</th></tr></thead><tbody>');
+
+        adsData.forEach((a, i) => {
             const isExpired = a.expireDate && a.expireDate < today;
             const ratings = a.ratings || [];
             const avg = ratings.length > 0 ? (ratings.reduce((x, y) => x + y, 0) / ratings.length).toFixed(1) : "0.0";
-            return [
-                i+1, 
-                a.name + (isExpired ? " (EXPIRED)" : ""), 
-                a.phone, 
-                a.category, 
-                a.subCategories ? a.subCategories.join(', ') : "", 
-                isExpired ? "EXPIRED" : a.status, 
-                avg + " ⭐"
-            ];
+            let statusStr = isExpired ? '<span class="expired">EXPIRED</span>' : a.status;
+            let subCats = a.subCategories ? a.subCategories.join(', ') : (a.subCategory || '');
+
+            printWindow.document.write(`<tr>
+                <td>${i+1}</td>
+                <td><b>${a.name}</b></td>
+                <td>${a.phone}</td>
+                <td>${a.category}</td>
+                <td>${subCats}</td>
+                <td>${statusStr}</td>
+                <td>${a.expireDate || 'N/A'}</td>
+                <td>${avg} ⭐</td>
+            </tr>`);
         });
 
-        doc.autoTable({ 
-            head: [["Sr", "Name", "Phone", "Category", "SubCategories", "Status", "Rating"]], 
-            body: tableBody, 
-            startY: 20,
-            didParseCell: function (data) {
-                const todayStr = new Date().toISOString().split('T')[0];
-                const rowData = adsData[data.row.index];
-                
-                if (rowData && rowData.expireDate && rowData.expireDate < todayStr) {
-                    data.cell.styles.textColor = [229, 62, 62]; 
-                    data.cell.styles.fontStyle = 'bold';
-                }
-            }
-        });
-
-        doc.save("Advertisers_Report.pdf");
+        printWindow.document.write('</tbody></table></body></html>');
+        printWindow.document.close();
+        printWindow.focus();
+        setTimeout(() => {
+            printWindow.print();
+        }, 500);
     }
 
     function openAdminModal(id) { 
@@ -1486,6 +1602,7 @@
     }
 
     renderHome();
+    populateCategoryDropdowns();
 </script>
 
 </body>
