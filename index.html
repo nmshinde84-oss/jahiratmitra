@@ -4,6 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title id="mainTitleTag">करंजाडे Updates जाहिरात मित्र</title>
+    
+    <!-- Mobile Home Screen App Icon & Manifest Settings -->
+    <link rel="apple-touch-icon" href="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=192">
+    <link rel="icon" type="image/png" href="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=192">
+    <meta name="theme-color" content="#5c1bc2">
+    
     <!-- Google Fonts & Font Awesome -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -197,8 +203,11 @@
         <h3 id="otherPageMainTitle" style="color:#5c1bc2; margin-bottom: 12px;"><i class="fa-solid fa-circle-info"></i> महत्त्वाची माहिती व सेवा</h3>
         <div class="section-title"><i class="fa-solid fa-bullhorn" style="color:#ff5400;"></i> ताजी माहिती (Live Updates)</div>
         <div id="karanjadeUpdatesList"></div>
+        
         <div class="section-title" style="margin-top: 18px;"><i class="fa-solid fa-address-book" style="color:#25d366;"></i> फोन डिरेक्टरी (Important Contacts)</div>
+        <div class="form-group" style="margin-bottom: 10px;"><input type="text" id="dirSearchInput" placeholder="डिरेक्टरीमध्ये नाव, नंबर किंवा कॅटेगरी शोधा..." oninput="renderUserDirectoryList()" style="padding: 8px; font-size: 12px;"></div>
         <div id="phoneDirectoryList"></div>
+
         <div class="section-title" style="margin-top: 18px;"><i class="fa-solid fa-boxes-stacked" style="color:#7e22ce;"></i> इतर जाहिराती (Other Ads)</div>
         <div id="otherGeneralAdsList"></div>
     </div>
@@ -206,7 +215,7 @@
     <!-- 3. सर्च पेज -->
     <div id="page-search" class="page">
         <h3 style="margin-bottom: 12px;">शोधा (Search Ads)</h3>
-        <div class="form-group"><input type="text" id="searchInput" placeholder="नाव, कामाचा प्रकार शोधा..." oninput="handleSearch()"></div>
+        <div class="form-group"><input type="text" id="searchInput" placeholder="कोणताही शब्द, नाव किंवा अक्षर टाका..." oninput="handleSearch()"></div>
         
         <div class="form-group">
             <label style="font-size: 12px; font-weight: 600; margin-bottom: 5px; color: #4a5568;">मुख्य कॅटेगरी निवडा:</label>
@@ -351,12 +360,10 @@
     </div>
 </div>
 
-<!-- अडमिनसाठी कॅटेगरी व सब-कॅटेगरी ॲड, एडिट आणि डिलीट करण्याचे मॉडेल -->
 <div class="modal" id="modalAdminCategory">
     <div class="modal-content">
         <h4 style="color:#0284c7; margin-bottom:10px;"><i class="fa-solid fa-folder-gear"></i> कॅटेगरी व सब-कॅटेगरी मॅनेजमेंट</h4>
         
-        <!-- मुख्य कॅटेगरी जोडा/डिलीट -->
         <div style="background:#f8fafc; padding:10px; border-radius:8px; margin-bottom:12px; border:1px solid #e2e8f0;">
             <h5 style="font-size:12px; color:#1e293b; margin-bottom:6px;">१. मुख्य कॅटेगरी (Main Category) जोडा / काढा:</h5>
             <div class="form-group" style="margin-bottom:8px;"><input type="text" id="adminNewMainCatName" placeholder="नवीन कॅटेगरीचे नाव"></div>
@@ -366,7 +373,6 @@
             </div>
         </div>
 
-        <!-- सब-कॅटेगरी जोडा/डिलीट -->
         <div style="background:#f8fafc; padding:10px; border-radius:8px; border:1px solid #e2e8f0;">
             <h5 style="font-size:12px; color:#1e293b; margin-bottom:6px;">२. सब-कॅटेगरी जोडा / काढा:</h5>
             <div class="form-group" style="margin-bottom:6px;"><label style="font-size:11px;">मुख्य कॅटेगरी निवडा:</label><select id="adminSubCatTarget" style="padding:6px; font-size:12px;" onchange="populateAdminSubCatList()"></select></div>
@@ -408,24 +414,27 @@
 
 <div class="modal" id="modalAdminDirectory">
     <div class="modal-content">
-        <h4 style="color:#15803d; margin-bottom:8px;">फोन डिरेक्टरी</h4>
+        <h4 style="color:#15803d; margin-bottom:8px;">फोन डिरेक्टरी मॅनेजमेंट</h4>
+        <div class="form-group"><label>कॅटेगरी / विभाग (उदा. वैद्यकीय, बँक, पोलिस):</label><input type="text" id="dirCategory" placeholder="उदा. वैद्यकीय"></div>
         <div class="form-group"><label>नाव:</label><input type="text" id="dirName"></div>
         <div class="form-group"><label>नंबर:</label><input type="tel" id="dirPhone"></div>
-        <button class="btn-primary" style="background:#16a34a;" onclick="addDirectoryContact()">+ डिरेक्टरी जोडा</button>
-        <div id="adminDirectoryList" style="margin-top:12px; max-height:120px; overflow-y:auto;"></div>
-        <button class="modal-btn-close" style="background:#718096;" onclick="closeAdminModal('modalAdminDirectory')">बंद करा</button>
+        <button class="btn-primary" style="background:#16a34a; margin-bottom:10px;" onclick="addDirectoryContact()">+ डिरेक्टरी जोडा</button>
+        
+        <div class="form-group" style="margin-bottom:6px;"><input type="text" id="adminDirSearchInput" placeholder="डिरेक्टरी शोधा (सर्च)..." oninput="renderAdminDirectoryList()" style="padding: 6px; font-size: 11px;"></div>
+        <div id="adminDirectoryList" style="margin-top:8px; max-height:140px; overflow-y:auto;"></div>
+        <button class="modal-btn-close" style="background:#718096; margin-top:10px;" onclick="closeAdminModal('modalAdminDirectory')">बंद करा</button>
     </div>
 </div>
 
 <div class="modal" id="modalAdminBanners">
     <div class="modal-content">
-        <h4 style="color:#9d174d; margin-bottom:8px;"><i class="fa-solid fa-gift"></i> बॅनर्स मॅनेजमेंट</h4>
+        <h4 style="color:#9d174d; margin-bottom:8px;"><i class="fa-solid fa-gift"></i> बॅनर्स मॅनेजमेंट & Expire Date</h4>
         <div class="form-group"><label>बॅनर फोटो URL (Image Link):</label><input type="text" id="bannerImgInput" placeholder="https://... फोटोची लिंक टाका"></div>
         <div class="form-group"><label>बॅनर वर्णन (Description / मेसेज):</label><textarea id="bannerDescInput" rows="2" placeholder="उदा. होळी विशेष ऑफर..."></textarea></div>
-        <div class="form-group"><label>Expire Date:</label><input type="date" id="bannerExpInput"></div>
+        <div class="form-group"><label>वैधता (Expire Date):</label><input type="date" id="bannerExpInput"></div>
         <div class="form-group"><label><input type="checkbox" id="bannerHideCheck"> बॅनर Hide करा</label></div>
         <button class="btn-primary" style="background:#db2777;" onclick="saveNewBannerItem()">+ नवीन बॅनर जोडा</button>
-        <div id="adminBannerListContainer" style="margin-top:12px; max-height:150px; overflow-y:auto;"></div>
+        <div id="adminBannerListContainer" style="margin-top:12px; max-height:180px; overflow-y:auto;"></div>
         <button class="modal-btn-close" style="background:#718096;" onclick="closeAdminModal('modalAdminBanners')">बंद करा</button>
     </div>
 </div>
@@ -476,7 +485,10 @@
         { url: "https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=600", desc: "✨ खास फेस्टिव्हल व स्पेशल ऑफर्सचा आनंद घ्या!", expireDate: "2026-12-31", hidden: false }
     ];
     let karanjadeUpdates = JSON.parse(localStorage.getItem('kj_updates')) || [];
-    let phoneDirectory = JSON.parse(localStorage.getItem('kj_directory')) || [];
+    let phoneDirectory = JSON.parse(localStorage.getItem('kj_directory')) || [
+        { id: 1, category: "आपत्कालीन", name: "पोलिस स्टेशन", phone: "112" },
+        { id: 2, category: "वैद्यकीय", name: "रुग्णवाहिका", phone: "108" }
+    ];
     
     let subCategoriesMap = JSON.parse(localStorage.getItem('kj_subcategories_map')) || {
         "Services": ["इलेक्ट्रिशियन", "प्लंबर", "कारपेंटर", "पेंटर", "AC / फ्रिज रिपेअर", "मोबाईल / कॉम्प्युटर रिपेअर", "CCTV सेवा", "घर साफसफाई", "Pest Control", "RO / वॉटर प्युरिफायर", "Washing Machine Repair", "घरगुती सेवा", "इतर सेवा"],
@@ -545,6 +557,8 @@
         localStorage.setItem('kj_owner', JSON.stringify(ownerDetails));
         localStorage.setItem('kj_subcategories_map', JSON.stringify(subCategoriesMap));
         localStorage.setItem('kj_cat_icons', JSON.stringify(categoryIconsMap));
+        localStorage.setItem('kj_directory', JSON.stringify(phoneDirectory));
+        localStorage.setItem('kj_updates', JSON.stringify(karanjadeUpdates));
         
         if (window.db) {
             try {
@@ -697,7 +711,6 @@
         updatePostSubCategories();
     }
 
-    // अडमिनसाठी सब-कॅटेगरी ड्रॉपडाउन भरण्याची सोय
     function populateAdminSubCatList() {
         const targetCat = document.getElementById('adminSubCatTarget').value;
         const subSelect = document.getElementById('adminExistingSubCatSelect');
@@ -796,7 +809,7 @@
             listContainer.innerHTML = '';
             const today = new Date().toISOString().split('T')[0];
             
-            const filtered = adsData.filter(ad => {
+            let filtered = adsData.filter(ad => {
                 const matchesStatus = ad.status === 'approved';
                 const matchesCat = ad.category === categoryName;
                 const adSubs = ad.subCategories || [ad.subCategory];
@@ -804,6 +817,8 @@
                 const matchesDate = (!ad.expireDate || ad.expireDate >= today);
                 return matchesStatus && matchesCat && matchesSub && matchesDate;
             });
+
+            filtered.sort(() => Math.random() - 0.5);
 
             if (filtered.length === 0) {
                 listContainer.innerHTML = '<p style="font-size:13px; color:#718096; text-align:center; padding:30px 0;">या विभागात सध्या कोणतीही जाहिरात नाही.</p>';
@@ -829,18 +844,40 @@
             updatesBox.innerHTML = karanjadeUpdates.length === 0 ? '<p style="font-size:12px; color:#888;">कोणतेही अपडेट नाही.</p>' : karanjadeUpdates.map(up => `<div class="info-update-card"><span style="font-size:11px; font-weight:700; color:#5c1bc2;">${up.type}</span><h5 style="margin: 4px 0; font-size:13px;">${up.title}</h5><p style="font-size:12px; color:#475569;">${up.desc}</p></div>`).join('');
         }
 
-        const dirBox = document.getElementById('phoneDirectoryList');
-        if(dirBox) {
-            dirBox.innerHTML = phoneDirectory.length === 0 ? '<p style="font-size:12px; color:#888;">नंबर उपलब्ध नाहीत.</p>' : phoneDirectory.map(d => `<div class="directory-card"><div><div style="font-size:13px; font-weight:700;">${d.name}</div><div style="font-size:12px; color:#64748b;">📞 ${d.phone}</div></div><a href="tel:${d.phone}" class="btn-call" style="padding:6px 12px; font-size:11px;"><i class="fa-solid fa-phone"></i> Call</a></div>`).join('');
-        }
+        renderUserDirectoryList();
 
         const generalBox = document.getElementById('otherGeneralAdsList');
         if(generalBox) {
-            const otherAds = adsData.filter(ad => ad.status === 'approved' && ad.category === 'Other' && (!ad.expireDate || ad.expireDate >= today));
+            let otherAds = adsData.filter(ad => ad.status === 'approved' && ad.category === 'Other' && (!ad.expireDate || ad.expireDate >= today));
+            otherAds.sort(() => Math.random() - 0.5);
             generalBox.innerHTML = otherAds.length === 0 ? '<p style="font-size:12px; color:#888;">इतर जाहिराती नाहीत.</p>' : otherAds.map(ad => generateAdCardHTML(ad)).join('');
         }
 
         showPage('page-other-special', true);
+    }
+
+    function renderUserDirectoryList() {
+        let dirBox = document.getElementById('phoneDirectoryList');
+        let searchInput = document.getElementById('dirSearchInput');
+        if(!dirBox) return;
+
+        let query = searchInput ? searchInput.value.trim().toLowerCase() : "";
+        let filtered = phoneDirectory.filter(d => 
+            d.name.toLowerCase().includes(query) || 
+            d.phone.includes(query) || 
+            (d.category && d.category.toLowerCase().includes(query))
+        );
+
+        dirBox.innerHTML = filtered.length === 0 ? '<p style="font-size:12px; color:#888;">नंबर सापडला नाही.</p>' : filtered.map(d => `
+            <div class="directory-card">
+                <div>
+                    <div style="font-size:11px; font-weight:700; color:#5c1bc2;">[${d.category || 'इतर'}]</div>
+                    <div style="font-size:13px; font-weight:700;">${d.name}</div>
+                    <div style="font-size:12px; color:#64748b;">📞 ${d.phone}</div>
+                </div>
+                <a href="tel:${d.phone}" class="btn-call" style="padding:6px 12px; font-size:11px;"><i class="fa-solid fa-phone"></i> Call</a>
+            </div>
+        `).join('');
     }
 
     function updatePostSubCategories() {
@@ -855,7 +892,6 @@
         `).join('');
     }
 
-    // नवीन मुख्य कॅटेगरी जोडणे (आणि नावावरून ऑटोमॅटिक योग्य आयकॉन निवडणे)
     function addNewMainCategoryByAdmin() {
         const newCatName = document.getElementById('adminNewMainCatName').value.trim();
         if(!newCatName) {
@@ -869,7 +905,6 @@
 
         subCategoriesMap[newCatName] = ["सामान्य"];
         
-        // नावावरून ऑटोमॅटिक आयकॉन ठरवणे
         let autoIcon = "fa-folder";
         let autoCss = "cat-icon-services";
         let lowerName = newCatName.toLowerCase();
@@ -898,7 +933,6 @@
         renderHomeCategoriesGrid();
     }
 
-    // मुख्य कॅटेगरी डिलीट (काढून टाकणे)
     function deleteMainCategoryByAdmin() {
         const targetCat = document.getElementById('adminSubCatTarget').value;
         if(targetCat === 'Other') {
@@ -942,7 +976,6 @@
         updatePostSubCategories();
     }
 
-    // सब-कॅटेगरी डिलीट (काढून टाकणे)
     function deleteSubCategoryByAdmin() {
         const targetCat = document.getElementById('adminSubCatTarget').value;
         const subToDel = document.getElementById('adminExistingSubCatSelect').value;
@@ -960,6 +993,39 @@
             updatePostSubCategories();
             alert('सब-कॅटेगरी यशस्वीरित्या काढून टाकली गेली आहे.');
         }
+    }
+
+    function handleSearch() {
+        const searchInputEl = document.getElementById('searchInput');
+        const query = searchInputEl ? searchInputEl.value.trim().toLowerCase() : "";
+        const searchCatEl = document.getElementById('searchCategory');
+        const selectedCat = searchCatEl ? searchCatEl.value : "";
+        
+        const checkboxes = document.querySelectorAll('#searchSubCategoriesCheckboxGroup input[type="checkbox"]:checked');
+        const selectedSubCats = Array.from(checkboxes).map(cb => cb.value);
+
+        const resultsContainer = document.getElementById('searchResultsList');
+        if(!resultsContainer) return;
+        const today = new Date().toISOString().split('T')[0];
+        
+        let filtered = adsData.filter(ad => {
+            const matchesStatus = ad.status === 'approved';
+            const matchesCat = (!selectedCat || ad.category === selectedCat);
+            
+            const adSubs = ad.subCategories || [ad.subCategory];
+            const matchesSub = (selectedSubCats.length === 0 || selectedSubCats.some(s => adSubs.includes(s)));
+
+            const combinedText = (ad.name + " " + ad.desc + " " + ad.address + " " + ad.phone + " " + (ad.subCategories ? ad.subCategories.join(' ') : '')).toLowerCase();
+            const matchesQuery = !query || combinedText.includes(query);
+
+            const matchesDate = (!ad.expireDate || ad.expireDate >= today);
+
+            return matchesStatus && matchesCat && matchesSub && matchesQuery && matchesDate;
+        });
+
+        filtered.sort(() => Math.random() - 0.5);
+
+        resultsContainer.innerHTML = filtered.length === 0 ? '<p style="font-size:12px; color:#888; text-align:center;">जाहिरात सापडली नाही.</p>' : filtered.map(ad => generateAdCardHTML(ad)).join('');
     }
 
     function updateSearchSubCategories() {
@@ -1078,35 +1144,6 @@
         }
     }
 
-    function handleSearch() {
-        const searchInputEl = document.getElementById('searchInput');
-        const query = searchInputEl ? searchInputEl.value.trim().toLowerCase() : "";
-        const searchCatEl = document.getElementById('searchCategory');
-        const selectedCat = searchCatEl ? searchCatEl.value : "";
-        
-        const checkboxes = document.querySelectorAll('#searchSubCategoriesCheckboxGroup input[type="checkbox"]:checked');
-        const selectedSubCats = Array.from(checkboxes).map(cb => cb.value);
-
-        const resultsContainer = document.getElementById('searchResultsList');
-        if(!resultsContainer) return;
-        const today = new Date().toISOString().split('T')[0];
-        
-        const filtered = adsData.filter(ad => {
-            const matchesStatus = ad.status === 'approved';
-            const matchesCat = (!selectedCat || ad.category === selectedCat);
-            
-            const adSubs = ad.subCategories || [ad.subCategory];
-            const matchesSub = (selectedSubCats.length === 0 || selectedSubCats.some(s => adSubs.includes(s)));
-
-            const matchesQuery = (ad.name.toLowerCase().includes(query) || ad.desc.toLowerCase().includes(query));
-            const matchesDate = (!ad.expireDate || ad.expireDate >= today);
-
-            return matchesStatus && matchesCat && matchesSub && matchesQuery && matchesDate;
-        });
-
-        resultsContainer.innerHTML = filtered.length === 0 ? '<p style="font-size:12px; color:#888; text-align:center;">जाहिरात सापडली नाही.</p>' : filtered.map(ad => generateAdCardHTML(ad)).join('');
-    }
-
     function handleUserSubmitAd(e) {
         e.preventDefault();
         const termsCheckEl = document.getElementById('postTermsCheck');
@@ -1172,6 +1209,7 @@
             if(contentBox) contentBox.style.display = 'block';
             let unameEl = document.getElementById('myAdsLoggedInUsername');
             if(unameEl) unameEl.innerText = currentLoggedInAdvertiser.username;
+            
             const ad = adsData.find(a => a.id === currentLoggedInAdvertiser.id);
             
             if(ad && list) {
@@ -1185,11 +1223,29 @@
                     <div class="ad-card" style="border-left: 5px solid ${borderCol}; opacity: ${isExpired ? '0.7' : '1'};">
                         <img src="${ad.cardImg}" class="ad-card-img">
                         <h4>${ad.name} ${isExpired ? '<span class="expired-badge">Expired</span>' : ''}</h4>
-                        <p style="font-size: 12px; color:#4a5568;">${ad.desc}</p>
-                        <p style="font-size: 11px; margin-top:6px; color:${borderCol}; font-weight:bold;">स्थिती: <b>${statusText}</b> | मुदत: <b>${ad.expireDate}</b> | रेटिंग: <b>${avgRating} ⭐ (${ratings.length} वेळा)</b></p>
+                        <div style="background:#eef2ff; padding:8px; border-radius:6px; margin:8px 0; font-size:12px; color:#3730a3;">
+                            ⭐ तुमच्या व्यवसायाचे एकूण रेटिंग: <b>${avgRating} ⭐ (${ratings.length} वेळा मिळाले)</b>
+                        </div>
+                        <div class="form-group">
+                            <label style="font-size:11px; font-weight:700;">तुमची माहिती (Description) बदला (डायरेक्ट अपडेट):</label>
+                            <textarea id="userEditDesc_${ad.id}" rows="3" style="padding:8px; font-size:12px;">${ad.desc}</textarea>
+                        </div>
+                        <button onclick="saveUserDescUpdate(${ad.id})" class="btn-primary" style="padding:8px; font-size:12px; background:#16a34a; margin-bottom:8px;">डिस्क्रिप्शन सेव्ह करा</button>
+                        <p style="font-size: 11px; margin-top:6px; color:${borderCol}; font-weight:bold;">स्थिती: <b>${statusText}</b> | मुदत: <b>${ad.expireDate}</b></p>
                     </div>
                 `;
             }
+        }
+    }
+
+    function saveUserDescUpdate(adId) {
+        let ad = adsData.find(a => a.id === adId);
+        let descInput = document.getElementById(`userEditDesc_${adId}`);
+        if(ad && descInput) {
+            ad.desc = descInput.value.trim();
+            saveAllData();
+            alert('यशस्वी! तुमचे डिस्क्रिप्शन अडमिन विना अपडेट केले गेले आहे.');
+            renderMyAdsView();
         }
     }
 
@@ -1352,24 +1408,39 @@
     }
 
     function addDirectoryContact() { 
+        let catEl = document.getElementById('dirCategory');
         let nameEl = document.getElementById('dirName');
         let phoneEl = document.getElementById('dirPhone');
         
         phoneDirectory.push({ 
             id: Date.now(), 
+            category: catEl ? catEl.value.trim() || "सामान्य" : "सामान्य",
             name: nameEl ? nameEl.value : "", 
             phone: phoneEl ? phoneEl.value : "" 
         }); 
         saveAllData(); 
         renderAdminDirectoryList(); 
-        alert('नंबर जोडला!'); 
+        alert('डिरेक्टरी नंबर जोडला!'); 
     }
     
     function renderAdminDirectoryList() { 
         let box = document.getElementById('adminDirectoryList');
-        if(box) {
-            box.innerHTML = phoneDirectory.map(d => `<div><b>${d.name}:</b> ${d.phone} <button onclick="phoneDirectory=phoneDirectory.filter(x=>x.id!==${d.id});saveAllData();renderAdminDirectoryList();" style="color:red;border:none;background:none;cursor:pointer;">हटवा</button></div>`).join(''); 
-        }
+        let searchInput = document.getElementById('adminDirSearchInput');
+        if(!box) return;
+
+        let query = searchInput ? searchInput.value.trim().toLowerCase() : "";
+        let filtered = phoneDirectory.filter(d => 
+            d.name.toLowerCase().includes(query) || 
+            d.phone.includes(query) || 
+            (d.category && d.category.toLowerCase().includes(query))
+        );
+
+        box.innerHTML = filtered.length === 0 ? '<p style="font-size:11px; color:#888;">नंबर सापडला नाही.</p>' : filtered.map(d => `
+            <div style="font-size:11px; margin-bottom:6px; background:#f8fafc; padding:6px; border-radius:6px; border:1px solid #e2e8f0;">
+                <b>[${d.category || 'इतर'}] ${d.name}:</b> ${d.phone} 
+                <button onclick="phoneDirectory=phoneDirectory.filter(x=>x.id!==${d.id});saveAllData();renderAdminDirectoryList();" style="color:red;border:none;background:none;cursor:pointer;float:right;font-weight:700;">हटवा</button>
+            </div>
+        `).join(''); 
     }
 
     function saveNewBannerItem() {
@@ -1400,7 +1471,25 @@
     function renderAdminBannersManager() {
         let box = document.getElementById('adminBannerListContainer');
         if(box) {
-            box.innerHTML = bannersList.map((b, i) => `<div style="font-size:11px; margin-bottom:6px; background:#f8fafc; padding:6px; border-radius:6px; border:1px solid #e2e8f0; display:flex; justify-content:space-between; align-items:center;"><div><b>बॅनर #${i+1}</b>: ${b.desc ? b.desc.substring(0,25)+'...' : 'वर्णन नाही'} [Hidden: ${b.hidden}]</div><button onclick="bannersList.splice(${i},1);saveAllData();renderHome();renderAdminBannersManager();" style="color:red;border:none;background:none;cursor:pointer;font-weight:700;">डिलीट</button></div>`).join('');
+            box.innerHTML = bannersList.map((b, i) => `
+                <div style="font-size:11px; margin-bottom:8px; background:#f8fafc; padding:8px; border-radius:6px; border:1px solid #e2e8f0;">
+                    <div><b>बॅनर #${i+1}</b>: ${b.desc ? b.desc.substring(0,20)+'...' : 'वर्णन नाही'}</div>
+                    <div style="margin:4px 0;">वैधता (Expiry): <input type="date" id="bannerEditExp_${i}" value="${b.expireDate || ''}" style="padding:2px; font-size:11px;"></div>
+                    <button onclick="saveBannerExpiry(${i})" style="background:#3182ce; color:#fff; border:none; padding:4px 8px; border-radius:4px; cursor:pointer; font-weight:600;">तारीख सेव्ह करा</button>
+                    <button onclick="bannersList.splice(${i},1);saveAllData();renderHome();renderAdminBannersManager();" style="color:red;border:none;background:none;cursor:pointer;font-weight:700;float:right;">डिलीट</button>
+                </div>
+            `).join('');
+        }
+    }
+
+    function saveBannerExpiry(index) {
+        let expInput = document.getElementById(`bannerEditExp_${index}`);
+        if(expInput && bannersList[index]) {
+            bannersList[index].expireDate = expInput.value;
+            saveAllData();
+            renderHome();
+            renderAdminBannersManager();
+            alert('बॅनरची एक्सपायरी तारीख यशस्वीरित्या अपडेट केली!');
         }
     }
 
@@ -1518,9 +1607,10 @@
         }
     }
 
+    // व्हॉट्सॲप मेसेज अपडेटेड फॉरमॅटनुसार ("जाहिरात मित्र" वर तुमची जाहिरात यशस्वीरित्या मंजूर झाली आहे! ✅)
     function shareAdCredentialsWhatsApp(id) {
         const ad = adsData.find(a => a.id === id); if (!ad) return;
-        const msg = `नमस्कार *${ad.name}*,\n\n*${appLocation} Updates जाहिरात मित्र* वर तुमची जाहिरात यशस्वीरित्या मंजूर झाली आहे! ✅\n\n👤 *User Name:* ${ad.username}\n🔑 *Password:* ${ad.phone}\n📅 *वैधता (Expiry):* ${ad.expireDate || '30 दिवस'}\n\n🌐 *वेबसाईट:* ${window.location.href}\n\nधन्यवाद! 🙏`;
+        const msg = `नमस्कार *${ad.name}*,\n\n"जाहिरात मित्र" वर तुमची जाहिरात यशस्वीरित्या मंजूर झाली आहे! ✅\n\n👤 *User Name:* ${ad.username}\n🔑 *Password:* ${ad.phone}\n📅 *वैधता (Expiry):* ${ad.expireDate || '30 दिवस'}\n\n🌐 *वेबसाईट:* ${window.location.href}\n\nधन्यवाद! 🙏`;
         let cleanPhone = ad.phone.replace(/\D/g, ''); if (cleanPhone.length === 10) cleanPhone = '91' + cleanPhone;
         window.open(`https://wa.me/${cleanPhone}?text=${encodeURIComponent(msg)}`, '_blank');
     }
@@ -1551,7 +1641,6 @@
         XLSX.writeFile(wb, "Advertisers_Report.xlsx");
     }
 
-    // मराठी फॉन्ट व स्पष्ट एक्स्पायरी तारखेसह प्रिंट/PDF रिपोर्ट
     function downloadPDFReport() {
         if (adsData.length === 0) { alert('डेटा नाही!'); return; }
         const today = new Date().toISOString().split('T')[0];
@@ -1593,7 +1682,12 @@
 
     function openAdminModal(id) { 
         let modalEl = document.getElementById(id);
-        if(modalEl) modalEl.classList.add('active'); 
+        if(modalEl) {
+            modalEl.classList.add('active');
+            if(id === 'modalAdminDirectory') {
+                renderAdminDirectoryList();
+            }
+        }
     }
     
     function closeAdminModal(id) { 
