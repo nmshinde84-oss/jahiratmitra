@@ -272,8 +272,8 @@
     <div id="page-myads" class="page">
         <h3 style="margin-bottom: 6px;">माझ्या जाहिराती (My Ads)</h3>
         <div id="myAdsLoginBox" style="margin-top: 14px; background:#fff; border:1px solid #e2e8f0; border-radius:12px; padding:16px;">
-            <div class="form-group"><label>Username</label><input type="text" id="myAdsUser"></div>
-            <div class="form-group"><label>Password (मोबाईल नंबर)</label><input type="password" id="myAdsPass"></div>
+            <div class="form-group"><label>Username</label><input type="text" id="myAdsUser" placeholder="उदा. KJ-9876-123 किंवा मोबाईल नंबर"></div>
+            <div class="form-group"><label>Password (मोबाईल नंबर)</label><input type="password" id="myAdsPass" placeholder="10 अंकी मोबाईल नंबर"></div>
             <button class="btn-primary" onclick="handleMyAdsLogin()">लॉगिन करा</button>
         </div>
         <div id="myAdsContentBox" style="display:none; margin-top:14px;">
@@ -657,6 +657,9 @@
             featContainer.innerHTML = '';
             const featuredAds = adsData.filter(ad => ad.status === 'approved' && ad.isFeatured && (!ad.expireDate || ad.expireDate >= today));
             
+            // आतील जाहिराती रँडम (बदलून) येण्यासाठी
+            featuredAds.sort(() => Math.random() - 0.5);
+            
             if (featuredAds.length === 0) {
                 featContainer.innerHTML = '<p style="font-size:12px; color:#888;">सध्या कोणतीही Featured जाहिरात नाही.</p>';
             } else {
@@ -667,6 +670,7 @@
         }
     }
 
+    // Categories ठरलेल्या योग्य क्रमानेच राहतील (शफल होणार नाहीत)
     function renderHomeCategoriesGrid() {
         const grid = document.getElementById('homeCategoriesGrid');
         if(!grid) return;
@@ -752,6 +756,8 @@
         const today = new Date().toISOString().split('T')[0];
         const featuredAds = adsData.filter(ad => ad.status === 'approved' && ad.isFeatured && (!ad.expireDate || ad.expireDate >= today));
 
+        featuredAds.sort(() => Math.random() - 0.5);
+
         if (featuredAds.length === 0) {
             container.innerHTML = '<p style="font-size:13px; color:#718096; text-align:center; padding:30px 0;">सध्या कोणतीही Featured जाहिरात उपलब्ध नाही.</p>';
         } else {
@@ -768,6 +774,8 @@
         container.innerHTML = '';
         const today = new Date().toISOString().split('T')[0];
         const activeBanners = bannersList.filter(b => !b.hidden && (!b.expireDate || b.expireDate >= today));
+
+        activeBanners.sort(() => Math.random() - 0.5);
 
         if (activeBanners.length === 0) {
             container.innerHTML = '<p style="font-size:13px; color:#718096; text-align:center; padding:30px 0;">सध्या कोणतीही फेस्टिव्हल ऑफर उपलब्ध नाही.</p>';
@@ -1188,11 +1196,28 @@
     }
 
     function handleMyAdsLogin() {
-        const u = document.getElementById('myAdsUser').value.trim();
+        const u = document.getElementById('myAdsUser').value.trim().toLowerCase();
         const p = document.getElementById('myAdsPass').value.trim();
-        const found = adsData.find(a => a.username === u && a.password === p);
-        if (found) { currentLoggedInAdvertiser = found; renderMyAdsView(); } else { alert('चुकीचे तपशील!'); }
+        
+        if (!u || !p) {
+            alert('कृपया Username आणि Password (मोबाईल नंबर) दोन्ही भरा!');
+            return;
+        }
+
+        const found = adsData.find(a => 
+            (a.username && a.username.toLowerCase() === u && a.password === p) || 
+            (a.phone && a.phone === p && (a.username.toLowerCase() === u || a.phone === u))
+        );
+
+        if (found) { 
+            currentLoggedInAdvertiser = found; 
+            renderMyAdsView(); 
+            alert('यशस्वी लॉगिन झाले!');
+        } else { 
+            alert('चुकीचे युजरनेम किंवा पासवर्ड! कृपया तुमची माहिती तपासा.'); 
+        }
     }
+
     function handleAdvertiserLogout() { currentLoggedInAdvertiser = null; renderMyAdsView(); }
 
     function renderMyAdsView() {
@@ -1607,7 +1632,6 @@
         }
     }
 
-    // व्हॉट्सॲप मेसेज अपडेटेड फॉरमॅटनुसार ("जाहिरात मित्र" वर तुमची जाहिरात यशस्वीरित्या मंजूर झाली आहे! ✅)
     function shareAdCredentialsWhatsApp(id) {
         const ad = adsData.find(a => a.id === id); if (!ad) return;
         const msg = `नमस्कार *${ad.name}*,\n\n"जाहिरात मित्र" वर तुमची जाहिरात यशस्वीरित्या मंजूर झाली आहे! ✅\n\n👤 *User Name:* ${ad.username}\n🔑 *Password:* ${ad.phone}\n📅 *वैधता (Expiry):* ${ad.expireDate || '30 दिवस'}\n\n🌐 *वेबसाईट:* ${window.location.href}\n\nधन्यवाद! 🙏`;
