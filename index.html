@@ -6,8 +6,8 @@
     <title id="mainTitleTag">करंजाडे Updates जाहिरात मित्र</title>
     
     <!-- Mobile Home Screen App Icon & Manifest Settings -->
-    <link rel="apple-touch-icon" href="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=192">
-    <link rel="icon" type="image/png" href="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=192">
+    <link rel="apple-touch-icon" href="https://i.ibb.co/QjHk4wX7/IMG-20261002-WA0001.jpg">
+    <link rel="icon" type="image/png" href="https://i.ibb.co/QjHk4wX7/IMG-20261002-WA0001.jpg">
     <meta name="theme-color" content="#5c1bc2">
     
     <!-- Google Fonts & Font Awesome -->
@@ -664,7 +664,7 @@
                 featContainer.innerHTML = '<p style="font-size:12px; color:#888;">सध्या कोणतीही Featured जाहिरात नाही.</p>';
             } else {
                 featuredAds.forEach(ad => {
-                    featContainer.innerHTML += `<div class="featured-card" onclick="scrollToFeaturedAd(${ad.id})"><span class="featured-tag"><i class="fa-solid fa-star"></i> FEATURED</span><img src="${ad.cardImg}" class="ad-card-img" style="height:100px; object-fit:contain;"><h5 style="font-size: 13px; font-weight:700;">${ad.name}</h5><div style="font-size: 11px; color: #718096; margin: 3px 0;">📍 ${ad.city}</div><div class="ad-actions" style="grid-template-columns: 1fr 1fr;"><a href="tel:${ad.phone}" class="btn-call" onclick="event.stopPropagation()"><i class="fa-solid fa-phone"></i> Call</a><a href="https://wa.me/91${ad.phone}" class="btn-whatsapp" onclick="event.stopPropagation()"><i class="fa-brands fa-whatsapp"></i> WA</a></div></div>`;
+                    featContainer.innerHTML += `<div class="featured-card" onclick="openCategoryPage('${ad.category}')"><span class="featured-tag"><i class="fa-solid fa-star"></i> FEATURED</span><img src="${ad.cardImg}" class="ad-card-img" style="height:100px; object-fit:contain;"><h5 style="font-size: 13px; font-weight:700;">${ad.name}</h5><div style="font-size: 11px; color: #718096; margin: 3px 0;">📍 ${ad.city}</div><div class="ad-actions" style="grid-template-columns: 1fr 1fr;"><a href="tel:${ad.phone}" class="btn-call" onclick="event.stopPropagation()"><i class="fa-solid fa-phone"></i> Call</a><a href="https://wa.me/91${ad.phone}" class="btn-whatsapp" onclick="event.stopPropagation()"><i class="fa-brands fa-whatsapp"></i> WA</a></div></div>`;
                 });
             }
         }
@@ -722,31 +722,6 @@
 
         const subs = subCategoriesMap[targetCat] || [];
         subSelect.innerHTML = subs.map(s => `<option value="${s}">${s}</option>`).join('');
-    }
-
-    function scrollToFeaturedAd(adId) {
-        showPage('page-home', true);
-        setTimeout(() => {
-            let targetEl = document.getElementById(`adCard_${adId}`);
-            if (!targetEl) {
-                let foundAd = adsData.find(a => a.id === adId);
-                if(foundAd) {
-                    openCategoryPage(foundAd.category || 'Services');
-                    setTimeout(() => {
-                        targetEl = document.getElementById(`adCard_${adId}`);
-                        if (targetEl) {
-                            targetEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                            targetEl.style.border = '2px solid #5c1bc2';
-                            setTimeout(() => { targetEl.style.border = '1px solid #e2e8f0'; }, 2000);
-                        }
-                    }, 100);
-                }
-            } else {
-                targetEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                targetEl.style.border = '2px solid #5c1bc2';
-                setTimeout(() => { targetEl.style.border = '1px solid #e2e8f0'; }, 2000);
-            }
-        }, 100);
     }
 
     function openFeaturedAdsPage() {
