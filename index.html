@@ -4,16 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title id="mainTitleTag">करंजाडे Updates जाहिरात मित्र</title>
-   
+    
     <!-- Mobile Home Screen App Icon & Manifest Settings -->
     <link rel="apple-touch-icon" href="https://i.ibb.co/QjHk4wX7/IMG-20261002-WA0001.jpg">
     <link rel="icon" type="image/png" href="https://i.ibb.co/QjHk4wX7/IMG-20261002-WA0001.jpg">
     <meta name="theme-color" content="#5c1bc2">
-   
+    
     <!-- Google Fonts & Font Awesome -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-   
+    
     <!-- SheetJS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 
@@ -49,17 +49,17 @@
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; -webkit-tap-highlight-color: transparent; }
         body { background-color: #e2e8f0; color: #2d3748; display: flex; justify-content: center; align-items: flex-start; min-height: 100vh; margin: 0; }
-       
+        
         .app-container { width: 100%; max-width: 480px; background-color: #ffffff; min-height: 100vh; position: relative; box-shadow: 0 10px 30px rgba(0,0,0,0.15); display: flex; flex-direction: column; animation: smoothPopup 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-        @keyframes smoothPopup {
-            0% { opacity: 0; transform: scale(0.94) translateY(20px); }
-            100% { opacity: 1; transform: scale(1) translateY(0); }
+        @keyframes smoothPopup { 
+            0% { opacity: 0; transform: scale(0.94) translateY(20px); } 
+            100% { opacity: 1; transform: scale(1) translateY(0); } 
         }
 
         @media (min-width: 481px) { body { background: linear-gradient(135deg, #5c1bc2 0%, #2b2d42 100%); padding: 20px 0; } .app-container { min-height: 92vh; border-radius: 20px; overflow: hidden; } }
-       
+        
         .sticky-top-bar { position: sticky; top: 0; z-index: 1000; background-color: #ffffff; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12); }
-       
+        
         .custom-banner-header { background: linear-gradient(135deg, #5c1bc2 0%, #3f1285 100%); color: white; padding: 16px; position: relative; overflow: hidden; display: flex; flex-direction: column; justify-content: center; min-height: 110px; cursor: pointer; }
         .banner-content { position: relative; z-index: 2; }
         .banner-title-row { display: flex; align-items: center; gap: 8px; font-size: 20px; font-weight: 800; text-shadow: 0 2px 4px rgba(0,0,0,0.3); }
@@ -70,12 +70,20 @@
         .ticker-wrap { width: 100%; overflow: hidden; background: #ff5400; border-top: 1px solid rgba(255, 255, 255, 0.2); border-bottom: 2px solid #d94100; padding: 10px 0; white-space: nowrap; cursor: pointer; }
         .ticker-move { display: inline-block; white-space: nowrap; animation: tickerSlide 18s linear infinite; font-size: 14px; font-weight: 800; color: #ffffff; letter-spacing: 0.4px; text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4); }
         @keyframes tickerSlide { 0% { transform: translate3d(100%, 0, 0); } 100% { transform: translate3d(-100%, 0, 0); } }
-       
+        
         .page { display: none; padding: 16px 16px 140px 16px; flex: 1; }
         .page.active { display: block; }
         .location { display: flex; align-items: center; font-size: 13px; font-weight: 600; color: #4a5568; margin-bottom: 12px; gap: 6px; }
         .location i { color: #e53e3e; }
         .section-title { font-size: 15px; font-weight: 700; margin-bottom: 12px; display: flex; align-items: center; gap: 6px; color: #1a202c; cursor: pointer; }
+        
+        /* Stories Styles */
+        .stories-scroll-container { display: flex; overflow-x: auto; gap: 12px; padding-bottom: 10px; margin-bottom: 18px; scrollbar-width: thin; align-items: center; }
+        .story-ring { width: 68px; height: 68px; border-radius: 50%; background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); padding: 3px; cursor: pointer; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+        .story-thumb { width: 62px; height: 62px; border-radius: 50%; object-fit: cover; border: 2px solid #ffffff; background: #fff; }
+        .story-item-wrap { display: flex; flex-direction: column; align-items: center; gap: 4px; flex-shrink: 0; cursor: pointer; width: 70px; }
+        .story-name-text { font-size: 10px; font-weight: 600; color: #2d3748; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 100%; }
+
         .featured-scroll-container { display: flex; overflow-x: auto; gap: 12px; padding-bottom: 10px; margin-bottom: 20px; scrollbar-width: thin; }
         .featured-card { min-width: 260px; max-width: 260px; background: #fff; border: 1.5px solid #fbd38d; border-radius: 12px; padding: 12px; box-shadow: 0 2px 6px rgba(0,0,0,0.04); flex-shrink: 0; cursor: pointer; }
         .featured-tag { background: #feebc8; color: #b7791f; font-size: 10px; font-weight: 700; padding: 2px 6px; border-radius: 4px; display: inline-block; margin-bottom: 6px; }
@@ -94,7 +102,7 @@
         .cat-icon-events { background: #ffedd5; color: #ea580c; }
         .cat-icon-other { background: #f3e8ff; color: #7e22ce; }
         .category-card .title { font-size: 13px; font-weight: 600; color: #2d3748; }
-       
+        
         .checkbox-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; max-height: 180px; overflow-y: auto; background: #f8fafc; padding: 10px; border-radius: 8px; border: 1px solid #cbd5e0; }
         .checkbox-item { display: flex; align-items: center; gap: 6px; font-size: 12px; color: #4a5568; cursor: pointer; }
         .checkbox-item input { width: 16px; height: 16px; cursor: pointer; }
@@ -103,7 +111,8 @@
         .sub-chip { background: #edf2f7; color: #4a5568; padding: 6px 12px; border-radius: 20px; font-size: 11px; font-weight: 600; cursor: pointer; border: 1px solid #cbd5e0; }
         .sub-chip.active { background: #5c1bc2; color: #fff; border-color: #5c1bc2; }
 
-        .ad-card { border: 1px solid #e2e8f0; border-radius: 12px; padding: 14px; background: #fff; margin-bottom: 14px; box-shadow: 0 2px 4px rgba(0,0,0,0.03); scroll-margin-top: 80px; }
+        .ad-card { border: 1px solid #e2e8f0; border-radius: 12px; padding: 14px; background: #fff; margin-bottom: 14px; box-shadow: 0 2px 4px rgba(0,0,0,0.03); scroll-margin-top: 80px; transition: all 0.3s ease; }
+        .ad-card.highlight { border: 2px solid #f59e0b; box-shadow: 0 0 15px rgba(245, 158, 11, 0.4); background: #fffbeb; }
         .ad-card h4 { font-size: 15px; color: #1a202c; font-weight: 700; }
         .ad-meta { font-size: 12px; color: #718096; margin: 4px 0 6px 0; }
         .ad-address { font-size: 12px; color: #4a5568; margin-bottom: 6px; }
@@ -114,7 +123,7 @@
         .btn-call { border: 1px solid #5c1bc2; background: white; color: #5c1bc2; }
         .btn-whatsapp { background: #25d366; color: white; border: none; }
         .btn-share { background: #3182ce; color: white; border: none; }
-       
+        
         .social-links-row { display: flex; gap: 6px; margin-top: 8px; margin-bottom: 8px; }
         .btn-social { flex: 1; border-radius: 6px; padding: 6px; font-size: 11px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 4px; text-decoration: none; color: white; }
         .btn-insta { background: #e1306c; }
@@ -142,6 +151,17 @@
         .modal-btn-close { background: #5c1bc2; color: white; border: none; padding: 8px 16px; border-radius: 8px; margin-top: 14px; cursor: pointer; width: 100%; font-weight: 600; }
         .back-btn { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 600; color: #5c1bc2; cursor: pointer; margin-bottom: 12px; }
         .expired-badge { background: #e53e3e; color: #fff; padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: bold; margin-left: 8px; }
+        
+        /* Story Viewer Modal */
+        #storyViewerModal { background: rgba(0,0,0,0.92); z-index: 20000; flex-direction: column; padding: 0; }
+        .story-viewer-box { width: 100%; max-width: 440px; height: 100%; max-height: 820px; display: flex; flex-direction: column; position: relative; background: #000; border-radius: 12px; overflow: hidden; }
+        .story-progress-bar-row { display: flex; gap: 4px; padding: 12px 10px 0 10px; z-index: 5; }
+        .story-progress-track { flex: 1; height: 3px; background: rgba(255,255,255,0.3); border-radius: 2px; overflow: hidden; }
+        .story-progress-fill { width: 100%; height: 100%; background: #fff; animation: storyProgress 5s linear forwards; }
+        @keyframes storyProgress { 0% { transform: translateX(-100%); } 100% { transform: translateX(0); } }
+        .story-viewer-header { display: flex; align-items: center; justify-content: space-between; padding: 10px 14px; z-index: 5; color: #fff; background: linear-gradient(to bottom, rgba(0,0,0,0.6), transparent); }
+        .story-viewer-img-wrap { flex: 1; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
+        .story-viewer-img-wrap img { width: 100%; height: 100%; object-fit: contain; }
     </style>
 </head>
 <body>
@@ -162,10 +182,13 @@
     <!-- 1. होम पेज -->
     <div id="page-home" class="page active">
         <div class="location"><i class="fa-solid fa-location-dot"></i><span id="currentLocationDisplay">करंजाडे, पनवेल</span></div>
-       
+        
+        <!-- Stories Row Section -->
+        <div class="stories-scroll-container" id="homeStoriesContainer"></div>
+
         <div class="section-title" onclick="openFestivalOffersPage()" style="background: #fff; padding: 12px 14px; border-radius: 12px; border: 1px solid #e2e8f0; margin-bottom: 18px; box-shadow: 0 1px 3px rgba(0,0,0,0.03); cursor: pointer;">
-            <i class="fa-solid fa-gift" style="color: #ec4899; font-size: 18px;"></i>
-            <span style="font-size: 14px; font-weight: 700; color: #1a202c;">फेस्टिव्हल व स्पेशल ऑफर्स</span>
+            <i class="fa-solid fa-gift" style="color: #ec4899; font-size: 18px;"></i> 
+            <span style="font-size: 14px; font-weight: 700; color: #1a202c;">फेस्टिव्हल व स्पेशल ऑफर्स</span> 
             <i class="fa-solid fa-chevron-right" style="font-size: 12px; margin-left: auto; color: #718096;"></i>
         </div>
 
@@ -203,7 +226,7 @@
         <h3 id="otherPageMainTitle" style="color:#5c1bc2; margin-bottom: 12px;"><i class="fa-solid fa-circle-info"></i> महत्त्वाची माहिती व सेवा</h3>
         <div class="section-title"><i class="fa-solid fa-bullhorn" style="color:#ff5400;"></i> ताजी माहिती (Live Updates)</div>
         <div id="karanjadeUpdatesList"></div>
-       
+        
         <div class="section-title" style="margin-top: 18px;"><i class="fa-solid fa-address-book" style="color:#25d366;"></i> फोन डिरेक्टरी (Important Contacts)</div>
         <div class="form-group" style="margin-bottom: 10px;"><input type="text" id="dirSearchInput" placeholder="डिरेक्टरीमध्ये नाव, नंबर किंवा कॅटेगरी शोधा..." oninput="renderUserDirectoryList()" style="padding: 8px; font-size: 12px;"></div>
         <div id="phoneDirectoryList"></div>
@@ -216,7 +239,7 @@
     <div id="page-search" class="page">
         <h3 style="margin-bottom: 12px;">शोधा (Search Ads)</h3>
         <div class="form-group"><input type="text" id="searchInput" placeholder="कोणताही शब्द, नाव किंवा अक्षर टाका..." oninput="handleSearch()"></div>
-       
+        
         <div class="form-group">
             <label style="font-size: 12px; font-weight: 600; margin-bottom: 5px; color: #4a5568;">मुख्य कॅटेगरी निवडा:</label>
             <select id="searchCategory" onchange="updateSearchSubCategories()">
@@ -237,7 +260,7 @@
         <h3 style="margin-bottom: 8px; color: #1a202c;">नवीन जाहिरात पोस्ट करा</h3>
         <form onsubmit="handleUserSubmitAd(event)">
             <div class="form-group"><label>व्यवसायाचे / सेवेचे नाव *</label><input type="text" id="postName" required placeholder="उदा. पाटील क्लिनिक"></div>
-           
+            
             <div class="form-group">
                 <label>मुख्य कॅटेगरी निवडा *</label>
                 <select id="postCategory" required onchange="updatePostSubCategories()">
@@ -252,7 +275,7 @@
             <div class="form-group"><label>मोबाईल नंबर * (पासवर्ड)</label><input type="tel" id="postPhone" required placeholder="10 अंकी मोबाईल नंबर"></div>
             <div class="form-group"><label>पत्ता *</label><input type="text" id="postAddress" required placeholder="उदा. सेक्टर 4"></div>
             <div class="form-group"><label>माहिती (Description) *</label><textarea id="postDesc" rows="3" required placeholder="माहिती लिहा..."></textarea></div>
-           
+            
             <div class="form-group"><label>इन्स्टाग्राम प्रोफाइल लिंक (पर्यायी)</label><input type="url" id="postInsta" placeholder="https://instagram.com/..."></div>
             <div class="form-group"><label>फेसबुक पेज लिंक (पर्यायी)</label><input type="url" id="postFb" placeholder="https://facebook.com/..."></div>
             <div class="form-group"><label>स्वतःची वेबसाईट लिंक (पर्यायी)</label><input type="url" id="postWeb" placeholder="https://..."></div>
@@ -363,7 +386,7 @@
 <div class="modal" id="modalAdminCategory">
     <div class="modal-content">
         <h4 style="color:#0284c7; margin-bottom:10px;"><i class="fa-solid fa-folder-gear"></i> कॅटेगरी व सब-कॅटेगरी मॅनेजमेंट</h4>
-       
+        
         <div style="background:#f8fafc; padding:10px; border-radius:8px; margin-bottom:12px; border:1px solid #e2e8f0;">
             <h5 style="font-size:12px; color:#1e293b; margin-bottom:6px;">१. मुख्य कॅटेगरी (Main Category) जोडा / काढा:</h5>
             <div class="form-group" style="margin-bottom:8px;"><input type="text" id="adminNewMainCatName" placeholder="नवीन कॅटेगरीचे नाव"></div>
@@ -419,7 +442,7 @@
         <div class="form-group"><label>नाव:</label><input type="text" id="dirName"></div>
         <div class="form-group"><label>नंबर:</label><input type="tel" id="dirPhone"></div>
         <button class="btn-primary" style="background:#16a34a; margin-bottom:10px;" onclick="addDirectoryContact()">+ डिरेक्टरी जोडा</button>
-       
+        
         <div class="form-group" style="margin-bottom:6px;"><input type="text" id="adminDirSearchInput" placeholder="डिरेक्टरी शोधा (सर्च)..." oninput="renderAdminDirectoryList()" style="padding: 6px; font-size: 11px;"></div>
         <div id="adminDirectoryList" style="margin-top:8px; max-height:140px; overflow-y:auto;"></div>
         <button class="modal-btn-close" style="background:#718096; margin-top:10px;" onclick="closeAdminModal('modalAdminDirectory')">बंद करा</button>
@@ -471,16 +494,41 @@
     </div>
 </div>
 
+<!-- Story Viewer Modal -->
+<div class="modal" id="storyViewerModal">
+    <div class="story-viewer-box">
+        <div class="story-progress-bar-row">
+            <div class="story-progress-track"><div class="story-progress-fill" id="storyProgressFill"></div></div>
+        </div>
+        <div class="story-viewer-header">
+            <div style="display:flex; align-items:center; gap:8px;">
+                <img id="viewerStoryAvatar" src="" style="width:36px; height:36px; border-radius:50%; object-fit:cover; border:1px solid #fff;">
+                <div>
+                    <div id="viewerStoryName" style="font-size:13px; font-weight:700;"></div>
+                    <div id="viewerStoryTime" style="font-size:10px; opacity:0.8;"></div>
+                </div>
+            </div>
+            <i class="fa-solid fa-xmark" style="font-size:20px; cursor:pointer; padding:6px;" onclick="closeStoryViewer()"></i>
+        </div>
+        <div class="story-viewer-img-wrap">
+            <img id="viewerStoryImg" src="">
+        </div>
+        <div style="padding:10px 14px; background:rgba(0,0,0,0.8); color:#fff; font-size:12px; display:flex; justify-content:space-between; align-items:center;">
+            <span>👁 व्ह्यूज: <b id="viewerStoryViewsCount">0</b></span>
+        </div>
+    </div>
+</div>
+
 <script>
     let appLocation = localStorage.getItem('kj_location') || "करंजाडे";
-    let ownerDetails = JSON.parse(localStorage.getItem('kj_owner')) || {
-        subject: "करंजाडे Updates मदत केंद्र",
-        phone: "9876543210",
-        email: "contact@updates.com",
-        desc: "करंजाडे Updates - सर्वोत्कृष्ट डिजिटल प्लॅटफॉर्मच्या माध्यमातून आपल्यापर्यंत सर्व सेवा पोहोचवत आहोत."
+    let ownerDetails = JSON.parse(localStorage.getItem('kj_owner')) || { 
+        subject: "करंजाडे Updates मदत केंद्र", 
+        phone: "9876543210", 
+        email: "contact@updates.com", 
+        desc: "करंजाडे Updates - सर्वोत्कृष्ट डिजिटल प्लॅटफॉर्मच्या माध्यमातून आपल्यापर्यंत सर्व सेवा पोहोचवत आहोत." 
     };
     let tickerText = localStorage.getItem('kj_ticker') || "🔥 तुमच्या परिसरात उत्तम सेवा • संपर्क करा 🔥";
-   
+    
     let bannersList = JSON.parse(localStorage.getItem('kj_banners_list')) || [
         { url: "https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=600", desc: "✨ खास फेस्टिव्हल व स्पेशल ऑफर्सचा आनंद घ्या!", expireDate: "2026-12-31", hidden: false }
     ];
@@ -489,7 +537,7 @@
         { id: 1, category: "आपत्कालीन", name: "पोलिस स्टेशन", phone: "112" },
         { id: 2, category: "वैद्यकीय", name: "रुग्णवाहिका", phone: "108" }
     ];
-   
+    
     let subCategoriesMap = JSON.parse(localStorage.getItem('kj_subcategories_map')) || {
         "Services": ["इलेक्ट्रिशियन", "प्लंबर", "कारपेंटर", "पेंटर", "AC / फ्रिज रिपेअर", "मोबाईल / कॉम्प्युटर रिपेअर", "CCTV सेवा", "घर साफसफाई", "Pest Control", "RO / वॉटर प्युरिफायर", "Washing Machine Repair", "घरगुती सेवा", "इतर सेवा"],
         "Property & Real Estate": ["फ्लॅट विक्री", "फ्लॅट भाड्याने", "रूम / PG", "दुकान / ऑफिस", "जमीन / प्लॉट", "घर विक्री", "घर भाड्याने", "Commercial Property", "नवीन प्रोजेक्ट", "Parking", "Property Consultant"],
@@ -518,10 +566,10 @@
         "Other": { icon: "fa-circle-info", css: "cat-icon-other" }
     };
 
-    let currentCategoryName = "";
+    let currentCategoryName = ""; 
     let currentSubCategory = "सर्व";
-   
-    let termsText = localStorage.getItem('kj_terms') ||
+    
+    let termsText = localStorage.getItem('kj_terms') || 
         "1. माहितीची सत्यता: जाहिरातदार जी माहिती (नाव, मोबाईल नंबर, पत्ता, कामाचे विवरण इ.) सबमिट करेल, ती पूर्णपणे खरी आणि कायदेशीर असावी. खोटी किंवा दिशाभूल करणारी माहिती टाकल्यास जाहिरात कोणतीही पूर्वकल्पना न देता डिलीट केली जाईल.\n\n" +
         "2. जाहिरात मंजुरी (Approval): युजरने सबमिट केलेली जाहिरात ॲडमिनच्या तपासणीनंतरच (Approval) वेबसाईटवर लाईव्ह केली जाईल.\n\n" +
         "3. वैधता व मुदत (Validity): जाहिरातीची मुदत संपल्यानंतर ती सार्वजनिक दृष्ट्या दिसेनाशी होईल.\n\n" +
@@ -545,11 +593,14 @@
     function generateBulkDummyAds() { return []; }
 
     let adsData = JSON.parse(localStorage.getItem('kj_ads')) || generateBulkDummyAds();
+    let storiesList = JSON.parse(localStorage.getItem('kj_stories')) || [];
     let currentAdminTab = 'pending';
     let currentLoggedInAdvertiser = null;
+    let storyTimer = null;
 
     async function saveAllDataToCloud() {
         localStorage.setItem('kj_ads', JSON.stringify(adsData));
+        localStorage.setItem('kj_stories', JSON.stringify(storiesList));
         localStorage.setItem('kj_location', appLocation);
         localStorage.setItem('kj_ticker', tickerText);
         localStorage.setItem('kj_banners_list', JSON.stringify(bannersList));
@@ -559,12 +610,12 @@
         localStorage.setItem('kj_cat_icons', JSON.stringify(categoryIconsMap));
         localStorage.setItem('kj_directory', JSON.stringify(phoneDirectory));
         localStorage.setItem('kj_updates', JSON.stringify(karanjadeUpdates));
-       
+        
         if (window.db) {
             try {
                 const { setDoc, doc } = window.firebaseFns;
                 await setDoc(doc(window.db, "appData", "mainStore"), {
-                    adsData: adsData, appLocation: appLocation, tickerText: tickerText,
+                    adsData: adsData, storiesList: storiesList, appLocation: appLocation, tickerText: tickerText,
                     bannersList: bannersList, karanjadeUpdates: karanjadeUpdates, phoneDirectory: phoneDirectory, termsText: termsText, ownerDetails: ownerDetails, subCategoriesMap: subCategoriesMap, categoryIconsMap: categoryIconsMap
                 });
             } catch (e) { console.log("Cloud sync note: ", e); }
@@ -579,6 +630,7 @@
                 if (snap.exists()) {
                     const cloudData = snap.data();
                     if (cloudData.adsData) adsData = cloudData.adsData;
+                    if (cloudData.storiesList) storiesList = cloudData.storiesList;
                     if (cloudData.appLocation) appLocation = cloudData.appLocation;
                     if (cloudData.tickerText) tickerText = cloudData.tickerText;
                     if (cloudData.bannersList) bannersList = cloudData.bannersList;
@@ -591,7 +643,7 @@
                 }
             }
         } catch (err) { console.log("Error loading from cloud"); }
-       
+        
         history.replaceState({ pageId: 'page-home' }, "", "");
         renderHome();
         populateCategoryDropdowns();
@@ -603,7 +655,7 @@
         document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
         const targetPage = document.getElementById(pageId);
         if(targetPage) targetPage.classList.add('active');
-       
+        
         if (navElement) {
             document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
             navElement.classList.add('active');
@@ -639,16 +691,17 @@
     function renderHome() {
         const locTextEl = document.getElementById('headerLocationText');
         if(locTextEl) locTextEl.innerText = `${appLocation} अपडेट्स`;
-       
+        
         const titleTagEl = document.getElementById('mainTitleTag');
         if(titleTagEl) titleTagEl.innerText = `${appLocation} updates जाहिरात मित्र`;
-       
+        
         const curLocEl = document.getElementById('currentLocationDisplay');
         if(curLocEl) curLocEl.innerText = `${appLocation}, पनवेल`;
-       
+        
         const tickerEl = document.getElementById('liveTickerText');
         if(tickerEl) tickerEl.innerText = tickerText;
 
+        renderHomeStories();
         renderHomeCategoriesGrid();
 
         const today = new Date().toISOString().split('T')[0];
@@ -656,16 +709,131 @@
         if(featContainer) {
             featContainer.innerHTML = '';
             const featuredAds = adsData.filter(ad => ad.status === 'approved' && ad.isFeatured && (!ad.expireDate || ad.expireDate >= today));
-           
-            // आतील जाहिराती रँडम (बदलून) येण्यासाठी
             featuredAds.sort(() => Math.random() - 0.5);
-           
+            
             if (featuredAds.length === 0) {
                 featContainer.innerHTML = '<p style="font-size:12px; color:#888;">सध्या कोणतीही Featured जाहिरात नाही.</p>';
             } else {
                 featuredAds.forEach(ad => {
-                    featContainer.innerHTML += `<div class="featured-card" onclick="openCategoryPage('${ad.category}')"><span class="featured-tag"><i class="fa-solid fa-star"></i> FEATURED</span><img src="${ad.cardImg}" class="ad-card-img" style="height:100px; object-fit:contain;"><h5 style="font-size: 13px; font-weight:700;">${ad.name}</h5><div style="font-size: 11px; color: #718096; margin: 3px 0;">📍 ${ad.city}</div><div class="ad-actions" style="grid-template-columns: 1fr 1fr;"><a href="tel:${ad.phone}" class="btn-call" onclick="event.stopPropagation()"><i class="fa-solid fa-phone"></i> Call</a><a href="https://wa.me/91${ad.phone}" class="btn-whatsapp" onclick="event.stopPropagation()"><i class="fa-brands fa-whatsapp"></i> WA</a></div></div>`;
+                    featContainer.innerHTML += `<div class="featured-card" onclick="openFeaturedAdTarget('${ad.category}', ${ad.id})"><span class="featured-tag"><i class="fa-solid fa-star"></i> FEATURED</span><img src="${ad.cardImg}" class="ad-card-img" style="height:100px; object-fit:contain;"><h5 style="font-size: 13px; font-weight:700;">${ad.name}</h5><div style="font-size: 11px; color: #718096; margin: 3px 0;">📍 ${ad.city}</div><div class="ad-actions" style="grid-template-columns: 1fr 1fr;"><a href="tel:${ad.phone}" class="btn-call" onclick="event.stopPropagation()"><i class="fa-solid fa-phone"></i> Call</a><a href="https://wa.me/91${ad.phone}" class="btn-whatsapp" onclick="event.stopPropagation()"><i class="fa-brands fa-whatsapp"></i> WA</a></div></div>`;
                 });
+            }
+        }
+    }
+
+    // Featured जाहिरात क्लिक केल्यावर योग्य कॅटेगरीत जाऊन थेट त्याच ॲडवर जाणे व हायलाईट करणे
+    function openFeaturedAdTarget(categoryName, adId) {
+        openCategoryPage(categoryName, "सर्व");
+        setTimeout(() => {
+            const targetCard = document.getElementById(`adCard_${adId}`);
+            if (targetCard) {
+                targetCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                targetCard.classList.add('highlight');
+                setTimeout(() => {
+                    targetCard.classList.remove('highlight');
+                }, 2500);
+            }
+        }, 150);
+    }
+
+    function renderHomeStories() {
+        const container = document.getElementById('homeStoriesContainer');
+        if(!container) return;
+        
+        const now = Date.now();
+        const twentyFourHours = 24 * 60 * 60 * 1000;
+        
+        storiesList = storiesList.filter(s => (now - s.timestamp) < twentyFourHours);
+        saveAllData();
+
+        if(storiesList.length === 0) {
+            container.innerHTML = '<div style="font-size:11px; color:#718096; padding:4px 0;">सध्या कोणतीही स्टोरी उपलब्ध नाही. (Approved जाहिरातदार My Ads मधून स्टोरी टाकू शकतात)</div>';
+            return;
+        }
+
+        container.innerHTML = storiesList.map((story, idx) => `
+            <div class="story-item-wrap" onclick="viewStory(${idx})">
+                <div class="story-ring">
+                    <img src="${story.imgUrl}" class="story-thumb">
+                </div>
+                <span class="story-name-text">${story.name}</span>
+            </div>
+        `).join('');
+    }
+
+    function viewStory(index) {
+        const now = Date.now();
+        const twentyFourHours = 24 * 60 * 60 * 1000;
+        storiesList = storiesList.filter(s => (now - s.timestamp) < twentyFourHours);
+        
+        if(!storiesList[index]) return;
+        const story = storiesList[index];
+
+        let viewedKey = `viewed_story_${story.id}`;
+        if (!sessionStorage.getItem(viewedKey)) {
+            sessionStorage.setItem(viewedKey, "true");
+            story.views = (story.views || 0) + 1;
+            saveAllData();
+        }
+
+        document.getElementById('viewerStoryAvatar').src = story.imgUrl;
+        document.getElementById('viewerStoryName').innerText = story.name;
+        document.getElementById('viewerStoryTime').innerText = timeAgo(story.timestamp);
+        document.getElementById('viewerStoryImg').src = story.imgUrl;
+        document.getElementById('viewerStoryViewsCount').innerText = story.views || 0;
+
+        const modal = document.getElementById('storyViewerModal');
+        modal.classList.add('active');
+
+        const fillBar = document.getElementById('storyProgressFill');
+        fillBar.style.animation = 'none';
+        void fillBar.offsetWidth;
+        fillBar.style.animation = 'storyProgress 5s linear forwards';
+
+        if(storyTimer) clearTimeout(storyTimer);
+        storyTimer = setTimeout(() => {
+            closeStoryViewer();
+        }, 5000);
+    }
+
+    function closeStoryViewer() {
+        if(storyTimer) clearTimeout(storyTimer);
+        document.getElementById('storyViewerModal').classList.remove('active');
+    }
+
+    function timeAgo(timestamp) {
+        const seconds = Math.floor((Date.now() - timestamp) / 1000);
+        if (seconds < 60) return 'आत्ताच';
+        const minutes = Math.floor(seconds / 60);
+        if (minutes < 60) return `${minutes} मिनिटे मागे`;
+        const hours = Math.floor(minutes / 60);
+        return `${hours} तास मागे`;
+    }
+
+    function compressImageAndUpload(file, callback) {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = (event) => {
+            const img = new Image();
+            img.src = event.target.result;
+            img.onload = () => {
+                const canvas = document.createElement('canvas');
+                let width = img.width;
+                let height = img.height;
+                const maxDim = 800;
+                if (width > height && width > maxDim) {
+                    height *= maxDim / width;
+                    width = maxDim;
+                } else if (height > maxDim) {
+                    width *= maxDim / height;
+                    height = maxDim;
+                }
+                canvas.width = width;
+                canvas.height = height;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(img, 0, 0, width, height);
+                const dataUrl = canvas.toDataURL('image/jpeg', 0.7);
+                callback(dataUrl);
             }
         }
     }
@@ -730,7 +898,6 @@
         container.innerHTML = '';
         const today = new Date().toISOString().split('T')[0];
         const featuredAds = adsData.filter(ad => ad.status === 'approved' && ad.isFeatured && (!ad.expireDate || ad.expireDate >= today));
-
         featuredAds.sort(() => Math.random() - 0.5);
 
         if (featuredAds.length === 0) {
@@ -749,7 +916,6 @@
         container.innerHTML = '';
         const today = new Date().toISOString().split('T')[0];
         const activeBanners = bannersList.filter(b => !b.hidden && (!b.expireDate || b.expireDate >= today));
-
         activeBanners.sort(() => Math.random() - 0.5);
 
         if (activeBanners.length === 0) {
@@ -775,10 +941,10 @@
     function openCategoryPage(categoryName, selectedSub = "सर्व") {
         currentCategoryName = categoryName;
         currentSubCategory = selectedSub;
-       
+        
         let catTitleEl = document.getElementById('categoryTitle');
         if(catTitleEl) catTitleEl.innerHTML = `<i class="fa-solid fa-folder-open" style="color:#5c1bc2;"></i> ${categoryName}`;
-       
+        
         const subContainer = document.getElementById('subcategoryContainer');
         if(subContainer) {
             const subs = ["सर्व", ...(subCategoriesMap[categoryName] || [])];
@@ -791,7 +957,7 @@
         if(listContainer) {
             listContainer.innerHTML = '';
             const today = new Date().toISOString().split('T')[0];
-           
+            
             let filtered = adsData.filter(ad => {
                 const matchesStatus = ad.status === 'approved';
                 const matchesCat = ad.category === categoryName;
@@ -809,7 +975,7 @@
                 filtered.forEach(ad => { listContainer.innerHTML += generateAdCardHTML(ad); });
             }
         }
-       
+        
         if(selectedSub === "सर्व") {
             showPage('page-category', true);
         }
@@ -819,9 +985,9 @@
         currentCategoryName = "OtherSpecial";
         let otherTitleEl = document.getElementById('otherPageMainTitle');
         if(otherTitleEl) otherTitleEl.innerHTML = `<i class="fa-solid fa-circle-info"></i> ${appLocation} महत्त्वाची माहिती व सेवा`;
-       
+        
         const today = new Date().toISOString().split('T')[0];
-       
+        
         const updatesBox = document.getElementById('karanjadeUpdatesList');
         if(updatesBox) {
             updatesBox.innerHTML = karanjadeUpdates.length === 0 ? '<p style="font-size:12px; color:#888;">कोणतेही अपडेट नाही.</p>' : karanjadeUpdates.map(up => `<div class="info-update-card"><span style="font-size:11px; font-weight:700; color:#5c1bc2;">${up.type}</span><h5 style="margin: 4px 0; font-size:13px;">${up.title}</h5><p style="font-size:12px; color:#475569;">${up.desc}</p></div>`).join('');
@@ -845,9 +1011,9 @@
         if(!dirBox) return;
 
         let query = searchInput ? searchInput.value.trim().toLowerCase() : "";
-        let filtered = phoneDirectory.filter(d =>
-            d.name.toLowerCase().includes(query) ||
-            d.phone.includes(query) ||
+        let filtered = phoneDirectory.filter(d => 
+            d.name.toLowerCase().includes(query) || 
+            d.phone.includes(query) || 
             (d.category && d.category.toLowerCase().includes(query))
         );
 
@@ -887,7 +1053,7 @@
         }
 
         subCategoriesMap[newCatName] = ["सामान्य"];
-       
+        
         let autoIcon = "fa-folder";
         let autoCss = "cat-icon-services";
         let lowerName = newCatName.toLowerCase();
@@ -936,7 +1102,7 @@
     function addNewSubCategoryByAdmin() {
         const targetCat = document.getElementById('adminSubCatTarget').value;
         const newSubName = document.getElementById('adminNewSubCatName').value.trim();
-       
+        
         if (!newSubName) {
             alert('कृपया सब-कॅटेगरीचे नाव टाका!');
             return;
@@ -983,18 +1149,18 @@
         const query = searchInputEl ? searchInputEl.value.trim().toLowerCase() : "";
         const searchCatEl = document.getElementById('searchCategory');
         const selectedCat = searchCatEl ? searchCatEl.value : "";
-       
+        
         const checkboxes = document.querySelectorAll('#searchSubCategoriesCheckboxGroup input[type="checkbox"]:checked');
         const selectedSubCats = Array.from(checkboxes).map(cb => cb.value);
 
         const resultsContainer = document.getElementById('searchResultsList');
         if(!resultsContainer) return;
         const today = new Date().toISOString().split('T')[0];
-       
+        
         let filtered = adsData.filter(ad => {
             const matchesStatus = ad.status === 'approved';
             const matchesCat = (!selectedCat || ad.category === selectedCat);
-           
+            
             const adSubs = ad.subCategories || [ad.subCategory];
             const matchesSub = (selectedSubCats.length === 0 || selectedSubCats.some(s => adSubs.includes(s)));
 
@@ -1017,7 +1183,7 @@
         const cat = catEl.value;
         const group = document.getElementById('searchSubCategoryGroup');
         const container = document.getElementById('searchSubCategoriesCheckboxGroup');
-       
+        
         if (!cat) {
             if(group) group.style.display = 'none';
             if(container) container.innerHTML = '';
@@ -1038,7 +1204,7 @@
     function generateAdCardHTML(ad) {
         let shareText = `📣 जाहिरात मित्र - ${ad.name}\n📍 पत्ता: ${ad.address}\n📝 माहिती: ${ad.desc}\n📞 संपर्क: ${ad.phone}\n\n📍 तुमच्या परिसरातील ऑफर्स व जाहिराती एका ठिकाणी!\n\n💰 बचत करा, सोय मिळवा!\n👉 अश्याच अनेक जाहिरातीसाठी आजच वेबसाईटला भेट द्या!\n🌐 ${window.location.href}`;
         let waShareUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(shareText)}`;
-       
+        
         let ratings = ad.ratings || [];
         let avgRating = ratings.length > 0 ? (ratings.reduce((a, b) => a + b, 0) / ratings.length).toFixed(1) : "0.0";
         let userHasRated = localStorage.getItem(`rated_ad_${ad.id}`) === "true";
@@ -1108,7 +1274,7 @@
             localStorage.setItem(`rated_ad_${adId}`, "true");
             saveAllData();
             alert(`धन्यवाद! तुम्ही ${stars} स्टार दिले आहेत.`);
-           
+            
             const activePageEl = document.querySelector('.page.active');
             const activePage = activePageEl ? activePageEl.id : 'page-home';
             if (activePage === 'page-category') {
@@ -1123,7 +1289,7 @@
                 renderHome();
             }
 
-            window.scrollTo(0, currentScrollY);
+            window.scrollTo({ top: currentScrollY, behavior: 'instant' });
         }
     }
 
@@ -1165,30 +1331,30 @@
 
         adsData.push(newAd); saveAllData(); alert('जाहिरात यशस्वीरित्या सबमिट झाली! अडमिन मंजुरीनंतर दिसेल.');
         const postForm = document.querySelector('#page-post form');
-        if(postForm) postForm.reset();
-        updatePostSubCategories();
+        if(postForm) postForm.reset(); 
+        updatePostSubCategories(); 
         showPage('page-myads', true);
     }
 
     function handleMyAdsLogin() {
         const u = document.getElementById('myAdsUser').value.trim().toLowerCase();
         const p = document.getElementById('myAdsPass').value.trim();
-       
+        
         if (!u || !p) {
             alert('कृपया Username आणि Password दोन्ही भरा!');
             return;
         }
 
-        const found = adsData.find(a =>
+        const found = adsData.find(a => 
             a.username && a.username.toLowerCase() === u && a.password === p
         );
 
-        if (found) {
-            currentLoggedInAdvertiser = found;
-            renderMyAdsView();
+        if (found) { 
+            currentLoggedInAdvertiser = found; 
+            renderMyAdsView(); 
             alert('यशस्वी लॉगिन झाले!');
-        } else {
-            alert('चुकीचे युजरनेम किंवा पासवर्ड! कृपया तुमची माहिती तपासा.');
+        } else { 
+            alert('चुकीचे युजरनेम किंवा पासवर्ड! कृपया तुमची माहिती तपासा.'); 
         }
     }
 
@@ -1201,22 +1367,43 @@
         const today = new Date().toISOString().split('T')[0];
 
         if (!currentLoggedInAdvertiser) {
-            if(loginBox) loginBox.style.display = 'block';
+            if(loginBox) loginBox.style.display = 'block'; 
             if(contentBox) contentBox.style.display = 'none';
         } else {
-            if(loginBox) loginBox.style.display = 'none';
+            if(loginBox) loginBox.style.display = 'none'; 
             if(contentBox) contentBox.style.display = 'block';
             let unameEl = document.getElementById('myAdsLoggedInUsername');
             if(unameEl) unameEl.innerText = currentLoggedInAdvertiser.username;
-           
+            
             const ad = adsData.find(a => a.id === currentLoggedInAdvertiser.id);
-           
+            
             if(ad && list) {
                 const isExpired = ad.expireDate && ad.expireDate < today;
                 const statusText = isExpired ? 'EXPIRED (मुदत संपली)' : ad.status.toUpperCase();
                 const borderCol = isExpired ? '#e53e3e' : (ad.status === 'approved' ? '#38a169' : '#d97706');
                 let ratings = ad.ratings || [];
                 let avgRating = ratings.length > 0 ? (ratings.reduce((a, b) => a + b, 0) / ratings.length).toFixed(1) : "0.0";
+
+                let existingStory = storiesList.find(s => s.adId === ad.id);
+                let storySectionHTML = '';
+
+                if (ad.status !== 'approved') {
+                    storySectionHTML = `<div style="background:#fff3cd; color:#856404; padding:8px; border-radius:6px; font-size:11px; margin-top:10px;">⚠️ तुमची जाहिरात अजून ॲप्रूव झालेली नाही. ॲप्रूव झाल्यावर तुम्हाला स्टोरी टाकण्याचा अधिकार मिळेल.</div>`;
+                } else if (existingStory) {
+                    storySectionHTML = `
+                        <div style="background:#f0fdf4; border:1px solid #bbf7d0; padding:10px; border-radius:8px; margin-top:10px;">
+                            <div style="font-size:12px; font-weight:700; color:#15803d; margin-bottom:4px;">🟢 तुमची 24-तासांची स्टोरी लाईव्ह आहे!</div>
+                            <div style="font-size:11px; color:#475569; margin-bottom:6px;">👁 एकूण व्ह्यूज (Views): <b>${existingStory.views || 0}</b></div>
+                            <button onclick="deleteAdvertiserStory(${ad.id})" style="background:#e53e3e; color:#fff; border:none; padding:6px 10px; border-radius:6px; font-size:11px; font-weight:600; cursor:pointer;">🗑️ स्टोरी डिलीट करा</button>
+                        </div>`;
+                } else {
+                    storySectionHTML = `
+                        <div style="background:#f8fafc; border:1px solid #e2e8f0; padding:10px; border-radius:8px; margin-top:10px;">
+                            <div style="font-size:12px; font-weight:700; color:#5c1bc2; margin-bottom:4px;">📸 नवीन 24-तासांची स्टोरी ठेवा (Story)</div>
+                            <input type="file" id="advertiserStoryFile" accept="image/*" style="font-size:11px; margin-bottom:6px; width:100%;">
+                            <button onclick="uploadAdvertiserStory(${ad.id}, '${ad.name}')" style="background:#5c1bc2; color:#fff; border:none; padding:8px; border-radius:6px; font-size:12px; font-weight:600; cursor:pointer; width:100%;">स्टोरी अपलोड करा (Post Story)</button>
+                        </div>`;
+                }
 
                 list.innerHTML = `
                     <div class="ad-card" style="border-left: 5px solid ${borderCol}; opacity: ${isExpired ? '0.7' : '1'};">
@@ -1230,10 +1417,45 @@
                             <textarea id="userEditDesc_${ad.id}" rows="3" style="padding:8px; font-size:12px;">${ad.desc}</textarea>
                         </div>
                         <button onclick="saveUserDescUpdate(${ad.id})" class="btn-primary" style="padding:8px; font-size:12px; background:#16a34a; margin-bottom:8px;">डिस्क्रिप्शन सेव्ह करा</button>
-                        <p style="font-size: 11px; margin-top:6px; color:${borderCol}; font-weight:bold;">स्थिती: <b>${statusText}</b> | मुदत: <b>${ad.expireDate}</b></p>
+                        ${storySectionHTML}
+                        <p style="font-size: 11px; margin-top:10px; color:${borderCol}; font-weight:bold;">स्थिती: <b>${statusText}</b> | मुदत: <b>${ad.expireDate}</b></p>
                     </div>
                 `;
             }
+        }
+    }
+
+    function uploadAdvertiserStory(adId, adName) {
+        const fileInput = document.getElementById('advertiserStoryFile');
+        if (!fileInput || !fileInput.files || fileInput.files.length === 0) {
+            alert('कृपया स्टोरीसाठी फोटो निवडा!');
+            return;
+        }
+
+        const file = fileInput.files[0];
+        compressImageAndUpload(file, (compressedDataUrl) => {
+            const newStory = {
+                id: Date.now(),
+                adId: adId,
+                name: adName,
+                imgUrl: compressedDataUrl,
+                timestamp: Date.now(),
+                views: 0
+            };
+
+            storiesList.push(newStory);
+            saveAllData();
+            alert('यशस्वी! तुमची 24-तासांची स्टोरी लाईव्ह झाली आहे.');
+            renderMyAdsView();
+        });
+    }
+
+    function deleteAdvertiserStory(adId) {
+        if(confirm("तुम्ही ही स्टोरी डिलीट करू इच्छिता?")) {
+            storiesList = storiesList.filter(s => s.adId !== adId);
+            saveAllData();
+            alert('स्टोरी यशस्वीरित्या डिलीट केली गेली.');
+            renderMyAdsView();
         }
     }
 
@@ -1251,10 +1473,10 @@
     function openOwnerContactModal() {
         let subEl = document.getElementById('modalOwnerSubject');
         if(subEl) subEl.innerHTML = `<i class="fa-solid fa-circle-info"></i> ${ownerDetails.subject || 'माहिती व संपर्क'}`;
-       
+        
         let descEl = document.getElementById('modalOwnerDesc');
         if(descEl) descEl.innerText = ownerDetails.desc || "माहिती उपलब्ध नाही.";
-       
+        
         let phoneEl = document.getElementById('modalOwnerPhone');
         if(phoneEl) {
             phoneEl.innerText = ownerDetails.phone || "";
@@ -1271,27 +1493,27 @@
         if(modalEl) modalEl.classList.add('active');
     }
 
-    function closeOwnerContactModal() {
+    function closeOwnerContactModal() { 
         let modalEl = document.getElementById('ownerModal');
-        if(modalEl) modalEl.classList.remove('active');
+        if(modalEl) modalEl.classList.remove('active'); 
     }
 
     function updateTickerAndOwnerDetails() {
         const tickerInputEl = document.getElementById('adminTickerInput');
         if(tickerInputEl) tickerText = tickerInputEl.value.trim();
-       
+        
         let subIn = document.getElementById('ownerSubjectInput');
         if(subIn) ownerDetails.subject = subIn.value.trim();
-       
+        
         let phIn = document.getElementById('ownerPhoneInput');
         if(phIn) ownerDetails.phone = phIn.value.trim();
-       
+        
         let emIn = document.getElementById('ownerEmailInput');
         if(emIn) ownerDetails.email = emIn.value.trim();
-       
+        
         let descIn = document.getElementById('ownerDescInput');
         if(descIn) ownerDetails.desc = descIn.value.trim();
-       
+        
         saveAllData();
         renderHome();
         alert('स्क्रोलिंग पट्टी आणि संपर्क माहिती यशस्वीरित्या अपडेट केली!');
@@ -1303,67 +1525,67 @@
         const passEl = document.getElementById('adminPass');
         const email = emailEl ? emailEl.value.trim() : "";
         const password = passEl ? passEl.value.trim() : "";
-       
+        
         if (!email || !password) { alert('कृपया Admin Email आणि Password टाका.'); return; }
         try {
             const { signInWithEmailAndPassword } = window.firebaseFns;
             await signInWithEmailAndPassword(window.firebaseAuth, email, password);
-           
+            
             let loginForm = document.getElementById('adminLoginForm');
             let dash = document.getElementById('adminDashboard');
             if(loginForm) loginForm.style.display = 'none';
             if(dash) dash.style.display = 'block';
-           
+            
             let locIn = document.getElementById('adminLocationInput');
             if(locIn) locIn.value = appLocation;
-           
+            
             let tickIn = document.getElementById('adminTickerInput');
             if(tickIn) tickIn.value = tickerText;
-           
+            
             let subIn = document.getElementById('ownerSubjectInput');
             if(subIn) subIn.value = ownerDetails.subject || "";
-           
+            
             let phIn = document.getElementById('ownerPhoneInput');
             if(phIn) phIn.value = ownerDetails.phone || "";
-           
+            
             let emIn = document.getElementById('ownerEmailInput');
             if(emIn) emIn.value = ownerDetails.email || "";
-           
+            
             let descIn = document.getElementById('ownerDescInput');
             if(descIn) descIn.value = ownerDetails.desc || "";
-           
+            
             let termsIn = document.getElementById('adminTermsInput');
             if(termsIn) termsIn.value = termsText;
-           
-            renderAdminKaranjadeUpdates();
-            renderAdminDirectoryList();
-            renderAdminBannersManager();
+            
+            renderAdminKaranjadeUpdates(); 
+            renderAdminDirectoryList(); 
+            renderAdminBannersManager(); 
             renderAdminAdsManager();
         } catch (error) { alert('चुकीचा Admin Email किंवा Password!'); }
     }
 
     async function handleAdminLogout() {
         try {
-            const { signOut } = window.firebaseFns;
+            const { signOut } = window.firebaseFns; 
             await signOut(window.firebaseAuth);
             let loginForm = document.getElementById('adminLoginForm');
             let dash = document.getElementById('adminDashboard');
-            if(loginForm) loginForm.style.display = 'block';
+            if(loginForm) loginForm.style.display = 'block'; 
             if(dash) dash.style.display = 'none';
         } catch (error) { alert('Logout करताना समस्या आली.'); }
     }
 
-    function updateAppLocation() {
+    function updateAppLocation() { 
         const locIn = document.getElementById('adminLocationInput');
-        const loc = locIn ? locIn.value.trim() : "";
-        if (loc) {
-            appLocation = loc;
-            saveAllData();
-            renderHome();
-            alert('लोकेशन बदलले!');
-        }
+        const loc = locIn ? locIn.value.trim() : ""; 
+        if (loc) { 
+            appLocation = loc; 
+            saveAllData(); 
+            renderHome(); 
+            alert('लोकेशन बदलले!'); 
+        } 
     }
-   
+    
     function updateTermsAndConditions() {
         const termsIn = document.getElementById('adminTermsInput');
         if(termsIn) termsText = termsIn.value.trim();
@@ -1383,87 +1605,87 @@
         if(modalEl) modalEl.classList.remove('active');
     }
 
-    function addKaranjadeUpdate() {
+    function addKaranjadeUpdate() { 
         let typeEl = document.getElementById('updateType');
         let titleEl = document.getElementById('updateTitle');
         let descEl = document.getElementById('updateDesc');
-       
-        karanjadeUpdates.unshift({
-            id: Date.now(),
-            type: typeEl ? typeEl.value : "",
-            title: titleEl ? titleEl.value : "",
-            desc: descEl ? descEl.value : ""
-        });
-        saveAllData();
-        renderAdminKaranjadeUpdates();
-        alert('अपडेट जोडले!');
+        
+        karanjadeUpdates.unshift({ 
+            id: Date.now(), 
+            type: typeEl ? typeEl.value : "", 
+            title: titleEl ? titleEl.value : "", 
+            desc: descEl ? descEl.value : "" 
+        }); 
+        saveAllData(); 
+        renderAdminKaranjadeUpdates(); 
+        alert('अपडेट जोडले!'); 
     }
-   
-    function renderAdminKaranjadeUpdates() {
+    
+    function renderAdminKaranjadeUpdates() { 
         let box = document.getElementById('adminExistingUpdates');
         if(box) {
-            box.innerHTML = karanjadeUpdates.map(u => `<div><b>[${u.type}]</b> ${u.title} <button onclick="karanjadeUpdates=karanjadeUpdates.filter(x=>x.id!==${u.id});saveAllData();renderAdminKaranjadeUpdates();" style="color:red;border:none;background:none;cursor:pointer;">हटवा</button></div>`).join('');
+            box.innerHTML = karanjadeUpdates.map(u => `<div><b>[${u.type}]</b> ${u.title} <button onclick="karanjadeUpdates=karanjadeUpdates.filter(x=>x.id!==${u.id});saveAllData();renderAdminKaranjadeUpdates();" style="color:red;border:none;background:none;cursor:pointer;">हटवा</button></div>`).join(''); 
         }
     }
 
-    function addDirectoryContact() {
+    function addDirectoryContact() { 
         let catEl = document.getElementById('dirCategory');
         let nameEl = document.getElementById('dirName');
         let phoneEl = document.getElementById('dirPhone');
-       
-        phoneDirectory.push({
-            id: Date.now(),
+        
+        phoneDirectory.push({ 
+            id: Date.now(), 
             category: catEl ? catEl.value.trim() || "सामान्य" : "सामान्य",
-            name: nameEl ? nameEl.value : "",
-            phone: phoneEl ? phoneEl.value : ""
-        });
-        saveAllData();
-        renderAdminDirectoryList();
-        alert('डिरेक्टरी नंबर जोडला!');
+            name: nameEl ? nameEl.value : "", 
+            phone: phoneEl ? phoneEl.value : "" 
+        }); 
+        saveAllData(); 
+        renderAdminDirectoryList(); 
+        alert('डिरेक्टरी नंबर जोडला!'); 
     }
-   
-    function renderAdminDirectoryList() {
+    
+    function renderAdminDirectoryList() { 
         let box = document.getElementById('adminDirectoryList');
         let searchInput = document.getElementById('adminDirSearchInput');
         if(!box) return;
 
         let query = searchInput ? searchInput.value.trim().toLowerCase() : "";
-        let filtered = phoneDirectory.filter(d =>
-            d.name.toLowerCase().includes(query) ||
-            d.phone.includes(query) ||
+        let filtered = phoneDirectory.filter(d => 
+            d.name.toLowerCase().includes(query) || 
+            d.phone.includes(query) || 
             (d.category && d.category.toLowerCase().includes(query))
         );
 
         box.innerHTML = filtered.length === 0 ? '<p style="font-size:11px; color:#888;">नंबर सापडला नाही.</p>' : filtered.map(d => `
             <div style="font-size:11px; margin-bottom:6px; background:#f8fafc; padding:6px; border-radius:6px; border:1px solid #e2e8f0;">
-                <b>[${d.category || 'इतर'}] ${d.name}:</b> ${d.phone}
+                <b>[${d.category || 'इतर'}] ${d.name}:</b> ${d.phone} 
                 <button onclick="phoneDirectory=phoneDirectory.filter(x=>x.id!==${d.id});saveAllData();renderAdminDirectoryList();" style="color:red;border:none;background:none;cursor:pointer;float:right;font-weight:700;">हटवा</button>
             </div>
-        `).join('');
+        `).join(''); 
     }
 
     function saveNewBannerItem() {
         const urlVal = document.getElementById('bannerImgInput').value.trim();
         const descVal = document.getElementById('bannerDescInput').value.trim();
         if(!urlVal) { alert('कृपया बॅनरची इमेज URL टाका!'); return; }
-       
+        
         let expEl = document.getElementById('bannerExpInput');
         let hideEl = document.getElementById('bannerHideCheck');
-       
-        bannersList.push({
-            url: urlVal,
-            desc: descVal,
-            expireDate: expEl ? expEl.value : "",
-            hidden: hideEl ? hideEl.checked : false
+        
+        bannersList.push({ 
+            url: urlVal, 
+            desc: descVal, 
+            expireDate: expEl ? expEl.value : "", 
+            hidden: hideEl ? hideEl.checked : false 
         });
-        saveAllData();
-        renderHome();
-        renderAdminBannersManager();
-       
-        document.getElementById('bannerImgInput').value = '';
-        document.getElementById('bannerDescInput').value = '';
-        if(expEl) expEl.value = '';
-        if(hideEl) hideEl.checked = false;
+        saveAllData(); 
+        renderHome(); 
+        renderAdminBannersManager(); 
+        
+        document.getElementById('bannerImgInput').value = ''; 
+        document.getElementById('bannerDescInput').value = ''; 
+        if(expEl) expEl.value = ''; 
+        if(hideEl) hideEl.checked = false; 
         alert('नवीन फेस्टिव्हल बॅनर जोडले!');
     }
 
@@ -1519,7 +1741,7 @@
             const matchesSearch = ad.name.toLowerCase().includes(searchVal) || ad.phone.includes(searchVal);
             return matchesTab && matchesSearch;
         });
-       
+        
         container.innerHTML = filtered.length === 0 ? '<p style="font-size:12px; color:#888; text-align:center; padding:10px;">कोणतीही जाहिरात सापडली नाही.</p>' : filtered.map(ad => {
             const isExpired = ad.expireDate && ad.expireDate < today;
             const expiredBadge = isExpired ? '<span class="expired-badge">Expired</span>' : '';
@@ -1580,10 +1802,10 @@
             if(webEl) ad.webUrl = webEl.value;
             if(expEl) ad.expireDate = expEl.value;
             if(featEl) ad.isFeatured = featEl.checked;
-           
-            saveAllData();
-            alert('जाहिरात यशस्वीरित्या अपडेट केली!');
-            renderAdminAdsManager();
+            
+            saveAllData(); 
+            alert('जाहिरात यशस्वीरित्या अपडेट केली!'); 
+            renderAdminAdsManager(); 
             renderHome();
         }
     }
@@ -1594,14 +1816,14 @@
             ad.status = 'approved';
             let imgEl = document.getElementById(`editImg_${id}`);
             let featEl = document.getElementById(`editFeatured_${id}`);
-           
+            
             const customImg = imgEl ? imgEl.value : "";
             if (customImg) { ad.cardImg = customImg; } else if (!ad.cardImg) { ad.cardImg = categoryAutoImages[ad.category] || "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=500"; }
             if(featEl) ad.isFeatured = featEl.checked;
-           
-            saveAllData();
-            renderAdminAdsManager();
-            renderHome();
+            
+            saveAllData(); 
+            renderAdminAdsManager(); 
+            renderHome(); 
             shareAdCredentialsWhatsApp(id);
         }
     }
@@ -1616,7 +1838,7 @@
     function downloadExcelReport() {
         if (adsData.length === 0) { alert('डेटा नाही!'); return; }
         const today = new Date().toISOString().split('T')[0];
-       
+        
         const reportData = adsData.map((a, i) => {
             const isExpired = a.expireDate && a.expireDate < today;
             const ratings = a.ratings || [];
@@ -1634,8 +1856,8 @@
         });
 
         const ws = XLSX.utils.json_to_sheet(reportData);
-        const wb = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(wb, ws, "Ads Report");
+        const wb = XLSX.utils.book_new(); 
+        XLSX.utils.book_append_sheet(wb, ws, "Ads Report"); 
         XLSX.writeFile(wb, "Advertisers_Report.xlsx");
     }
 
@@ -1678,7 +1900,7 @@
         }, 500);
     }
 
-    function openAdminModal(id) {
+    function openAdminModal(id) { 
         let modalEl = document.getElementById(id);
         if(modalEl) {
             modalEl.classList.add('active');
@@ -1687,10 +1909,10 @@
             }
         }
     }
-   
-    function closeAdminModal(id) {
+    
+    function closeAdminModal(id) { 
         let modalEl = document.getElementById(id);
-        if(modalEl) modalEl.classList.remove('active');
+        if(modalEl) modalEl.classList.remove('active'); 
     }
 
     renderHome();
