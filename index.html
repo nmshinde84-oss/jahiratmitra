@@ -629,8 +629,15 @@
                 const snap = await getDoc(doc(window.db, "appData", "mainStore"));
                 if (snap.exists()) {
                     const cloudData = snap.data();
-                    if (cloudData.adsData) adsData = cloudData.adsData;
-                    if (cloudData.storiesList) storiesList = cloudData.storiesList;
+                    // क्लाउडवर डेटा असेल तरच लोकल डेटा अपडेट करा (सुरक्षितता)
+                    if (cloudData.adsData && cloudData.adsData.length > 0) {
+                        adsData = cloudData.adsData;
+                        localStorage.setItem('kj_ads', JSON.stringify(adsData));
+                    }
+                    if (cloudData.storiesList) {
+                        storiesList = cloudData.storiesList;
+                        localStorage.setItem('kj_stories', JSON.stringify(storiesList));
+                    }
                     if (cloudData.appLocation) appLocation = cloudData.appLocation;
                     if (cloudData.tickerText) tickerText = cloudData.tickerText;
                     if (cloudData.bannersList) bannersList = cloudData.bannersList;
@@ -721,7 +728,6 @@
         }
     }
 
-    // Featured जाहिरात क्लिक केल्यावर योग्य कॅटेगरीत जाऊन थेट त्याच ॲडवर जाणे व हायलाईट करणे
     function openFeaturedAdTarget(categoryName, adId) {
         openCategoryPage(categoryName, "सर्व");
         setTimeout(() => {
@@ -838,7 +844,6 @@
         }
     }
 
-    // Categories ठरलेल्या योग्य क्रमानेच राहतील (शफल होणार नाहीत)
     function renderHomeCategoriesGrid() {
         const grid = document.getElementById('homeCategoriesGrid');
         if(!grid) return;
